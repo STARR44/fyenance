@@ -15,7 +15,8 @@ from rest_framework import serializers
 class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = BaseTransaction
-        fields = ('id', 'amount', 'date_created', 'type', 'category')
+        fields = ('id', 'amount', 'date_created', 'type', 'category', 'user')
+        extra_kwargs = {'user': {'read_only': True}}
 
     def create(self, validated_data):
         transaction = BaseTransaction.objects.create_transaction(**validated_data)
