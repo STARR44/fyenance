@@ -1,0 +1,145 @@
+/* AboutPage.css */
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400&display=swap");
+
+
+.about-page {
+  font-family: "Fredoka", sans-serif;
+  background-color: #F9FAFB;
+  color: #3f3e39;
+}
+
+.about-header {
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* margin: 30px; Removes top and bottom margins */
+  padding: 15px; /* Adjust padding as needed */
+  position: sticky; /* logo should remain in view while scrolling */
+  top: 0; /* Positions it at the top */
+  z-index: 10; /* Ensures it's above other content */
+}
+
+
+
+.about-header .logo-text { /* Increase the logo text for the About page specifically */
+  font-size: 22px;
+}
+
+.about-content {
+  text-align: center;
+  margin: 0 auto;
+  max-width: 850px;
+  margin-top: 50px;
+}
+
+.about-content .mission-text {
+  max-width: 500px;
+  margin: 0 auto; /* Center the box horizontally */
+}
+
+@media (min-width: 1200px) {
+  .about-content {
+    max-width: 850px;
+  }
+}
+
+/* Style for faint horizontal lines */
+.faint-line {
+  border: 0;
+  border-top: 1px solid #d3d3d3; /* Light gray color */
+  width: 35%; /* Adjust the width to make it short */
+  margin: 10px auto; /* Center the line and add space above/below */
+}
+
+.about-content h3 {
+  /* font-family: "Azeret Mono", monospace; might remove this line later*/
+  font-size: 1.7rem;
+  background: linear-gradient(90deg, #d7c178, #adebb3, #84c3a5);
+  -webkit-background-clip: text;
+  color: #333; /* Fallback for unsupported browsers */
+  -webkit-text-fill-color: transparent;
+  transition: background-position 0.5s ease-in-out, transform 0.3s ease;
+  background-size: 200%;
+  text-align: center;
+}
+
+.about-content h3:hover {
+  background-position: right;
+  transform: scale(1.05);
+}
+
+.highlight-text {
+  /* font-family: "Azeret Mono", monospace; Ensure the 'fye' uses Azeret */
+  /* Might remove later */
+  color: #d7c178;
+  font-weight: bolder;
+}
+
+/* Apply Azeret Mono font to 'nance' might remove this line later*/
+.feynance {
+  /* font-family: "Azeret Mono", monospace; */
+  color: #333; /* Keep it the default color */
+  /* font-size: 2rem; */
+  font-weight: bolder;
+}
+
+.about-content p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin: 10px 0;
+}
+
+.first-paragraph {
+  padding-top: 25px;
+}
+
+.second-paragraph {
+  margin-top: 30px;
+  margin-bottom: 20px;
+  padding-top: 30px;
+  padding-bottom: 50px;
+}
+
+.mission-text {
+  /* background-color: #adebb3; */
+  border: 2px solid;
+  border-color: #adebb3;
+  text-align: center;
+  border-radius: 10px;
+  color: #3f3e39;
+  margin-bottom: 50px;
+  margin-top: 50px;
+  padding-bottom: 30px;
+  padding-top: 30px;
+}
+
+.about-page .cta-section {
+  width: 100vw; /* Make it span the entire viewport width */
+  margin-left: calc(-50vw + 50%); /* Center it correctly on the viewport */
+  margin-top: 1px; /* Adjust this to add more space above the CTA */
+  /* margin-bottom: 10px; */
+}
+
+@media (max-width: 768px) {
+  .cta-section {
+    padding: 20px 10px; /* Reduce padding for smaller screens */
+    font-size: 1rem; /* Adjust font size */
+  }
+}
+
+.about-footer {
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 10px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.about-footer .logo-text { /* Increase the logo text for the About page specifically */
+  text-align: center;
+  font-size: 22px;
+}
