@@ -13,12 +13,9 @@ from django.http import JsonResponse
 import json
 from .models import BaseTransaction, Budget, Category
 from .serializers import TransactionSerializer, BudgetSerializer, CategorySerializer
-# from accounts.serializers import UserSerializer
-# from accounts.models import FyenanceUser
 
 # Do not forget to add the login required decorator here
 class TransactionListCreate(generics.ListCreateAPIView):
-    # queryset = BaseTransaction.objects.all()
     serializer_class = TransactionSerializer
     permission_classes = [IsAuthenticated]
 
@@ -36,8 +33,6 @@ class TransactionListCreate(generics.ListCreateAPIView):
         If the transaction ID exists, it updates the existing transaction with new data.
         If the transaction ID does not exist, it creates a new transaction.
         """
-        # if not self.request.session.exists(self.request.session.session_key):
-        #     self.request.session.create()
 
         serializer = self.serializer_class(data=request.data)
         print(serializer)
@@ -52,7 +47,6 @@ class TransactionListCreate(generics.ListCreateAPIView):
             if queryset.exists():
                 transaction = queryset[0]
                 transaction.amount = amount
-                # transaction.date_created = date_created
                 transaction.type = type
                 transaction.category = category
                 transaction.save(update_fields=['amount', 'date_created', 'type', 'category'])
@@ -124,30 +118,14 @@ class BudgetListCreate(generics.ListCreateAPIView):
         """
         This GET request lists all saved budgets.
         """
-        
-        # user = request.user
+
         username = request.user.username
         if username != None:
             budget = Budget.objects.filter(user_username=username)
             data = BudgetSerializer(budget, many=True).data
             return Response(data, status=status.HTTP_200_OK)
         return Response({"Bad Request": "User parameter not found in request."}, status=status.HTTP_400_BAD_REQUEST)
-    
 
-# class BudgetListCreate(generics.ListCreateAPIView):
-#     # queryset = Budget.objects.all()
-#     serializer_class = BudgetSerializer
-#     permission_classes = [IsAuthenticated]
-
-#     def get_queryset(self):
-#         user = self.request.user
-#         return Budget.objects.filter(user=user)
-    
-#     def perform_create(self, serializer, validated_data):
-#         if serializer.is_valid():
-#             serializer.save(user=self.request.user)
-#         else:
-#             print(serializer.errors)
 
 class CategoryListCreate(generics.CreateAPIView):
     serializer_class = CategorySerializer
@@ -167,8 +145,6 @@ class CategoryListCreate(generics.CreateAPIView):
         If the category name exists, it updates the existing category colour with new data.
         If the category name does not exist, it creates a new category.
         """
-        # if not self.request.session.exists(self.request.session.session_key):
-        #     self.request.session.create()
 
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
@@ -236,28 +212,6 @@ class ExchangeTokenView(APIView):
         else:
             return Response(response.json(), status=response.status_code)
 
-
-
-
-
-
-
-
-
-
-    # queryset = Category.objects.all()
-#     serializer_class = CategorySerializer
-#     permission_classes = [IsAuthenticated]
-
-#     def get_queryset(self):
-#         user = self.request.user
-#         return Category.objects.filter(user=user)
-    
-#     def perform_create(self, validated_data):
-#         if serializer.is_valid():
-#             serializer.save(user=self.request.user)
-#         else:
-#             print(serializer.errors)
 
 class AboutView(generics.GenericAPIView):
     permission_classes = [AllowAny]
