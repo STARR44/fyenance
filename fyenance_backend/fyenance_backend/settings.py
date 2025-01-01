@@ -57,9 +57,11 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     'api',
     'accounts',
+    'frontend',
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
+    'rest_framework_simplejwt',
     # 'allauth',
     # 'allauth.account',
     # 'allauth.socialaccount',
@@ -143,6 +145,10 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=3),
 }
 
+SESSION_COOKIE_SECURE = True  # Only send cookies over HTTPS
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_AGE = 1209600
+
 CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ALLOWS_CREDENTIALS = True
@@ -170,8 +176,18 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# React build files
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+TEMPLATES[0]['DIRS'] = [os.path.join(BASE_DIR, '../fyenance_frontend/build')]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+LOGIN_REDIRECT_URL = "/"
