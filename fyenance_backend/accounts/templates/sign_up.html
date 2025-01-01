@@ -5,6 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up - Fyenance</title>
     <script src="https://accounts.google.com/gsi/client" async></script>
+    <script>
+        function handleCredentialResponse(response) {
+            // This function is called when the user signs in with Google
+            const token = response.credential;
+
+            // Send the token to your backend
+            fetch("http://localhost:8000/accounts/google-login/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                body: JSON.stringify({ token: token }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message === "Login successful") {
+                    alert("Welcome, " + data.username + "!");
+                    window.location.href = "/"; // Redirect to the dashboard or another page
+                } else {
+                    alert(data.error || "Login failed!");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("An error occurred. Please try again.");
+            });
+        }
+    </script>
     <style>
         /* Reuse styles from the login page */
     </style>
@@ -14,21 +43,13 @@
 <div class="container">
     <h2>Create a Fyenance Account</h2>
 
-    <form method="POST" action="{% url 'sign_up' %}">
+    <form method="POST">
         {% csrf_token %}
-        <div class="form-group">
-            <input type="text" name="username" placeholder="Username" required>
-        </div>
-        <div class="form-group">
-            <input type="email" name="email" placeholder="Email" required>
-        </div>
-        <div class="form-group">
-            <input type="password" name="password" placeholder="Password" required>
-        </div>
-        <div class="form-group">
-            <input type="password" name="confirm_password" placeholder="Confirm Password" required>
-        </div>
-        <button type="submit">Sign Up</button>
+        <table>
+            {{ form.as_table }}
+        </table>
+        <input type="submit" value="Submit" class='btn btn-dark'>
+        <input type="hidden" name="next" value="{{ request.path }}">
     </form>
 
     <p>OR</p>
@@ -37,8 +58,9 @@
          data-client_id="6157513953-avhb53l5mlgdsndmum3rvgj4e7ogeb2t.apps.googleusercontent.com"
          data-context="signup"
          data-ux_mode="popup"
-         data-login_uri="http://localhost:8000/accounts/auth-receiver"
-         data-itp_support="true">
+         data-login_uri="http://localhost:8000/accounts/google-login/"
+         data-itp_support="true"
+         data-callback="handleCredentialResponse">
     </div>
 
     <div class="g_id_signin"

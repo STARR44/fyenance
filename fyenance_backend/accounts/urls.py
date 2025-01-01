@@ -1,9 +1,15 @@
 from django.urls import path
-from .views import CreateUserView
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from .views import SignUpView, LoginView, GoogleLoginView, UserLoginView
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
+
+app_name = 'accounts'
 
 urlpatterns = [
-    path('sign-up', CreateUserView.as_view(), name='sign_up'),
+    path('sign-up', SignUpView.as_view(), name='sign_up'),
+    # path('login', LoginView.as_view(), name='login'),
+    path('login', UserLoginView.as_view(), name='login'),
     path('token/', TokenObtainPairView.as_view(), name='get_token'),
     path('token/refresh/', TokenRefreshView.as_view(), name='refresh_token'),
+    path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+    path('google-login/', GoogleLoginView.as_view(), name='google_login'),
 ]
