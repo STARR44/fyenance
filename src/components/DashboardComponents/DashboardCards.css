@@ -1,0 +1,210 @@
+/* src/components/DashboardComponents/DashboardCards.css */
+.dashboard-cards {
+  display: flex;
+  gap: 20px; /* Space between cards */
+  margin-top: 20px;
+  margin: 20px;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 15px;
+  height: 235px;
+  max-height: 250px;
+  min-height: 220px; /* Ensure a minimum height */
+  flex: 1 1 calc(33.33% - 20px); /* Three cards per row, with a gap of 20px */
+  display: flex;
+  flex-direction: column; /* Stack content vertically */
+  gap: 10px; /* Add consistent spacing between children */
+  overflow: hidden;
+}
+
+.card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 10px; /* Add spacing below the heading */
+}
+
+.card p {
+  font-size: 1rem;
+  color: #7a7a7a; /* Lighter text */
+}
+
+.total-balance-card {
+  background: linear-gradient(to right, #3f3e39, #adebb3); /* gradient */
+  border-top: none; /* Remove unnecessary top border */
+  color: white; /* Ensure text is visible on the gradient */
+}
+
+.total-balance-card .balance-placeholder {
+  color: #ffffff;
+}
+
+/* .progress-bar-placeholder {
+  background-color: #f3f3f3;
+  border-radius: 5px;
+  height: 10px;
+  margin-top: 10px;
+} */
+
+/* Segment Toggle Styles */
+.header-container {
+  display: flex;
+  /* width: 100%; */
+}
+
+.header {
+  padding: 5px 7px;
+  flex: 1;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: bold;
+  border-radius: 7px 8px 8px; /* Rounded top corners */
+}
+
+.header.active {
+  background-color: #f5f5f5; /* Ash color for active header */
+}
+
+.header {
+  background-color: #d9d9d9; /* Default grey color for inactive header */
+}
+
+.content {
+  flex-grow: 1; /* Allow the content to take remaining space */
+  padding: 16px;
+  border-radius: 0 0 5px 5px; /* Rounded bottom corners */
+  transition: opacity 0.3s ease-in-out;
+  /* gap: 10px; */
+}
+
+/* Individual Content Items */
+.content-item {
+  background-color: #efecec; /* White background for content items */
+  padding-left: 8px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  font-size: 1rem;
+  color: #aaa; /*Darker text color for readability */
+  margin-bottom: 20px;
+}
+
+.cashflow-content,
+.budget-content {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cashflow-content p,
+.budget-content p {
+  margin: 0;
+}
+
+/* Set text color for Income */
+.income-text {
+  color: #4ecc5a !important;
+}
+
+/* Set text color for Expenses */
+.expenses-text {
+  color: red !important;
+}
+
+.budget-content p {
+  color: #aaa; /* Lighter color for the placeholder text */
+}
+
+
+/* Single unified progress bar */
+.progress-bar{
+  display: flex;
+  width: 100%;
+  height: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #f0f0f0; 
+  margin-bottom: 10px;
+}
+
+/* Each segment inside the single bar */
+.progress-segment {
+  min-width: 10px;
+  height: 100%;
+  transition: width 0.3s ease; /* Smooth transition for width change */
+  border-radius: 10px; /* Rounded corners for each segment */
+  border: 1px solid #f9fcfb; /* Adds a subtle divider between segments */
+}
+
+/* Categories grid: three per row */
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+/* Category item */
+.category-item {
+  text-align: center;
+}
+
+/* Category header: color circle and name */
+.category-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.color-circle {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.category-name {
+  font-size: 14px;
+  margin: 0;
+  font-weight: bold;
+}
+
+/* Percentage below the category name */
+.percentage {
+  font-size: 12px;
+  color: #666;
+  margin: 0;
+}
+
+
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .card {
+    flex: 1 1 calc(50% - 20px); /* Two cards per row on smaller screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-cards {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    flex: 1 1 100%; /* One card per row */
+    padding: 15px; /* Slightly reduce padding */
+    gap: 15px; /* Add spacing between content */
+  }
+
+  .cashflow-content,
+  .budget-content {
+    gap: 10px; /* Larger gap for better readability */
+  }
+}
