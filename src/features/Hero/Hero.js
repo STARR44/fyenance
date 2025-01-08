@@ -9,6 +9,8 @@ function Hero () {
           Keep an <span className="hero-phrase">eye</span> on your
           money
         </h1>
+        {/* Button Above the Video */}
+        <button className="hero-btn">Get Started</button>
         <video className="hero-video" controls>
           <source src="" type="video/mp4" />
           Your browser does not support the video tag.

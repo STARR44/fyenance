@@ -24,13 +24,13 @@
 
 .cta-button {
   font-family: "Fredoka", sans-serif; 
-  background-color: #3f3e39; /* Dark grey background for the button */
-  color: #ADEBB3; /* light green for text */
-  border: 2px solid #4ECC5A; /* Mint green border */
+  background-color: #D7C178; /* Dark grey background for the button */
+  color: #ffffff; /* light green for text */
+  border: 2px solid #3f3e39; /* Mint green border */
   font-size: 1.8rem;
   font-weight: 600;
   padding: 12px 25px;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
 }
