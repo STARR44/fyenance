@@ -1,3 +1,20 @@
+"""
+views.py
+
+This module contains views for managing transactions, budgets, categories, and user interactions with an external API. 
+It also includes utility views such as an about page and token exchange endpoint. These views use Django REST Framework 
+(DRF) and other Django tools to implement functionality for creating, retrieving, and updating resources.
+
+The main classes include:
+- TransactionListCreate: Manage user transactions.
+- BudgetListCreate: Manage user budgets.
+- CategoryListCreate: Manage categories.
+- ExchangeTokenView: Handle token exchange with an external API.
+- AboutView: Provide a simple about page.
+"""
+
+
+
 import os
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -16,16 +33,60 @@ from .serializers import TransactionSerializer, BudgetSerializer, CategorySerial
 
 # Do not forget to add the login required decorator here
 class TransactionListCreate(generics.ListCreateAPIView):
+    
+     
+    """
+    Handles listing and creating user transactions.
+
+    **GET**:
+    - Lists all transactions associated with the authenticated user.
+
+    **POST**:
+    - Creates a new transaction or updates an existing one based on `transaction_id`.
+
+    Attributes:
+        serializer_class (TransactionSerializer): The serializer for handling transaction data.
+        permission_classes (list): Restricts access to authenticated users.
+
+    Methods:
+        get_queryset: Returns transactions filtered by `transaction_id` if provided.
+        post: Handles the creation or update of a transaction.
+        get: Retrieves all transactions for the authenticated user.
+    """
+
     serializer_class = TransactionSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
+        """
+        Get transactions filtered by transaction ID from the request data.
+
+        Returns:
+            QuerySet: A queryset of transactions matching the given transaction ID.
+        """
+
         transaction_id = self.request.data.get('transaction_id')
         print(transaction_id)
         return BaseTransaction.objects.filter(transaction_id=transaction_id)
     
     def post(self, request, format=None):
         """
+        Handles the creation or update of a transaction.
+
+        Parameters:
+        - request: The HTTP request containing transaction data.
+        - format: Optional format specifier.
+
+        Workflow:
+        - If a transaction with the provided ID exists, updates it with new data.
+        - If no transaction exists, creates a new transaction.
+
+        Returns:
+        - 200 OK: When an existing transaction is updated.
+        - 201 Created: When a new transaction is created.
+        - 400 Bad Request: If the request data is invalid.
+
+        Example:
         This POST request should allow me to add a new transaction or update an existing one.
         So it first checks if the serializer is valid.
         If it is, it saves the newly filled fields.
@@ -61,7 +122,18 @@ class TransactionListCreate(generics.ListCreateAPIView):
         
     def get(self, request, format=None):
         """
-        This GET request lists all saved transactions.
+        Lists all transactions for the authenticated user.
+
+        Parameters:
+        - request: The HTTP request.
+        - format: Optional format specifier.
+
+        Workflow:
+        - Retrieves and returns all transactions for the authenticated user.
+
+        Returns:
+        - 200 OK: When transactions are successfully listed.
+        - 400 Bad Request: If the user parameter is missing in the request.
         """
         
         user = request.user
@@ -72,15 +144,52 @@ class TransactionListCreate(generics.ListCreateAPIView):
         return Response({"Bad Request": "User parameter not found in request."}, status=status.HTTP_400_BAD_REQUEST)
     
 class BudgetListCreate(generics.ListCreateAPIView):
+    """
+    Handles listing and creating user budgets.
+
+    **GET**:
+    - Lists all budgets associated with the authenticated user.
+
+    **POST**:
+    - Creates a new budget or updates an existing one based on `name`.
+
+    Attributes:
+        serializer_class (BudgetSerializer): The serializer for handling budget data.
+        permission_classes (list): Restricts access to authenticated users.
+
+    Methods:
+        get_queryset: Returns budgets filtered by `name`.
+        post: Handles the creation or update of a budget.
+        get: Retrieves all budgets for the authenticated user.
+    """
+
     serializer_class = BudgetSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
+        """Returns queryset filtered by `name`."""
+
         budget_name = self.request.data.get('name')
         return Budget.objects.filter(name=budget_name)
     
     def post(self, request, format=None):
         """
+        Handles the creation or update of a budget.
+
+        Parameters:
+        - request: The HTTP request containing budget data.
+        - format: Optional format specifier.
+
+        Workflow:
+        - If a budget with the provided name exists, updates it with new data.
+        - If no budget exists, creates a new budget.
+
+        Returns:
+        - 200 OK: When an existing budget is updated.
+        - 201 Created: When a new budget is created.
+        - 400 Bad Request: If the request data is invalid.
+
+        Example:
         This POST request should allow me to add a new transaction or update an existing one.
         So it first checks if the serializer is valid.
         If it is, it saves the newly filled fields.
@@ -116,6 +225,20 @@ class BudgetListCreate(generics.ListCreateAPIView):
         
     def get(self, request, format=None):
         """
+        Lists all budgets for the authenticated user.
+
+        Parameters:
+        - request: The HTTP request.
+        - format: Optional format specifier.
+
+        Workflow:
+        - Retrieves and returns all budgets for the authenticated user.
+
+        Returns:
+        - 200 OK: When budgets are successfully listed.
+        - 400 Bad Request: If the user parameter is missing in the request.
+
+        Example:
         This GET request lists all saved budgets.
         """
 
@@ -128,16 +251,48 @@ class BudgetListCreate(generics.ListCreateAPIView):
 
 
 class CategoryListCreate(generics.CreateAPIView):
+    """
+    Handles creation and listing of categories.
+
+    Attributes:
+        serializer_class (CategorySerializer): The serializer for handling category data.
+        permission_classes (list): Configured to allow any user for now.
+        lookup_url_kwarg (str): Lookup field for category name.
+
+    Methods:
+        get_queryset: Returns queryset filtered by `name`.
+        post: Handles the creation or update of a category.
+        get: Retrieves all categories.
+    """
+
     serializer_class = CategorySerializer
     permission_classes = [AllowAny] # After testing these endpoints, the permission classes will return to IsAuthenticated
     lookup_url_kwarg = 'name'
 
     def get_queryset(self):
+        """Returns queryset filtered by `name`."""
+
         name = self.request.data.get('name')
         return Category.objects.filter(name=name)
     
     def post(self, request, format=None):
         """
+        Handles the creation or update of a category.
+
+        Parameters:
+        - request: The HTTP request containing category data.
+        - format: Optional format specifier.
+
+        Workflow:
+        - If a category with the provided name exists, updates it with new data.
+        - If no category exists, creates a new category.
+
+        Returns:
+        - 200 OK: When an existing category is updated.
+        - 201 Created: When a new category is created.
+        - 400 Bad Request: If the request data is invalid.
+
+        Example:
         This POST request should allow me to add a new category or update an existing one.
         So it first checks if the serializer is valid.
         If it is, it saves the newly filled fields.
@@ -171,6 +326,19 @@ class CategoryListCreate(generics.CreateAPIView):
         
     def get(self, request, format=None):
         """
+        Lists all categories.
+
+        Parameters:
+        - request: The HTTP request.
+        - format: Optional format specifier.
+
+        Workflow:
+        - Retrieves and returns all categories.
+
+        Returns:
+        - 200 OK: When categories are successfully listed.
+
+        Example:
         This POST request should allow me to add a new transaction or update an existing one.
         So it first checks if the serializer is valid.
         If it is, it saves the newly filled fields.
@@ -186,8 +354,36 @@ class CategoryListCreate(generics.CreateAPIView):
 
 
 class ExchangeTokenView(APIView):
+    """
+    Handles token exchange with an external API.
+
+    Attributes:
+        permission_classes (list): Restricts access to authenticated users.
+
+    Methods:
+        post: Exchanges a code for account information.
+    """
+     
     permission_classes = [IsAuthenticated] # After testing these endpoints, the permission classes will return to IsAuthenticated
+    
     def post(self, request):
+        """
+        Exchanges a Mono API code for an account ID and balance.
+
+        Parameters:
+        - request: The HTTP request containing the Mono API code.
+
+        Workflow:
+        - Validates the presence of the Mono API code in the request.
+        - Sends the code to the Mono API to retrieve account details.
+        - Saves the account ID and balance for the current user.
+
+        Returns:
+        - 201 Created: When the account details are saved successfully.
+        - 400 Bad Request: If the Mono API code is missing.
+        - Other Status Codes: Reflect the response from the Mono API.
+        """
+
         code = request.data.get("code")
         if not code:
             return Response({"error": "Code is required"}, status=400)
@@ -214,6 +410,19 @@ class ExchangeTokenView(APIView):
 
 
 class AboutView(generics.GenericAPIView):
+    """
+    Returns a plain text response with information about the application.
+
+    Parameters:
+    - request: The HTTP request for the about page.
+
+    Workflow:
+    - Sends a static text response detailing the application's purpose.
+
+    Returns:
+    - 200 OK: Always, with a plain text response.
+    """
+
     permission_classes = [AllowAny]
     def get(self, request, *args, **kwargs):
         return HttpResponse("This is the about page.", content_type="text/plain")
