@@ -1,0 +1,116 @@
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&display=swap");
+
+.transaction-form h3 {
+  margin-bottom: 10px;
+  padding-bottom: 20px;
+  font-size: 20px;
+  text-align: center;
+}
+
+.transaction-form label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.transaction-form input,
+.transaction-form select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.form-buttons button {
+  padding: 12px 20px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  width: 30%;
+  gap:10px;
+  cursor: pointer;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  margin-right: 10px;  /* Adds space between buttons */
+}
+
+.form-buttons button[type="submit"] {
+  background-color: black;
+  font-size: 16px;
+  color: #fff;
+}
+
+.form-buttons button[type="button"] {
+  background-color: #D9D9D9;
+  font-size: 16px;
+  color: black;
+}
+
+@media (max-width: 600px) {
+    .form-buttons {
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+    .form-buttons button {
+      max-width: 100%; /* Full width when stacked */
+    }
+  }
+
+
+/* Styling for Submitted Data */
+.submitted-data {
+  background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+.submitted-data h4 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+  }
+
+.transaction-form .submitted-data p {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.submitted-data .type-display {
+  font-weight: bold;
+  /* font-size: 1.2rem; */
+}
+
+.transaction-form .submitted-data .income {
+  color: green;
+}
+
+.submitted-data .expense {
+  color: red;
+}
+
+.submitted-data .category-display,
+.submitted-data .amount-display,
+.submitted-data .date-display {
+  margin-left: 30px;
+}
+
+.submitted-data .amount-display {
+  font-size: 1rem;
+}
+
+.submitted-data .date-display {
+  font-size: 1rem;
+  color: #333;
+}
