@@ -1,0 +1,168 @@
+/* Transaction page styles */
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&display=swap");
+
+/* Body background */
+.transaction-page {
+  background-color: #f9fafb;
+  padding: 20px;
+  font-family: "Fredoka", sans-serif;
+  font-weight: 400;
+  font-size: 1.5rem;
+  overflow: visible;
+}
+
+/* Header Section */
+.transaction-page .transaction-header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 30px;
+  margin-bottom: 20px;
+  padding-top: 18px;
+  padding-bottom: 20px;
+  font-size: 1.5rem;
+  position: relative;
+}
+
+.transaction-form-container {
+  position: absolute; /* Position the form relative to the parent container */
+  top: 120%; /* Position below the button */
+  right: 20px; /* Align with the right edge of the button */
+  max-width: 400px; /* Set a maximum width for the form */
+  width: 100%; /* Allow responsiveness */
+  max-height: 90vh;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* Ensure it stays above other elements */
+}
+
+.transaction-page .time-periods button {
+  background: none;
+  padding: 10px 20px;
+  margin-left: 20px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: "Fredoka", sans-serif;
+  transition: background-color 0.3s ease;
+}
+
+.transaction-page .time-periods button.active {
+  background-color: white;
+  border: 1px solid black;
+  font-weight: bold;
+}
+
+.transaction-page .add-transaction-btn {
+  background-color: #d9d9d9;
+  color: black;
+  font-family: "Fredoka", sans-serif;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-right: 30px;
+  transition: background-color 0.3s ease;
+  position: relative;
+}
+
+.transaction-page .add-transaction-btn:hover {
+  background-color: #adebb3;
+}
+
+/* Table Styling */
+.transaction-page .transaction-table table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+}
+
+.transaction-page .transaction-table th,
+.transaction-page .transaction-table td {
+  padding: 15px 10px;
+}
+
+.transaction-page .transaction-table th {
+  border-bottom: 2px solid #d9d9d9;
+  font-size: 16px;
+  font-weight: 500;
+  text-align: left; /* Ensure left alignment */
+  /* margin-right: 25px; */
+  color: #4f4f4f;
+}
+
+.transaction-page .transaction-table tr:not(:last-child) {
+  border-bottom: 1px solid #ddd;
+}
+
+/* Add gap between rows */
+.transaction-page .transaction-table tr {
+  height: 50px;
+  transition: background-color 0.3s ease;
+}
+
+.transaction-page .transaction-table td {
+  font-size: 1rem;
+  color: #333;
+}
+
+/* Styling specific table columns */
+
+/* Category column */
+.transaction-page .transaction-table td:nth-child(3) {
+  /* color: #4ecc5a;  distinctive color */
+  font-weight: bold;
+  padding-left: 30px;
+}
+
+/* Amount column */
+.transaction-page .transaction-table td:nth-child(4) {
+  font-weight: bold;
+  color: #333;
+}
+
+/* Date column */
+.transaction-page .transaction-table td:nth-child(5) {
+  font-size: 1rem;
+  color: #777;
+}
+
+/* Income and Expense Styling */
+.income {
+  color: green;
+}
+
+.expense {
+  color: red;
+  font-weight: bold;
+}
+
+/* Action buttons styling */
+.transaction-page .transaction-table td button {
+  margin-right: 10px;
+  /* margin-top: 12px; */
+  background-color: #f0f0f0;
+  color: #333;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.transaction-page .transaction-table td button:hover {
+  background-color: #d9d9d9;
+}
+
+@media (max-width: 600px) {
+  .transaction-form-container {
+    left: 10px; /* Move it slightly inwards for smaller screens */
+    right: 10px; /* Prevent it from touching the edges */
+    max-width: calc(100% - 20px); /* Adjust max width */
+  }
+}
