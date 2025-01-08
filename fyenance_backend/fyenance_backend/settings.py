@@ -16,6 +16,9 @@ from pathlib import Path
 
 from datetime import timedelta
 
+import dj_database_url
+import sys
+
 load_dotenv()
 
 
@@ -38,12 +41,31 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-d3s#495976)4lqs%gqnxgu6&uzdumt6ec2-ztffga-!*@(k!--"
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = []
+
+ENVIRONMENT = os.getenv('DJANGO_ENVIRONMENT')
+
+if ENVIRONMENT == 'production' and len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
+    ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS').split(',')
+    DEBUG = True
+    SECURE_SSL_REDIRECT = True
+    if os.getenv("DATABASE_URL", None) is None:
+        raise Exception("DATABASE_URL environment variable not defined")
+    DATABASES = {
+        "default": dj_database_url.parse(os.getenv('DATABASE_URL'))
+    }
+else:
+    ALLOWED_HOSTS = ['*']
+    DEBUG = True
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 
 # Application definition
@@ -114,12 +136,7 @@ WSGI_APPLICATION = "fyenance_backend.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
+
 
 
 # Password validation
