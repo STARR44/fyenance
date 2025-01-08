@@ -1,6 +1,6 @@
 // src/pages/DashboardPages/MainDashboard.js
-import React, { useState, useEffect } from "react"; // React for component creation and useState for state management
-
+// src/pages/DashboardPages/MainDashboard.js
+import React, { useState } from "react"; // Removed axios and useEffect as APIs are no longer needed
 import {
   DashboardNav, // Navigation bar component for the dashboard
   ActionLinks, // Component with action buttons
@@ -9,82 +9,61 @@ import {
 } from "../../components/DashboardComponents";
 import { FaPlus } from "react-icons/fa"; // Import the plus icon from react-icons
 import DashboardCards from "../../components/DashboardComponents/DashboardCards"; // Import the new component
+import OverlaySpinner from "../../components/DashboardComponents/OverlaySpinner"; // Spinner component for loading state
 import "./MainDashboard.css"; // Import styles specific to the dashboard page
 
 function DashboardPage() {
-  // Placeholder user details (To be replaced with real authentication data later)
+  // State hooks for managing the dashboard data
   const [user] = useState({
     name: "John Doe", // Example username
     email: "johndoe@example.com",
   });
 
-  
-  // State to track the completion of specific user actions
   const [actionsCompleted, setActionsCompleted] = useState({
-    addTransaction: false, // Tracks if "Add a Transaction" is completed
-    addBudget: false, // Tracks if "Create a Budget" is completed
-    linkBankAccount: false, // Tracks if "Link a Bank Account" is completed
+    addTransaction: false, // Tracks if the 'Add Transaction' action is done
+    addBudget: false, // Tracks if the 'Add Budget' action is done
+    linkBankAccount: false, // Tracks if the 'Link Bank Account' action is done
   });
 
-  // Fetch user data from the API when the component mounts
-
-  // Load data from localStorage for actions
-  useEffect(() => {
-    const savedActions = localStorage.getItem("actionsCompleted");
-    if (savedActions) {
-      setActionsCompleted(JSON.parse(savedActions)); // Parse and set the saved data
-    }
-  }, []); // Empty dependency array ensures this runs only on mount
-
-  // Save data to localStorage whenever actionsCompleted state changes
-  useEffect(() => {
-    localStorage.setItem("actionsCompleted", JSON.stringify(actionsCompleted));
-  }, [actionsCompleted]); // Runs every time actionsCompleted changes
-
-  // Checks if at least one action is completed
+  // Check if any action has been completed (for determining user status)
   const hasActions = Object.values(actionsCompleted).some(
     (isCompleted) => isCompleted
-  ); // Checks if at least one action is completed
+  );
 
-  // const handleActionClick = () => {
-  //   setHasActions(true); // Updates the state when an action is taken
-  // };
-
+  // Handle action completion ( Add Transaction, Budget...)
   const handleActionComplete = (action) => {
     setActionsCompleted((prevState) => ({
       ...prevState,
       [action]: true,
-    })); // Marks the specific action as completed
+    }));
   };
 
   return (
     <div className="dashboard-page">
-      <DashboardNav user={user} /> {/* Pass user data to DashboardNav */}
+      <OverlaySpinner isLoading={false} /> {/* Removed loading state */}
+      <DashboardNav user={user} />
       <div className="dashboard-content">
-        {/* Conditional rendering based on whether actions have been completed */}
-        {!hasActions ? (
+        {!user || !hasActions ? (
           <>
-            <NewUserPlaceholder />{" "}
-            {/* Render placeholder content and action buttons for new users */}
-            <ActionLinks onActionComplete={handleActionComplete} />{" "}
-            {/* Actions to be taken by users */}
+            <NewUserPlaceholder />
+            <ActionLinks
+              onActionComplete={handleActionComplete}
+              isLoading={false} // Removed loading state
+            />
           </>
         ) : (
           <div>
-            {/* Greeting and Add Button Container */}
             <div className="greeting-and-add-container">
-              {/* Greeting Message */}
-              <Greeting user={user} /> {/* Greeting based on user data */}
-              {/* Add Button */}
+              <Greeting user={user} />
               <button className="add-button">
-                {" "}
                 Add
-                <FaPlus size={18} className="plus-icon" />{" "}
-                {/* React icon for "+" */}
+                <FaPlus size={18} className="plus-icon" />
               </button>
             </div>
-            {/* Cards and Tables will go here (to be added later) */}
-            <DashboardCards /> {/* Render the cards */}
+
+            <DashboardCards
+            // Removed API-dependent props
+            />
           </div>
         )}
       </div>
