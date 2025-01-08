@@ -1,4 +1,5 @@
-import os
+import os, re
+# from decimal import Decimal
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
@@ -13,6 +14,10 @@ from django.http import JsonResponse
 import json
 from .models import BaseTransaction, Budget, Category
 from .serializers import TransactionSerializer, BudgetSerializer, CategorySerializer
+from django.core.exceptions import ValidationError
+
+def cleanDecimal(value):
+    return float(value.replace(",", ""))
 
 # Do not forget to add the login required decorator here
 class TransactionListCreate(generics.ListCreateAPIView):
@@ -37,26 +42,30 @@ class TransactionListCreate(generics.ListCreateAPIView):
         serializer = self.serializer_class(data=request.data)
         print(serializer)
         if serializer.is_valid():
-            amount = serializer.validated_data.get('amount')
-            # date_created = serializer.data.get('date_created')
-            type = serializer.validated_data.get('type')
-            category = serializer.validated_data.get('category')
-            user = request.user
-            queryset = self.get_queryset()
+            try:
+                amount = serializer.validated_data.get('amount')
+                type = serializer.validated_data.get('type')
+                category = serializer.validated_data.get('category')
+                budget = serializer.validated_data.get('budget')
+                user = request.user
+                queryset = self.get_queryset()
 
-            if queryset.exists():
-                transaction = queryset[0]
-                transaction.amount = amount
-                transaction.type = type
-                transaction.category = category
-                transaction.save(update_fields=['amount', 'date_created', 'type', 'category'])
-                return Response(self.serializer_class(transaction).data, status=status.HTTP_200_OK) # I am choosing not to call it TransactionSerializer
-            else:
-                """
-                If the transaction id does not exist, it creates a new transaction.
-                """
-                transaction = serializer.save(user=user)
-                return Response(self.serializer_class(transaction).data, status=status.HTTP_201_CREATED)
+                if queryset.exists():
+                    transaction = queryset[0]
+                    transaction.amount = amount
+                    transaction.type = type
+                    transaction.category = category
+                    transaction.budget = budget
+                    transaction.save(update_fields=['amount', 'date_created', 'type', 'category', 'budget'])
+                    return Response(self.serializer_class(transaction).data, status=status.HTTP_200_OK) # I am choosing not to call it TransactionSerializer
+                else:
+                    """
+                    If the transaction id does not exist, it creates a new transaction.
+                    """
+                    transaction = serializer.save(user=user)
+                    return Response(self.serializer_class(transaction).data, status=status.HTTP_201_CREATED)
+            except ValidationError as e:
+                return Response({"Error (Bad Request)": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         return Response({"Bad Request": "Invalido data"}, status=status.HTTP_400_BAD_REQUEST)
         
     def get(self, request, format=None):
@@ -91,7 +100,8 @@ class BudgetListCreate(generics.ListCreateAPIView):
 
         serializer = self.serializer_class(data=request.data)
         print(serializer)
-        if serializer.is_valid():
+
+        if serializer.is_valid(raise_exception=True):
             name = serializer.validated_data.get('name')
             amount_allocated = serializer.validated_data.get('amount_allocated')
             amount_left = serializer.validated_data.get('amount_left')
@@ -108,9 +118,11 @@ class BudgetListCreate(generics.ListCreateAPIView):
                 return Response(self.serializer_class(budget).data, status=status.HTTP_200_OK) # I am choosing not to call it TransactionSerializer
             else:
                 """
-                If the transaction id does not exist, it creates a new transaction.
+                If the budget name does not exist, it creates a new budget.
                 """
-                budget = serializer.save(user=user)
+                # I am doing this to set the remaining amount as the allocated amount for new budgets
+                amount_left = serializer.validated_data.get('amount_allocated')
+                budget = serializer.save(amount_left=amount_left, user=user)
                 return Response(self.serializer_class(budget).data, status=status.HTTP_201_CREATED)
         return Response({"Bad Request": "Invalid data"}, status=status.HTTP_400_BAD_REQUEST)
         
@@ -130,7 +142,7 @@ class BudgetListCreate(generics.ListCreateAPIView):
 class CategoryListCreate(generics.CreateAPIView):
     serializer_class = CategorySerializer
     permission_classes = [AllowAny] # After testing these endpoints, the permission classes will return to IsAuthenticated
-    lookup_url_kwarg = 'name'
+    lookup_url_kwarg = 'name' # Find out if this is still necessary
 
     def get_queryset(self):
         name = self.request.data.get('name')
@@ -150,13 +162,19 @@ class CategoryListCreate(generics.CreateAPIView):
         if serializer.is_valid():
             name = serializer.data.get('name')
             colour = serializer.data.get('colour')
+            # Checking whether the colour provided is valid HEX
+            pattern = r'(?#)([a-fA-F0-9]{6})'
+            if not re.match(pattern, colour):
+                return Response({"Error": "Invalid colour provided."}, status=status.HTTP_400_BAD_REQUEST)
+
             if colour[0] != '#':
                 colour = '#' + colour
             queryset = self.get_queryset()
 
             if queryset.exists():
                 category = queryset[0]
-                category.colour = colour
+                category.colour = colour.lower()
+                print(category.colour)
                 category.save(update_fields=['colour'])
                 return Response(self.serializer_class(category).data, status=status.HTTP_200_OK) # I am choosing not to call it CategorySerializer
             else:
@@ -181,7 +199,6 @@ class CategoryListCreate(generics.CreateAPIView):
 
         categories = Category.objects.all()
         data = CategorySerializer(categories, many=True).data
-        # data['logged_in'] = self.request.session.session_key == transactions[0].user
         return Response(data, status=status.HTTP_200_OK)
 
 
