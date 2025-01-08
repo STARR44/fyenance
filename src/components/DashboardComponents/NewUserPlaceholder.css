@@ -1,0 +1,15 @@
+/* CSS for NewUserPlaceholder */
+
+  .new-user-placeholder {
+    text-align: center;
+    /* margin-top: 20px; */
+  }
+  
+  .placeholder-text {
+    font-size: 1.4rem;
+    color: #666;
+    margin-bottom: 20px;
+    padding: 10px;
+    font-weight: 400;
+  }
+  
