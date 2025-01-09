@@ -70,8 +70,8 @@ function DashboardNav({ user }) {
                 <BsSun size={16} color="B2BEB5" /> Light mode
               </p>{" "}
               {/* Lightmode icon next to text */}
-              <Link to="/settings">
-                <p className="settings-styles">
+              <Link to="/settings" className="settings-link">
+                <p>
                   <FaSun size={16} /> Settings
                 </p>{" "}
               </Link>
