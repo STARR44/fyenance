@@ -42,7 +42,8 @@ function AboutPage() {
         </p>
       </main>
       {/* CTA section inside main */}
-      <CTA />
+    
+      <CTA /> 
       <footer className="about-footer">
         <Logo />
       </footer>
