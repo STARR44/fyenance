@@ -1,11 +1,11 @@
-/* src/components/DashboardComponents/DashboardCards.css */
+/* Updated Dashboard Cards Layout */
 .dashboard-cards {
   display: flex;
   gap: 20px; /* Space between cards */
-  margin-top: 20px;
   margin: 20px;
   flex-wrap: wrap; /* Allow wrapping on smaller screens */
-}
+  justify-content: center;
+} 
 
 .card {
   background-color: #fff;
@@ -13,47 +13,42 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
   margin-bottom: 15px;
-  height: 235px;
-  max-height: 250px;
-  min-height: 220px; /* Ensure a minimum height */
-  flex: 1 1 calc(33.33% - 20px); /* Three cards per row, with a gap of 20px */
+  height: auto; /* Allow flexible height */
+  min-height: 220px;
+  max-height: 250px; /* Optional max height */
+  max-width: 400px;
+  min-width: 280px;
+  flex: 1 1 calc(33.33% - 20px); /* Three cards per row, with a gap */
   display: flex;
   flex-direction: column; /* Stack content vertically */
-  gap: 10px; /* Add consistent spacing between children */
-  overflow: hidden;
+  gap: 10px;
+  overflow: hidden; /* Avoid content spilling */
+  transition: flex 0.3s ease;
 }
 
 .card h3 {
   font-size: 1.2rem;
-  margin-bottom: 10px; /* Add spacing below the heading */
+  margin-bottom: 10px;
 }
 
 .card p {
   font-size: 1rem;
-  color: #7a7a7a; /* Lighter text */
+  color: #7a7a7a;
 }
 
 .total-balance-card {
-  background: linear-gradient(to right, #3f3e39, #adebb3); /* gradient */
-  border-top: none; /* Remove unnecessary top border */
-  color: white; /* Ensure text is visible on the gradient */
+  background: linear-gradient(to right, #3f3e39, #adebb3);
+  color: white;
 }
 
 .total-balance-card .balance-placeholder {
   color: #ffffff;
 }
 
-/* .progress-bar-placeholder {
-  background-color: #f3f3f3;
-  border-radius: 5px;
-  height: 10px;
-  margin-top: 10px;
-} */
-
 /* Segment Toggle Styles */
 .header-container {
   display: flex;
-  /* width: 100%; */
+  width: 100%;
 }
 
 .header {
@@ -119,40 +114,36 @@
   color: #aaa; /* Lighter color for the placeholder text */
 }
 
-
-/* Single unified progress bar */
-.progress-bar{
+/* Progress Bar */
+.progress-bar {
   display: flex;
-  width: 100%;
+  width: 100%; /* Responsive to card width */
+  /* max-width: 100%; Prevent exceeding the card width */
   height: 20px;
   border-radius: 10px;
   overflow: hidden;
-  background-color: #f0f0f0; 
+  background-color: #f0f0f0;
   margin-bottom: 10px;
 }
 
-/* Each segment inside the single bar */
 .progress-segment {
-  min-width: 10px;
+  min-width: 2px; /* Prevent collapsing at small widths */
   height: 100%;
-  transition: width 0.3s ease; /* Smooth transition for width change */
-  border-radius: 10px; /* Rounded corners for each segment */
-  border: 1px solid #f9fcfb; /* Adds a subtle divider between segments */
+  transition: width 0.3s ease;
+  border: 1px solid #f9fcfb; /* Adds subtle dividers */
 }
 
-/* Categories grid: three per row */
+/* Categories Grid */
 .categories-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
 }
 
-/* Category item */
 .category-item {
   text-align: center;
 }
 
-/* Category header: color circle and name */
 .category-header {
   display: flex;
   align-items: center;
@@ -170,41 +161,40 @@
 
 .category-name {
   font-size: 14px;
-  margin: 0;
   font-weight: bold;
 }
 
-/* Percentage below the category name */
 .percentage {
   font-size: 12px;
   color: #666;
-  margin: 0;
 }
 
-
-
 /* Media Queries */
-@media (max-width: 768px) {
+
+@media (max-width: 1024px) {
   .card {
-    flex: 1 1 calc(50% - 20px); /* Two cards per row on smaller screens */
+    flex: 1 1 calc(50% - 20px); /* Two cards per row */
   }
 }
 
 @media (max-width: 768px) {
   .dashboard-cards {
-    flex-direction: column;
+    justify-content: flex-start; /* Align cards to the left */
+  }
+
+  .card {
+    flex: 1 1 calc(100% - 20px); /* Single card per row */
+    max-width: 100%; /* Allow full width */
+    padding: 15px; /* Reduce padding for smaller screens */
   }
 }
 
 @media (max-width: 480px) {
-  .card {
-    flex: 1 1 100%; /* One card per row */
-    padding: 15px; /* Slightly reduce padding */
-    gap: 15px; /* Add spacing between content */
+  .progress-bar {
+    height: 15px; /* Reduce bar height on small screens */
   }
 
-  .cashflow-content,
-  .budget-content {
-    gap: 10px; /* Larger gap for better readability */
+  .categories-grid {
+    grid-template-columns: 1fr; /* One category per row */
   }
 }
