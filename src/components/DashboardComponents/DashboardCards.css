@@ -127,10 +127,21 @@
 }
 
 .progress-segment {
-  min-width: 2px; /* Prevent collapsing at small widths */
+  min-width: 4px; /* Prevent collapsing at small widths */
+  flex-grow: 1; /* Let segments take equal space */
   height: 100%;
-  transition: width 0.3s ease;
+  transition: width 0.5s ease-in-out;
   border: 1px solid #f9fcfb; /* Adds subtle dividers */
+}
+
+
+/* Round the first and last segment edges */
+.progress-segment:first-child {
+  border-radius: 12px 0 0 12px; /* Round left edge */
+}
+
+.progress-segment:last-child {
+  border-radius: 0 12px 12px 0; /* Round right edge */
 }
 
 /* Categories Grid */
@@ -176,6 +187,31 @@
     flex: 1 1 calc(50% - 20px); /* Two cards per row */
   }
 }
+
+
+
+/* Larger Progress Bar for Two Cards per Row */
+@media (min-width: 768px) {
+  .progress-bar {
+    height: 25px; /* Increase height for better visibility */
+  }
+}
+
+/* Even Larger Progress Bar for Three Cards per Row */
+@media (min-width: 1024px) {
+  .progress-bar {
+    height: 30px; /* Further increase height for large screens */
+  }
+}
+
+@media (min-width: 1200px) {
+  .progress-bar {
+    height: 35px; /* Increase height for large screens */
+  }
+}
+
+
+  
 
 @media (max-width: 768px) {
   .dashboard-cards {
