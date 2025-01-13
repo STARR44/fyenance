@@ -7,30 +7,27 @@
 }
 
 .dashboard-content {
-  background-color: #F9FAFB;
+  background-color: #f9fafb;
   display: flex;
   flex-direction: column;
   justify-content: flex-start; /* Position content at the top */
-  /* align-items: center; Center content horizontally */
   height: 100vh; /* Full viewport height */
   padding-top: 15vh; /* Push content slightly lower for better placement */
-  /* text-align: center; Center-align text */
 }
-
 
 /* Container for Greeting and Add Button */
 .greeting-and-add-container {
+  position: relative;
   display: flex;
   justify-content: space-between; /* Align greeting and add button on the same row */
   align-items: center;
   width: 100%;
-  /* padding: 20px; /* Space around the container */
+  padding: 10px; /* Space around the container */
 }
-
 
 /* Add Button Styling */
 .add-button {
-  background-color: #D9D9D9; /* Main color (Light Grey) */
+  background-color: #d9d9d9; /* Main color (Light Grey) */
   color: #3f3e39;
   border: none;
   border-radius: 5px;
@@ -47,11 +44,48 @@
 }
 
 .add-button:hover {
-  background-color: #4ECC5A; /* green shade on hover */
-  color: #ffffff; /* White text on hover */
+  background-color: #adebb3; /* green shade on hover */
+  color: #3f3e39; /* White text on hover */
 }
 
 .plus-icon {
   margin-left: 5px;
-  /* font-size: 1rem; */
+}
+
+/* Dropdown Menu Styling */
+.add-dropdown {
+  position: absolute; /* To ensure it appears above the button */
+  top: 80%; /* Align the dropdown directly below the button */
+  right: 8px;
+  background-color: #d9d9d9;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  border: 2px solid #d3d3d3;
+  border-radius: 5px;
+  width: 200px; /* Control the size of drop down */
+  z-index: 9999; /* Ensure dropdown appears above other elements */
+  padding: 8px 0;
+}
+
+.add-dropdown ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.add-dropdown li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.add-dropdown li:hover {
+  background-color: #f0f0f0;
+}
+
+.add-dropdown ul li {
+  padding: 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2); /* Faint line using light gray with opacity */
+}
+
+.add-dropdown ul li:last-child {
+  border-bottom: none;
 }
