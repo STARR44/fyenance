@@ -6,13 +6,12 @@ import "./DashboardCards.css"; // styles for the cards here
 function DashboardCards() {
   const [activeSegment, setActiveSegment] = useState("cashflow");
   const [transactions, setTransactions] = useState([
-    { type: "income", amount: 5000, category: "Food" }, // Hardcoded for testing purposes
-    { type: "expense", amount: 2000, category: "Food" },
-    { type: "expense", amount: 1500, category: "Transportation" },
-    { type: "income", amount: 7000, category: "Subscriptions" },
-    { type: "expense", amount: 1000, category: "Utilities" },
+    // { type: "income", amount: 5000, category: "Food" }, // Hardcoded for testing purposes
+    // { type: "expense", amount: 2000, category: "Food" },
+    // { type: "expense", amount: 1500, category: "Transportation" },
+    // { type: "income", amount: 7000, category: "Subscriptions" },
+    // { type: "expense", amount: 1000, category: "Utilities" },
   ]); // Hardcoded test transactions
-  // const [transactions, setTransactions] = useState([]); // State for transactions
   // Define categories array with sample data
   const categories = [
     { name: "Food", color: "#C34AEB" },
@@ -49,11 +48,6 @@ function DashboardCards() {
 
   // Cashflow calculation
   // const cashflow = totalIncome - totalExpenses;
-
-  // Function to add a new transaction (for demo purposes)
-  // const handleAddTransaction = (newTransaction) => {
-  //   setTransactions([...transactions, newTransaction]);
-  // };
 
   return (
     <div className="dashboard-cards">
@@ -110,23 +104,35 @@ function DashboardCards() {
       {/* Categories Card */}
       <div className="card categories-card">
         <h3>Categories</h3>
-        {/* Single progress bar */}
+
+        {/* Progress Bar */}
         <div className="progress-bar single-bar">
-          {categoryTotals.map((category, index) => (
+          {/* Only show progress bar if transactions are available */}
+          {transactions.length === 0 ? (
             <div
-              key={index}
               className="progress-segment"
               style={{
-                width: `${category.percentage}%`,
-                backgroundColor: category.color,
-                minWidth:
-                  category.percentage > 0 ? `${category.percentage}%` : "1px", // Ensure visibility even for 0%
+                width: "100%", // Full width progress bar (but empty)
+                backgroundColor: "#ccc", // Light gray to indicate no data
               }}
             ></div>
-          ))}
+          ) : (
+            categoryTotals.map((category, index) => (
+              <div
+                key={index}
+                className="progress-segment"
+                style={{
+                  width: `${category.percentage}%`,
+                  backgroundColor: category.color,
+                  minWidth:
+                    category.percentage > 0 ? `${category.percentage}%` : "1px", // Ensure visibility even for 0%
+                }}
+              ></div>
+            ))
+          )}
         </div>
 
-        {/* Categories displayed in rows of three */}
+        {/* Categories Grid */}
         <div className="categories-grid">
           {categoryTotals.map((category, index) => (
             <div key={index} className="category-item">
@@ -134,12 +140,18 @@ function DashboardCards() {
               <div className="category-header">
                 <div
                   className="color-circle"
-                  style={{ backgroundColor: category.color }}
+                  style={{
+                    backgroundColor: category.color, // Always show the category color
+                  }}
                 ></div>
                 <p className="category-name">{category.name}</p>
               </div>
               {/* Percentage underneath the category */}
-              <p className="percentage">{category.percentage.toFixed(0)}%</p>
+              <p className="percentage">
+                {transactions.length === 0
+                  ? "0%"
+                  : category.percentage.toFixed(0) + "%"}
+              </p>
             </div>
           ))}
         </div>
