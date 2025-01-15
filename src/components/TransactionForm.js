@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from "react";
 import "./TransactionForm.css";
 
-function TransactionForm({ categories, transaction, onSubmit, onCancel }) {
+function TransactionForm({
+  categories,
+  budgets,
+  transaction,
+  onSubmit,
+  onCancel,
+}) {
   const [formData, setFormData] = useState({
     type: transaction ? transaction.type : "income", // Default to 'income'
     category: transaction ? transaction.category : "", // Default to empty string if not editing
+    budget: transaction ? transaction.budget : "", // Add budget field
     amount: transaction ? transaction.amount : "",
     date: transaction ? transaction.date : "",
-    // type: "income",
-    // category: "",
-    // amount: "",
-    // date: "",
   });
-
-  const [submittedData, setSubmittedData] = useState(null);
 
   // Populate form when editing
   useEffect(() => {
@@ -28,6 +29,7 @@ function TransactionForm({ categories, transaction, onSubmit, onCancel }) {
       setFormData({
         type: "income",
         category: "",
+        budget: "", // Reset budget field
         amount: "",
         date: "",
       });
@@ -44,8 +46,7 @@ function TransactionForm({ categories, transaction, onSubmit, onCancel }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (formData.amount && formData.date) {
-      onSubmit(formData);
-      setSubmittedData(formData); // Stores the submitted data for display
+      onSubmit(formData); // Submit the form data
     } else {
       alert("Please fill in all required fields.");
     }
@@ -75,18 +76,35 @@ function TransactionForm({ categories, transaction, onSubmit, onCancel }) {
               name="category"
               value={formData.category}
               onChange={handleInputChange}
-              required
             >
               <option value="">Select Category</option>{" "}
               {/* Placeholder option */}
               {categories.map((category) => (
-                <option key={category.name} value={category.name}>
+                <option key={category.id} value={category.name}>
                   {category.name}
                 </option>
               ))}
             </select>
           </label>
-          
+        )}
+
+        {/* Show budget field only if type is expense */}
+        {formData.type === "expense" && (
+          <label>
+            Budget:
+            <select
+              name="budget"
+              value={formData.budget}
+              onChange={handleInputChange}
+            >
+              <option value="">Select Budget</option> {/* Placeholder option */}
+              {budgets.map((budget) => (
+                <option key={budget.id} value={budget.name}>
+                  {budget.name}
+                </option>
+              ))}
+            </select>
+          </label>
         )}
 
         <label>
@@ -118,26 +136,6 @@ function TransactionForm({ categories, transaction, onSubmit, onCancel }) {
           </button>
         </div>
       </form>
-
-      {submittedData && (
-        <div className="submitted-data">
-          <h4>Transaction Details</h4>
-          <p className={`type-display ${submittedData.type}`}>
-            <strong>Transaction Type:</strong> {submittedData.type}
-          </p>
-          {submittedData.type === "expense" && (
-            <p className="category-display">
-              <strong>Category:</strong> {submittedData.category}
-            </p>
-          )}
-          <p className="amount-display">
-            <strong>Amount:</strong> ${submittedData.amount}
-          </p>
-          <p className="date-display">
-            <strong>Transaction Date:</strong> {submittedData.date}
-          </p>
-        </div>
-      )}
     </div>
   );
 }
