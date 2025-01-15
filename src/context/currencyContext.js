@@ -7,7 +7,7 @@ const CurrencyContext = createContext();
 
 // CurrencyProvider component
 export const CurrencyProvider = ({ children }) => {
-  const [currency, setCurrency] = useState("$");  // Default to Naira
+  const [currency, setCurrency] = useState("₦");  // Default to Naira
   
   // Fetch currency from localStorage if available
   useEffect(() => {
