@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom"; // Import useLocation and useNavigate
 import { FiChevronDown, FiChevronUp } from "react-icons/fi"; // Import icons // Import collapse icons
 import Logo from "../../../components/Logo"; //  relative path
+import { useCurrency } from "../../../context/currencyContext"; // Use the Currency context
 import "./Settings.css"; // Import styles
 
 function SettingsPage() {
@@ -9,6 +10,7 @@ function SettingsPage() {
   const navigate = useNavigate(); // For manual navigation
   const [activeTab, setActiveTab] = useState("general"); // Default tab is 'general'
   const [isCollapsed, setIsCollapsed] = useState(false); // Track collapse state// Collapse state
+  const { currency, changeCurrency } = useCurrency(); // Access the current currency and the function to change it
 
   // Parse the query parameter to set the active tab
   useEffect(() => {
@@ -27,6 +29,11 @@ function SettingsPage() {
 
   const toggleCollapse = () => {
     setIsCollapsed((prevState) => !prevState); // Toggle collapse state
+  };
+
+  // Handle the currency change
+  const handleCurrencyChange = (event) => {
+    changeCurrency(event.target.value); // Update the currency context when selected
   };
 
   return (
@@ -69,31 +76,41 @@ function SettingsPage() {
 
         {/* Main Content Area */}
         {!isCollapsed && (
-            <div className="settings-content">
-              {activeTab === "general" && <div>General Settings</div>}
-              {activeTab === "profile" && <div>Profile Settings</div>}
-              {activeTab === "financial-data" && (
-                <div className="financial-tab-content">
-                  <h3>Account</h3>
-                  <hr className="underline" />
-                  <p>
-                    Automate account balance and transaction updates by linking
-                    your account with fyenance.
-                  </p>
-                  <button className="link-bank-btn">Link Bank Account</button>
+          <div className="settings-content">
+            {activeTab === "general" && (
+              <div className="general-settings">
+                <p>Select Currency:</p>
+                <select value={currency} onChange={handleCurrencyChange}>
+                  <option value="₦">Naira (₦)</option>
+                  <option value="$">USD ($)</option>
+                  <option value="€">Euro (€)</option>
+                  {/* add more currencies if need be */}
+                </select>
+              </div>
+            )}
+            {activeTab === "profile" && <div>Profile Settings</div>}
+            {activeTab === "financial-data" && (
+              <div className="financial-tab-content">
+                <h3>Account</h3>
+                <hr className="underline" />
+                <p>
+                  Automate account balance and transaction updates by linking
+                  your account with fyenance.
+                </p>
+                <button className="link-bank-btn">Link Bank Account</button>
 
-                  <h3>Transactions</h3>
-                  <hr className="underline" />
-                  <p>Export or upload your transactions as xslx or csv.</p>
-                  <div className="transaction-buttons">
-                    <button className="download-btn">
-                      Download Transactions
-                    </button>
-                    <button className="upload-btn">Upload Transactions</button>
-                  </div>
+                <h3>Transactions</h3>
+                <hr className="underline" />
+                <p>Export or upload your transactions as xslx or csv.</p>
+                <div className="transaction-buttons">
+                  <button className="download-btn">
+                    Download Transactions
+                  </button>
+                  <button className="upload-btn">Upload Transactions</button>
                 </div>
-              )}
-            </div>
+              </div>
+            )}
+          </div>
         )}
       </div>
     </div>
