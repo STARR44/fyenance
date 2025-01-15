@@ -5,7 +5,7 @@
   margin: 20px;
   flex-wrap: wrap; /* Allow wrapping on smaller screens */
   justify-content: center;
-} 
+}
 
 .card {
   background-color: #fff;
@@ -114,7 +114,36 @@
   color: #aaa; /* Lighter color for the placeholder text */
 }
 
-/* Progress Bar */
+/* Budget Content */
+.budget-item {
+  background-color: #efecec; /* White background for content items */
+  padding-left: 8px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  font-size: 1rem;
+  color: #aaa; /*Darker text color for readability */
+  margin-bottom: 20px;
+}
+
+.budget-item .amount-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.budget-item .amount-left-label {
+  font-size: 0.9rem;
+  color: #898989; /* Black text for label */
+}
+
+.budget-item .amount-value {
+  font-size: 1rem;
+  font-weight: bold; /* Emphasis on the value */
+  padding-right: 5px;
+}
+
+
+/* Progress Bar  for categories card*/
 .progress-bar {
   display: flex;
   width: 100%; /* Responsive to card width */
@@ -133,7 +162,6 @@
   transition: width 0.5s ease-in-out;
   border: 1px solid #f9fcfb; /* Adds subtle dividers */
 }
-
 
 /* Round the first and last segment edges */
 .progress-segment:first-child {
@@ -188,8 +216,6 @@
   }
 }
 
-
-
 /* Larger Progress Bar for Two Cards per Row */
 @media (min-width: 768px) {
   .progress-bar {
@@ -209,9 +235,6 @@
     height: 35px; /* Increase height for large screens */
   }
 }
-
-
-  
 
 @media (max-width: 768px) {
   .dashboard-cards {
