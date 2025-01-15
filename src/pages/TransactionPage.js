@@ -7,13 +7,23 @@ import "./TransactionPage.css";
 function TransactionPage() {
   const [transactions, setTransactions] = useState([]);
   const [showAddTransactionForm, setShowAddTransactionForm] = useState(false);
-  const [categories, setCategories] = useState([       //Hardcoded for testing purposes
-    { name: "Food", color: "#C34AEB" },
-    { name: "Subscriptions", color: "#C32A81" },
-    { name: "Transportation", color: "#5CEB1B" },
-    { name: "Utilities", color: "#E3A576" },
-    { name: "Miscellaneous", color: "#C2B6B6" },
-  ]);
+  const budgets = [
+    { id: 1, name: "Groceries", amountAllocated: 5000, amountSpent: 50 },
+    {
+      id: 2,
+      name: "Wedding expenses",
+      amountAllocated: 3000,
+      amountSpent: 4000,
+    },
+  ];
+  // Define categories array with sample data
+  const categories = [
+    { id: 1, name: "Food", color: "#C34AEB" },
+    { id: 2, name: "Subscriptions", color: "#C32A81" },
+    { id: 3, name: "Transportation", color: "#5CEB1B" },
+    { id: 4, name: "Utilities", color: "#E3A576" },
+    { id: 5, name: "Miscellaneous", color: "#C2B6B6" },
+  ];
   const [editTransaction, setEditTransaction] = useState(null);
   const [activeHeader, setActiveHeader] = useState("Day");
 
@@ -53,18 +63,18 @@ function TransactionPage() {
     }
   };
 
-  // Format date uniformly
-  //   const formatDate = (dateString) => {
-  //     const options = { year: "numeric", month: "short", day: "numeric" };
-  //     return new Date(dateString).toLocaleDateString(undefined, options);
-  //   };
-
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
     const year = String(date.getFullYear()).slice(2); // Get last 2 digits of the year
     return `${day}-${month}-${year}`;
+  };
+
+  // Helper function to format the amount with commas and the Naira symbol (₦)
+  const formatAmount = (amount) => {
+    // "₦" symbol and format the amount with commas
+    return `₦${Number(amount).toLocaleString()}`;
   };
 
   return (
@@ -96,6 +106,7 @@ function TransactionPage() {
             <div className="transaction-form-container">
               <TransactionForm
                 categories={categories}
+                budgets={budgets}
                 transaction={editTransaction}
                 onSubmit={handleFormSubmit}
                 onCancel={() => toggleForm()}
@@ -132,7 +143,16 @@ function TransactionPage() {
                     </span>
                   </td>
                   <td>{transaction.category || "-"}</td>
-                  <td>{transaction.amount}</td>
+                  <td
+                    style={{
+                      color:
+                        transaction.type === "income" ? "#4ECC5A" : "#EE3535", // Apply color dynamically
+                    }}
+                  >
+                    {formatAmount(transaction.amount)}{" "}
+                    {/* Display amount with commas */}
+                  </td>
+
                   <td>{formatDate(transaction.date)}</td>
                   <td>
                     <button onClick={() => toggleForm(transaction)}>
@@ -147,17 +167,6 @@ function TransactionPage() {
             </tbody>
           </table>
         </div>
-
-        {/* Transaction Form
-        {showAddTransactionForm && (
-          <div className="transaction-form-container">
-            <TransactionForm
-              transaction={editTransaction}
-              onSubmit={handleFormSubmit}
-              onCancel={() => toggleForm()}
-            />
-          </div>
-        )} */}
       </div>
     </>
   );
