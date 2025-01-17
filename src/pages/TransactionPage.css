@@ -30,7 +30,6 @@
   top: 100%; /* Right below the button */
   right: 3%; /* Aligns with the button */
   max-width: 500px; /* Set a maximum width for the form */
-  /* width: 100%; Allow responsiveness */
   width: 350px;
   max-height: 100vh;
   padding: 20px;
