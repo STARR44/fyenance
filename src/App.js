@@ -5,6 +5,7 @@ import LandingPage from "./pages/LandingPage"; // Import Landing page
 import About from "./pages/AboutPage"; // Import About page
 import DashboardPage from "./pages/DashboardPages/MainDashboard"; // Import Dashboard page component
 import TransactionPage from "./pages/TransactionPage";
+import BudgetPage from "./pages/budgetPage";
 import SettingsPage from "./pages/DashboardPages/SettingsPages/Settings"; // Import SettingsPage
 
 function App() {
@@ -25,8 +26,11 @@ function App() {
             {/* The Dashboard component is displayed for the /dashboard path */}
             <Route path="/dashboard" element={<DashboardPage />} />
 
-            {/* The Dashboard component is displayed for the /trnsaction page path */}
+            {/* The Dashboard component is displayed for the /transaction page path */}
             <Route path="/transactions" element={<TransactionPage />} />
+
+            {/* The Dashboard component is displayed for the /Budget page path */}
+            <Route path="/budget" element={<BudgetPage />} />
 
             {/* The Settings component is displayed for the /settings path */}
             <Route path="/settings" element={<SettingsPage />} />
