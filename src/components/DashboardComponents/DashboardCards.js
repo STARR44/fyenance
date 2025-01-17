@@ -8,11 +8,11 @@ function DashboardCards() {
   const [activeSegment, setActiveSegment] = useState("cashflow");
   const { currency } = useCurrency(); // Access current currency from context
   const [transactions, setTransactions] = useState([
-    { type: "income", amount: 5000, category: "Food" }, // Hardcoded for testing purposes
-    { type: "expense", amount: 2000, category: "Food" },
-    { type: "expense", amount: 1500, category: "Transportation" },
-    { type: "income", amount: 7000, category: "Subscriptions" },
-    { type: "expense", amount: 1000, category: "Utilities" },
+  //   { type: "income", amount: 5000, category: "Food" }, // Hardcoded for testing purposes
+  //   { type: "expense", amount: 2000, category: "Food" },
+  //   { type: "expense", amount: 1500, category: "Transportation" },
+  //   { type: "income", amount: 7000, category: "Subscriptions" },
+  //   { type: "expense", amount: 1000, category: "Utilities" },
   ]); // Hardcoded test transactions
   // Define categories array with sample data
   const categories = [
