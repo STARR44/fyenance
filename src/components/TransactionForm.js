@@ -9,7 +9,7 @@ function TransactionForm({
   onCancel,
 }) {
   const [formData, setFormData] = useState({
-    type: transaction ? transaction.type : "income", // Default to 'income'
+    type: transaction ? transaction.type : "expense", // Default to 'income'
     category: transaction ? transaction.category : "", // Default to empty string if not editing
     budget: transaction ? transaction.budget : "", // Add budget field
     amount: transaction ? transaction.amount : "",
@@ -27,13 +27,14 @@ function TransactionForm({
     } else {
       // Reset form data for new transactions
       setFormData({
-        type: "income",
+        type: "expense",
         category: "",
         budget: "", // Reset budget field
         amount: "",
         date: "",
       });
     }
+    console.log("formData updated:", formData); // Debugging log
   }, [transaction]);
 
   // Handle input change
@@ -69,43 +70,36 @@ function TransactionForm({
         </label>
 
         {/* Show category only if type is expense */}
-        {formData.type === "expense" && (
-          <label>
-            Category:
-            <select
-              name="category"
-              value={formData.category}
-              onChange={handleInputChange}
-            >
-              <option value="">Select Category</option>{" "}
-              {/* Placeholder option */}
-              {categories.map((category) => (
-                <option key={category.id} value={category.name}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-          </label>
-        )}
-
-        {/* Show budget field only if type is expense */}
-        {formData.type === "expense" && (
-          <label>
-            Budget:
-            <select
-              name="budget"
-              value={formData.budget}
-              onChange={handleInputChange}
-            >
-              <option value="">Select Budget</option> {/* Placeholder option */}
-              {budgets.map((budget) => (
-                <option key={budget.id} value={budget.name}>
-                  {budget.name}
-                </option>
-              ))}
-            </select>
-          </label>
-        )}
+        <label className={formData.type === "income" ? "hidden-field" : ""}>
+          Category:
+          <select
+            name="category"
+            value={formData.category}
+            onChange={handleInputChange}
+          >
+            <option value="">Select Category</option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.name}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className={formData.type === "income" ? "hidden-field" : ""}>
+          Budget:
+          <select
+            name="budget"
+            value={formData.budget}
+            onChange={handleInputChange}
+          >
+            <option value="">Select Budget</option>
+            {budgets.map((budget) => (
+              <option key={budget.id} value={budget.name}>
+                {budget.name}
+              </option>
+            ))}
+          </select>
+        </label>
 
         <label>
           Amount:
