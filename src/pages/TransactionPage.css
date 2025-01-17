@@ -28,12 +28,13 @@
 .transaction-form-container {
   position: absolute; /* Position the form relative to the parent container */
   top: 100%; /* Right below the button */
-  right: 8px; /* Aligns with the button */
-  max-width: 400px; /* Set a maximum width for the form */
-  width: 100%; /* Allow responsiveness */
+  right: 3%; /* Aligns with the button */
+  max-width: 500px; /* Set a maximum width for the form */
+  /* width: 100%; Allow responsiveness */
+  width: 350px;
   max-height: 100vh;
   padding: 20px;
-  min-height: 350px; /* Ensure enough space for buttons */
+  min-height: 200px; /* Ensure enough space for buttons */
   background-color: #fff;
   border-radius: 8px;
   border: 1px solid #ccc;
