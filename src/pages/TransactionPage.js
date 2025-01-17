@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FaCaretDown } from "react-icons/fa";
 import DashboardNav from "../components/DashboardComponents/DashboardNav";
 import TransactionForm from "../components/TransactionForm";
@@ -7,6 +7,7 @@ import "./TransactionPage.css";
 function TransactionPage() {
   const [transactions, setTransactions] = useState([]);
   const [showAddTransactionForm, setShowAddTransactionForm] = useState(false);
+  const formRef = useRef(null); // Create a ref for the form container
   const budgets = [
     { id: 1, name: "Groceries", amountAllocated: 5000, amountSpent: 50 },
     {
@@ -42,7 +43,7 @@ function TransactionPage() {
           t.id === editTransaction.id ? { ...t, ...transactionData } : t
         )
       );
-      alert("Transaction updated successfully!");
+      // alert("Transaction updated successfully!");
     } else {
       // Add new transaction with generated ID
       const newTransaction = {
@@ -50,7 +51,7 @@ function TransactionPage() {
         ...transactionData,
       };
       setTransactions((prev) => [...prev, newTransaction]);
-      alert("Transaction added successfully!");
+      // alert("Transaction added successfully!");
     }
     toggleForm();
   };
@@ -76,6 +77,27 @@ function TransactionPage() {
     // "₦" symbol and format the amount with commas
     return `₦${Number(amount).toLocaleString()}`;
   };
+
+  // Detect click outside the form to close it
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (formRef.current && !formRef.current.contains(event.target)) {
+        setShowAddTransactionForm(false); // Close the form
+      }
+    };
+
+    // Add event listener when the form is visible
+    if (showAddTransactionForm) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    // Cleanup event listener
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showAddTransactionForm]); // Only trigger when form visibility changes
 
   return (
     <>
@@ -103,7 +125,7 @@ function TransactionPage() {
 
           {/* Transaction Form */}
           {showAddTransactionForm && (
-            <div className="transaction-form-container">
+            <div ref={formRef} className="transaction-form-container">
               <TransactionForm
                 categories={categories}
                 budgets={budgets}
