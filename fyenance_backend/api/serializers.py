@@ -7,7 +7,8 @@ def cleanDecimal(value):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ('name', 'colour')
+        fields = ('name', 'colour', 'percentage')
+        extra_kwargs = {'percentage': {'read_only': True}}
 
 class TransactionSerializer(serializers.ModelSerializer):
     category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all())

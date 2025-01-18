@@ -10,6 +10,37 @@ from django.core.exceptions import ValidationError
 class Category(models.Model):
     name = models.CharField(max_length=50, unique=True)
     colour = models.CharField(max_length=7)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="category_owner")
+    user_username = models.CharField(max_length=150, editable=False, default="")
+    count = models.IntegerField(default=0)
+    percentage = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)  # Adjusted field type
+
+    def calculatePercentage(self):
+        expenses = BaseTransaction.objects.filter(type="Expense")
+        categories = Category.objects.all()
+
+        total_expenses = expenses.count()
+
+        if total_expenses > 0:
+            for category in categories:
+                category_count = expenses.filter(category=category).count()
+                category.count = category_count
+                category.percentage = (category_count / total_expenses) * 100
+                category.save()
+        else:
+            for category in categories:
+                category.count = 0
+                category.percentage = 0
+                category.save()        
+
+    def clean(self):
+        super.clean()
+        if self.percentage > 100:
+            raise ValidationError("Percentage must be less than or equal to 100.")
+        
+    def save(self, *args, **kwargs):
+        self.user_username = self.user.username  # Automatically populate the username field
+        super().save(*args, **kwargs)
 
     def __str__(self): 
         return f"{self.id} - {self.name} - #{self.colour}"
@@ -96,6 +127,14 @@ class BaseTransaction(models.Model):
                 self.budget.calculate_amount_left()
             self.budget.save()
         super().save(*args, **kwargs)
+
+        if self.type == 'Expense':
+            Category.calculatePercentage(Category)
+
+    def delete(self, *args, **kwargs):
+        super().delete(*args, **kwargs)
+        if self.type == 'Expense':
+            Category.calculatePercentage(Category)
 
     def __str__(self):
         return f"{self.transaction_id} - {self.type} - ${self.amount}"
