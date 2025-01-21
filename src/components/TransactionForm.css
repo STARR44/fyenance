@@ -73,6 +73,39 @@
   display: none !important;
 }
 
+
+/* .invalid {
+  border-color: #dc3545;
+  box-shadow: 0 0 4px rgba(220, 53, 69, 0.25);
+} */
+
+input.invalid {
+  border: 2px solid red;
+}
+
+.error {
+  color: #dc3545;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+
+
+@media (max-width: 768px) {
+  .transaction-form {
+    padding: 1rem;
+  }
+
+  .form-buttons {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .form-buttons button {
+    width: 100%;
+  }
+}
+
+
 @media (max-width: 600px) {
   .form-buttons {
     flex-direction: column;
