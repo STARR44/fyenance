@@ -2,28 +2,12 @@ import React, { useState, useRef, useEffect } from "react";
 import DashboardNav from "../components/DashboardComponents/DashboardNav";
 import BudgetForm from "../components/budgetForm";
 import { useCurrency } from "../context/currencyContext";
+import { useGlobalContext } from "../context/GlobalContext";
 import { formatCurrency } from "../utils/formatCurrency";
 import "./budgetPage.css";
 
 function BudgetPage() {
-  const [budgets, setBudgets] = useState([
-    {
-      id: 1,
-      name: "Groceries",
-      amountAllocated: 5000,
-      amountSpent: 200,
-      startDate: "2025-01-01",
-      endDate: "2025-01-31",
-    },
-    {
-      id: 2,
-      name: "Vacation",
-      amountAllocated: 3000,
-      amountSpent: 3200,
-      startDate: "2025-02-01",
-      endDate: "2025-02-28",
-    },
-  ]);
+  const { budgets, addBudget, updateBudget, deleteBudget } = useGlobalContext();
   const { currency } = useCurrency();
   const [editingBudget, setEditingBudget] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -42,7 +26,7 @@ function BudgetPage() {
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (formRef.current && !formRef.current.contains(event.target)) {
-        setEditingBudget(null); // Close the form
+        setEditingBudget(null);
       }
     };
 
@@ -57,31 +41,17 @@ function BudgetPage() {
 
   const handleAddOrEditBudget = (budget) => {
     if (budget.id) {
-      setBudgets((prev) => prev.map((b) => (b.id === budget.id ? budget : b)));
+      updateBudget(budget.id, budget);
     } else {
-      setBudgets((prev) => [
-        ...prev,
-        {
-          ...budget,
-          id: budgets.length + 1,
-          amountSpent: 0,
-        },
-      ]);
+      addBudget(budget);
     }
-    setEditingBudget(null); // Close the form
+    setEditingBudget(null);
   };
 
   const handleDeleteBudget = (id) => {
     if (window.confirm("Are you sure you want to delete this budget?")) {
-      setBudgets((prev) => prev.filter((budget) => budget.id !== id));
+      deleteBudget(id);
     }
-  };
-
-  const calculateStatus = (budget) => {
-    const remaining = budget.amountAllocated - budget.amountSpent;
-    if (remaining < 0) return { label: "Exceeded", color: "#EE3535" };
-    if (remaining === 0) return { label: "Inactive", color: "gray" };
-    return { label: "Active", color: "#4ECC5A" };
   };
 
   const filteredBudgets = budgets.filter((budget) =>
@@ -131,24 +101,30 @@ function BudgetPage() {
           <tbody>
             {filteredBudgets.length > 0 ? (
               filteredBudgets.map((budget) => {
-                const status = calculateStatus(budget);
-                const remaining = budget.amountAllocated - budget.amountSpent;
+                const statusColor =
+                  budget.status === "Exceeded"
+                    ? "#EE3535"
+                    : budget.status === "Inactive"
+                    ? "#898989"
+                    : "#3F3E39";
 
                 return (
                   <tr key={budget.id}>
                     <td>{budget.name}</td>
-                    <td>
-                      {formatCurrency(budget.amountAllocated, currency, false)}
-                    </td>
-                    {/* Suppress decimals */}
+                    <td>{formatCurrency(budget.allocated, currency, false)}</td>
                     <td
-                      style={{ color: remaining >= 0 ? "#4ECC5A" : "#EE3535" }}
+                      style={{
+                        color: budget.amountLeft >= 0 ? "#4ECC5A" : "#EE3535",
+                      }}
                     >
-                      {remaining < 0 ? "-" : ""}
-                      {formatCurrency(Math.abs(remaining), currency, false)}
-                      {/* Suppress decimals */}
+                      {budget.amountLeft < 0 ? "-" : ""}
+                      {formatCurrency(
+                        Math.abs(budget.amountLeft),
+                        currency,
+                        false
+                      )}
                     </td>
-                    <td style={{ color: status.color }}>{status.label}</td>
+                    <td style={{ color: statusColor }}>{budget.status}</td>
                     <td>
                       <button
                         className="edit-btn"
