@@ -1,55 +1,81 @@
 import React, { useState, useEffect } from "react";
+import { useGlobalContext } from "../context/GlobalContext";
 import "./TransactionForm.css";
 
-function TransactionForm({
-  categories,
-  budgets,
-  transaction,
-  onSubmit,
-  onCancel,
-}) {
+function TransactionForm({ transaction, onCancel }) {
+  const { addTransaction, updateTransaction, categories, budgets } =
+    useGlobalContext();
+
   const [formData, setFormData] = useState({
-    type: transaction ? transaction.type : "expense", // Default to 'income'
-    category: transaction ? transaction.category : "", // Default to empty string if not editing
-    budget: transaction ? transaction.budget : "", // Add budget field
-    amount: transaction ? transaction.amount : "",
-    date: transaction ? transaction.date : "",
+    type: "expense",
+    categoryId: "",
+    budgetId: "",
+    amount: "",
+    date: new Date().toISOString().split("T")[0],
   });
 
-  // Populate form when editing
+  const [errors, setErrors] = useState({});
+
   useEffect(() => {
     if (transaction) {
       setFormData({
         ...transaction,
-        // Ensure amount is a number (if applicable)
         amount: transaction.amount ? String(transaction.amount) : "",
       });
     } else {
-      // Reset form data for new transactions
-      setFormData({
-        type: "expense",
-        category: "",
-        budget: "", // Reset budget field
-        amount: "",
-        date: "",
-      });
+      resetForm();
     }
-    console.log("formData updated:", formData); // Debugging log
   }, [transaction]);
 
-  // Handle input change
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+  const resetForm = () => {
+    setFormData({
+      type: "expense",
+      categoryId: "",
+      budgetId: "",
+      amount: "",
+      date: new Date().toISOString().split("T")[0],
+    });
+    setErrors({});
   };
 
-  // Form submission
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]:
+        name === "amount"
+          ? Number(value)
+          : name === "categoryId" || name === "budgetId"
+          ? value
+            ? Number(value)
+            : "" // Ensure IDs are stored as numbers
+          : value,
+    }));
+
+    setErrors((prev) => ({ ...prev, [name]: "" }));
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.amount) newErrors.amount = "Amount is required.";
+    if (!formData.date) newErrors.date = "Date is required.";
+    return newErrors;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (formData.amount && formData.date) {
-      onSubmit(formData); // Submit the form data
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
     } else {
-      alert("Please fill in all required fields.");
+      if (transaction) {
+        updateTransaction(transaction.id, formData);
+      } else {
+        addTransaction(formData);
+      }
+      resetForm();
+      onCancel();
     }
   };
 
@@ -69,37 +95,41 @@ function TransactionForm({
           </select>
         </label>
 
-        {/* Show category only if type is expense */}
-        <label className={formData.type === "income" ? "hidden-field" : ""}>
-          Category:
-          <select
-            name="category"
-            value={formData.category}
-            onChange={handleInputChange}
-          >
-            <option value="">Select Category</option>
-            {categories.map((category) => (
-              <option key={category.id} value={category.name}>
-                {category.name}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className={formData.type === "income" ? "hidden-field" : ""}>
-          Budget:
-          <select
-            name="budget"
-            value={formData.budget}
-            onChange={handleInputChange}
-          >
-            <option value="">Select Budget</option>
-            {budgets.map((budget) => (
-              <option key={budget.id} value={budget.name}>
-                {budget.name}
-              </option>
-            ))}
-          </select>
-        </label>
+        {formData.type === "expense" && (
+          <>
+            <label>
+              Category:
+              <select
+                name="categoryId"
+                value={formData.categoryId}
+                onChange={handleInputChange}
+              >
+                <option value="">Select Category (optional)</option>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label>
+              Budget:
+              <select
+                name="budgetId"
+                value={formData.budgetId}
+                onChange={handleInputChange}
+              >
+                <option value="">Select Budget (optional)</option>
+                {budgets.map((budget) => (
+                  <option key={budget.id} value={budget.id}>
+                    {budget.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </>
+        )}
 
         <label>
           Amount:
@@ -110,6 +140,7 @@ function TransactionForm({
             onChange={handleInputChange}
             required
           />
+          {errors.amount && <p className="error">{errors.amount}</p>}
         </label>
 
         <label>
@@ -121,6 +152,7 @@ function TransactionForm({
             onChange={handleInputChange}
             required
           />
+          {errors.date && <p className="error">{errors.date}</p>}
         </label>
 
         <div className="form-buttons">
