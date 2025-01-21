@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { useGlobalContext } from "../context/GlobalContext";
 import "./budgetForm.css";
 
-function BudgetForm({ onSubmit, onCancel, initialData }) {
+function BudgetForm({ onCancel, initialData }) {
+  const { addBudget, updateBudget } = useGlobalContext();
   const [formData, setFormData] = useState({
     name: "",
-    amountAllocated: "",
+    allocated: "",
     startDate: "",
     endDate: "",
   });
@@ -12,7 +14,6 @@ function BudgetForm({ onSubmit, onCancel, initialData }) {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Populate the form with initial data when component mounts
   useEffect(() => {
     if (initialData) {
       setFormData(initialData);
@@ -26,50 +27,50 @@ function BudgetForm({ onSubmit, onCancel, initialData }) {
 
   const validate = () => {
     const newErrors = {};
-
-    if (!formData.name.trim()) {
-      newErrors.name = "Budget Name is required.";
+    if (!formData.name.trim()) newErrors.name = "Budget Name is required.";
+    if (!formData.allocated || Number(formData.allocated) <= 0) {
+      newErrors.allocated = "Amount Allocated must be greater than zero.";
     }
-    if (!formData.amountAllocated || Number(formData.amountAllocated) <= 0) {
-      newErrors.amountAllocated = "Amount Allocated must be greater than zero.";
+    if (!formData.startDate) newErrors.startDate = "Start Date is required.";
+    if (!formData.endDate) newErrors.endDate = "End Date is required.";
+    else if (new Date(formData.endDate) < new Date(formData.startDate)) {
+      newErrors.endDate = "End Date must be later than Start Date.";
     }
-    if (!formData.startDate) {
-      newErrors.startDate = "Start Date is required.";
-    }
-    if (!formData.endDate) {
-      newErrors.endDate = "End Date is required.";
-    } else if (
-      formData.startDate &&
-      new Date(formData.endDate) < new Date(formData.startDate)
-    ) {
-      newErrors.endDate = "End Date must be later than or equal to Start Date.";
-    }
-
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; // Return true if no errors
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     if (validate()) {
-      setIsSubmitting(true); // Simulate submission state
+      setIsSubmitting(true);
       setTimeout(() => {
-        onSubmit(formData); // Call the onSubmit handler
-        setIsSubmitting(false); // Reset submission state
-        setFormData({
-          name: "",
-          amountAllocated: "",
-          startDate: "",
-          endDate: "",
-        }); // Reset the form
+        if (initialData?.id) {
+          updateBudget(initialData.id, {
+            name: formData.name,
+            allocated: Number(formData.allocated),
+            startDate: formData.startDate,
+            endDate: formData.endDate,
+          });
+        } else {
+          addBudget({
+            id: Date.now(),
+            name: formData.name,
+            allocated: Number(formData.allocated),
+            startDate: formData.startDate,
+            endDate: formData.endDate,
+          });
+        }
+        setIsSubmitting(false);
+        setFormData({ name: "", allocated: "", startDate: "", endDate: "" });
+        onCancel(); // Close form after submit
       }, 1000);
     }
   };
 
   return (
     <div className="budget-form">
-      <h3>New Budget</h3>
+      <h3>{initialData ? "Edit Budget" : "New Budget"}</h3>
       <form onSubmit={handleSubmit}>
         <label>
           Budget Name:
@@ -79,6 +80,7 @@ function BudgetForm({ onSubmit, onCancel, initialData }) {
             value={formData.name}
             onChange={handleInputChange}
             placeholder="Enter budget name"
+            disabled={Boolean(initialData?.id)}
           />
           {errors.name && <small className="error">{errors.name}</small>}
         </label>
@@ -86,13 +88,13 @@ function BudgetForm({ onSubmit, onCancel, initialData }) {
           Amount Allocated:
           <input
             type="number"
-            name="amountAllocated"
-            value={formData.amountAllocated}
+            name="allocated"
+            value={formData.allocated}
             onChange={handleInputChange}
             placeholder="Enter allocated amount"
           />
-          {errors.amountAllocated && (
-            <small className="error">{errors.amountAllocated}</small>
+          {errors.allocated && (
+            <small className="error">{errors.allocated}</small>
           )}
         </label>
         <label>
