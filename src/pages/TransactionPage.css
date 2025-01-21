@@ -46,6 +46,12 @@
   flex-grow: 1; /* Allow content to grow and take available space */
 }
 
+.time-periods {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
 .transaction-page .time-periods button {
   background: none;
   padding: 10px 20px;
