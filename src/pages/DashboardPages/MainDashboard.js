@@ -73,9 +73,7 @@ function DashboardPage() {
               />
             </div>
 
-            <DashboardCards
-            // Removed API-dependent props
-            />
+            <DashboardCards />
           </div>
         )}
       </div>
