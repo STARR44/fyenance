@@ -43,6 +43,9 @@
 
 .total-balance-card .balance-placeholder {
   color: #ffffff;
+  font-size: 3rem;
+  font-weight: 500;
+  padding-left: 10px;
 }
 
 /* Segment Toggle Styles */
@@ -112,6 +115,8 @@
 
 .budget-content p {
   color: #aaa; /* Lighter color for the placeholder text */
+  font-size: 1rem;
+  font-weight: 500;
 }
 
 /* Budget Content */
@@ -147,7 +152,6 @@
 .progress-bar {
   display: flex;
   width: 100%; /* Responsive to card width */
-  /* max-width: 100%; Prevent exceeding the card width */
   height: 20px;
   border-radius: 10px;
   overflow: hidden;
