@@ -2,109 +2,78 @@ import React, { useState, useEffect, useRef } from "react";
 import { FaCaretDown } from "react-icons/fa";
 import DashboardNav from "../components/DashboardComponents/DashboardNav";
 import TransactionForm from "../components/TransactionForm";
+import { useGlobalContext } from "../context/GlobalContext"; // Import the context
 import "./TransactionPage.css";
 
 function TransactionPage() {
-  const [transactions, setTransactions] = useState([]);
+  const {
+    transactions,
+    budgets,
+    categories,
+    addTransaction,
+    updateTransaction,
+    deleteTransaction,
+  } = useGlobalContext(); // Access context values and methods
+
   const [showAddTransactionForm, setShowAddTransactionForm] = useState(false);
-  const formRef = useRef(null); // Create a ref for the form container
-  const budgets = [
-    { id: 1, name: "Groceries", amountAllocated: 5000, amountSpent: 50 },
-    {
-      id: 2,
-      name: "Wedding expenses",
-      amountAllocated: 3000,
-      amountSpent: 4000,
-    },
-  ];
-  // Define categories array with sample data
-  const categories = [
-    { id: 1, name: "Food", color: "#C34AEB" },
-    { id: 2, name: "Subscriptions", color: "#C32A81" },
-    { id: 3, name: "Transportation", color: "#5CEB1B" },
-    { id: 4, name: "Utilities", color: "#E3A576" },
-    { id: 5, name: "Miscellaneous", color: "#C2B6B6" },
-  ];
   const [editTransaction, setEditTransaction] = useState(null);
+  const formRef = useRef(null);
   const [activeHeader, setActiveHeader] = useState("Day");
 
-  // Toggle form visibility
   const toggleForm = (transaction = null) => {
     setEditTransaction(transaction);
     setShowAddTransactionForm(!showAddTransactionForm);
   };
 
-  // Handle form submission (add or update)
   const handleFormSubmit = (transactionData) => {
     if (editTransaction) {
-      // Update existing transaction
-      setTransactions((prev) =>
-        prev.map((t) =>
-          t.id === editTransaction.id ? { ...t, ...transactionData } : t
-        )
-      );
-      // alert("Transaction updated successfully!");
+      updateTransaction(editTransaction.id, transactionData);
     } else {
-      // Add new transaction with generated ID
-      const newTransaction = {
-        id: Date.now(),
-        ...transactionData,
-      };
-      setTransactions((prev) => [...prev, newTransaction]);
-      // alert("Transaction added successfully!");
+      addTransaction({ id: Date.now(), ...transactionData });
     }
     toggleForm();
   };
 
-  // Handle delete
   const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to delete this transaction?")) {
-      setTransactions((prev) => prev.filter((t) => t.id !== id));
+      deleteTransaction(id);
       alert("Transaction deleted successfully!");
     }
   };
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
-    const year = String(date.getFullYear()).slice(2); // Get last 2 digits of the year
-    return `${day}-${month}-${year}`;
+    return `${date.getDate().toString().padStart(2, "0")}-${(
+      date.getMonth() + 1
+    )
+      .toString()
+      .padStart(2, "0")}-${date.getFullYear().toString().slice(2)}`;
   };
 
-  // Helper function to format the amount with commas and the Naira symbol (₦)
-  const formatAmount = (amount) => {
-    // "₦" symbol and format the amount with commas
-    return `₦${Number(amount).toLocaleString()}`;
-  };
+  const formatAmount = (amount) => `₦${Number(amount).toLocaleString()}`;
 
-  // Detect click outside the form to close it
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (formRef.current && !formRef.current.contains(event.target)) {
-        setShowAddTransactionForm(false); // Close the form
+        setShowAddTransactionForm(false);
       }
     };
 
-    // Add event listener when the form is visible
     if (showAddTransactionForm) {
       document.addEventListener("mousedown", handleClickOutside);
     } else {
       document.removeEventListener("mousedown", handleClickOutside);
     }
 
-    // Cleanup event listener
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [showAddTransactionForm]); // Only trigger when form visibility changes
+  }, [showAddTransactionForm]);
 
   return (
     <>
-      {/* DashboardNav is placed first */}
       <DashboardNav />
       <div className="transaction-page">
-        {/* Header Section */}
         <div className="transaction-header-container">
           <div className="time-periods">
             {["Day", "Week", "Month", "Year"].map((period) => (
@@ -123,7 +92,6 @@ function TransactionPage() {
             Add Transaction
           </button>
 
-          {/* Transaction Form */}
           {showAddTransactionForm && (
             <div ref={formRef} className="transaction-form-container">
               <TransactionForm
@@ -137,7 +105,6 @@ function TransactionPage() {
           )}
         </div>
 
-        {/* Transaction Table */}
         <div className="transaction-table">
           <table>
             <thead>
@@ -151,41 +118,44 @@ function TransactionPage() {
               </tr>
             </thead>
             <tbody>
-              {transactions.map((transaction) => (
-                <tr key={transaction.id}>
-                  <td>{transaction.id}</td>
-                  <td>
-                    <span
-                      className={`type ${
-                        transaction.type === "income" ? "income" : "expense"
-                      }`}
+              {transactions.map((transaction) => {
+                const categoryObj = categories.find(
+                  (cat) => cat.id === transaction.categoryId
+                );
+                return (
+                  <tr key={transaction.id}>
+                    <td>{transaction.id}</td>
+                    <td>
+                      <span
+                        className={`type ${
+                          transaction.type === "income" ? "income" : "expense"
+                        }`}
+                      >
+                        {transaction.type === "income" ? "Income" : "Expense"}
+                        <span className="dropdown-icon"></span>
+                      </span>
+                    </td>
+                    <td>{categoryObj ? categoryObj.name : "-"}</td>
+                    <td
+                      style={{
+                        color:
+                          transaction.type === "income" ? "#4ECC5A" : "#EE3535",
+                      }}
                     >
-                      {transaction.type === "income" ? "Income" : "Expense"}
-                      <span className="dropdown-icon"></span>
-                    </span>
-                  </td>
-                  <td>{transaction.category || "-"}</td>
-                  <td
-                    style={{
-                      color:
-                        transaction.type === "income" ? "#4ECC5A" : "#EE3535", // Apply color dynamically
-                    }}
-                  >
-                    {formatAmount(transaction.amount)}{" "}
-                    {/* Display amount with commas */}
-                  </td>
-
-                  <td>{formatDate(transaction.date)}</td>
-                  <td>
-                    <button onClick={() => toggleForm(transaction)}>
-                      Edit
-                    </button>
-                    <button onClick={() => handleDelete(transaction.id)}>
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
+                      {formatAmount(transaction.amount)}
+                    </td>
+                    <td>{formatDate(transaction.date)}</td>
+                    <td>
+                      <button onClick={() => toggleForm(transaction)}>
+                        Edit
+                      </button>
+                      <button onClick={() => handleDelete(transaction.id)}>
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
