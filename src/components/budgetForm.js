@@ -70,7 +70,7 @@ function BudgetForm({ onCancel, initialData }) {
 
   return (
     <div className="budget-form">
-      <h3>{initialData ? "Edit Budget" : "New Budget"}</h3>
+      <h3>{initialData.id ? "Edit Budget" : "New Budget"}</h3>
       <form onSubmit={handleSubmit}>
         <label>
           Budget Name:
