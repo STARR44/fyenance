@@ -71,6 +71,7 @@ function BudgetPage() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
+
           <button className="add-budget" onClick={() => setEditingBudget({})}>
             Add Budget
           </button>
