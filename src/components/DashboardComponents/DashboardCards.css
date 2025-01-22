@@ -2,8 +2,11 @@
 .dashboard-cards {
   display: flex;
   gap: 20px; /* Space between cards */
-  margin: 20px;
+  width: 95%; /* Make cards compact */
+  margin: 0 auto; /* Centering */
+  padding: 0 20px; /* Align with RecentTransactions */
   flex-wrap: wrap; /* Allow wrapping on smaller screens */
+
   justify-content: center;
 }
 
@@ -11,13 +14,14 @@
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  padding: 16px 18px;
   margin-bottom: 15px;
   height: auto; /* Allow flexible height */
   min-height: 220px;
   max-height: 250px; /* Optional max height */
+  width: 100%;
   max-width: 400px;
-  min-width: 280px;
+  min-width: 295px;
   flex: 1 1 calc(33.33% - 20px); /* Three cards per row, with a gap */
   display: flex;
   flex-direction: column; /* Stack content vertically */
@@ -77,7 +81,6 @@
   padding: 16px;
   border-radius: 0 0 5px 5px; /* Rounded bottom corners */
   transition: opacity 0.3s ease-in-out;
-  /* gap: 10px; */
 }
 
 /* Individual Content Items */
@@ -147,7 +150,6 @@
   padding-right: 5px;
 }
 
-
 /* Progress Bar  for categories card*/
 .progress-bar {
   display: flex;
@@ -179,12 +181,13 @@
 /* Categories Grid */
 .categories-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Flexible layout */
   gap: 16px;
 }
 
 .category-item {
   text-align: center;
+  min-width: 100px; /* Prevent shrinking too much */
 }
 
 .category-header {
@@ -205,6 +208,7 @@
 .category-name {
   font-size: 14px;
   font-weight: bold;
+  text-align: center;
 }
 
 .percentage {
@@ -219,6 +223,9 @@
     flex: 1 1 calc(50% - 20px); /* Two cards per row */
   }
 }
+
+
+
 
 /* Larger Progress Bar for Two Cards per Row */
 @media (min-width: 768px) {
