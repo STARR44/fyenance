@@ -1,0 +1,79 @@
+.recent-transactions {
+  background: white;
+  padding: 16px 20px; /* Increased padding for a better look */
+  border: 1px solid rgba(0, 0, 0, 0.12); /* Softer border */
+  border-radius: 10px; /* Slightly rounded corners */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06); /* Subtle shadow */
+  max-width: 90%; /* Less wide */
+  margin: auto; /* Center it */
+  margin-top: 30px;
+  padding-bottom: 15px;
+}
+
+.recent-transactions-header {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Adds space between the icon and text */
+  font-size: 1.5rem;
+  margin-bottom: 18px; /* Adds space below the header */
+}
+
+.wallet-icon {
+  color: #4ecc5a; /* Green wallet icon */
+  font-size: 1.8rem; /* Adjust icon size */
+}
+
+.transaction-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.transaction-table th,
+.transaction-table td {
+  padding: 8px 12px; /* Increased padding for better spacing */
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  font-size: 15px; /* Readable text size */
+}
+
+.transaction-table th {
+  font-weight: 700;
+  font-size: 16px; /* Larger headers */
+  border-bottom: 2px solid #bbb; /* Even thicker border */
+}
+
+.transaction-table tr:last-child td {
+  border-bottom: none;
+}
+
+.type.income {
+  color: #4ecc5a;
+  font-weight: bold;
+}
+
+.type.expense {
+  color: #ee3535;
+  font-weight: bold;
+}
+
+.view-more {
+  display: block;
+  margin-top: 14px;
+  text-align: left;
+  color: #4ecc5a;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 15px;
+}
+
+.view-more:hover {
+  text-decoration: underline;
+}
+
+.no-transactions {
+  text-align: center;
+  font-style: italic;
+  color: gray;
+  padding: 12px 0;
+  font-size: 18px;
+}
