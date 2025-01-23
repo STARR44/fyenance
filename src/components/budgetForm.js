@@ -5,18 +5,25 @@ import "./budgetForm.css";
 function BudgetForm({ onCancel, initialData }) {
   const { addBudget, updateBudget } = useGlobalContext();
   const [formData, setFormData] = useState({
-    name: "",
-    allocated: "",
-    startDate: "",
-    endDate: "",
+    name: initialData?.name || "",
+    allocated: initialData?.allocated ?? "", // Ensure a default value
+    startDate: initialData?.startDate || "",
+    endDate: initialData?.endDate || "",
   });
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Populate form when editing an existing budget
   useEffect(() => {
     if (initialData) {
-      setFormData(initialData);
+      setFormData({
+        ...initialData,
+        startDate: initialData.startDate
+          ? initialData.startDate.slice(0, 10)
+          : "",
+        endDate: initialData.endDate ? initialData.endDate.slice(0, 10) : "",
+      });
     }
   }, [initialData]);
 
@@ -54,7 +61,7 @@ function BudgetForm({ onCancel, initialData }) {
           });
         } else {
           addBudget({
-            id: Date.now(),
+            id: initialData?.id || Date.now(), // Handle backend ID assignment
             name: formData.name,
             allocated: Number(formData.allocated),
             startDate: formData.startDate,
@@ -70,7 +77,7 @@ function BudgetForm({ onCancel, initialData }) {
 
   return (
     <div className="budget-form">
-      <h3>{initialData.id ? "Edit Budget" : "New Budget"}</h3>
+      <h3>{initialData?.id ? "Edit Budget" : "New Budget"}</h3>
       <form onSubmit={handleSubmit}>
         <label>
           Budget Name:
@@ -80,7 +87,6 @@ function BudgetForm({ onCancel, initialData }) {
             value={formData.name}
             onChange={handleInputChange}
             placeholder="Enter budget name"
-            disabled={Boolean(initialData?.id)}
           />
           {errors.name && <small className="error">{errors.name}</small>}
         </label>
