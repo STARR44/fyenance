@@ -1,12 +1,11 @@
 /* Updated Dashboard Cards Layout */
 .dashboard-cards {
   display: flex;
+  width: 95%;
   gap: 20px; /* Space between cards */
-  width: 95%; /* Make cards compact */
-  margin: 0 auto; /* Centering */
-  padding: 0 20px; /* Align with RecentTransactions */
+  padding: 0 20px auto;
   flex-wrap: wrap; /* Allow wrapping on smaller screens */
-
+  margin: 0 25px auto;
   justify-content: center;
 }
 
@@ -14,14 +13,11 @@
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 16px 18px;
-  margin-bottom: 15px;
-  height: auto; /* Allow flexible height */
-  min-height: 220px;
-  max-height: 250px; /* Optional max height */
-  width: 100%;
-  max-width: 400px;
-  min-width: 295px;
+  padding: 10px 15px; /* Add consistent padding */
+  min-height: 170px;
+  max-height: 260px; /* max height */
+  max-width: 450px;
+  min-width: 385px;
   flex: 1 1 calc(33.33% - 20px); /* Three cards per row, with a gap */
   display: flex;
   flex-direction: column; /* Stack content vertically */
@@ -50,6 +46,8 @@
   font-size: 3rem;
   font-weight: 500;
   padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 20px;
 }
 
 /* Segment Toggle Styles */
@@ -86,7 +84,8 @@
 /* Individual Content Items */
 .content-item {
   background-color: #efecec; /* White background for content items */
-  padding-left: 8px;
+  padding-left: 10px;
+  padding-right: 10px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
   font-size: 1rem;
@@ -98,7 +97,7 @@
 .budget-content {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 15px;
 }
 
 .cashflow-content p,
@@ -154,16 +153,15 @@
 .progress-bar {
   display: flex;
   width: 100%; /* Responsive to card width */
-  height: 20px;
+  height: 6px;
   border-radius: 10px;
   overflow: hidden;
   background-color: #f0f0f0;
-  margin-bottom: 10px;
+  transform: translateY(-10px);
+  margin-top: 8px; /* Small space above the bar */
 }
 
 .progress-segment {
-  min-width: 4px; /* Prevent collapsing at small widths */
-  flex-grow: 1; /* Let segments take equal space */
   height: 100%;
   transition: width 0.5s ease-in-out;
   border: 1px solid #f9fcfb; /* Adds subtle dividers */
@@ -178,24 +176,27 @@
   border-radius: 0 12px 12px 0; /* Round right edge */
 }
 
-/* Categories Grid */
 .categories-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Flexible layout */
-  gap: 16px;
-}
-
-.category-item {
-  text-align: center;
-  min-width: 100px; /* Prevent shrinking too much */
+  grid-template-columns: repeat(auto-fit, minmax(105px, 1fr));
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
 }
 
 .category-header {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: 8px;
+  justify-items: center;
+  gap: 5px;
+}
+
+.category-item {
+  display: flex;
+  flex-direction: column; /* Stack elements vertically */
+  align-items: center; /* Center everything properly */
+  text-align: center; /* Ensure text stays centered */
+  gap: 12px; /* Space between elements */
 }
 
 .color-circle {
@@ -212,6 +213,7 @@
 }
 
 .percentage {
+  margin-top: 5px;
   font-size: 12px;
   color: #666;
 }
@@ -223,9 +225,6 @@
     flex: 1 1 calc(50% - 20px); /* Two cards per row */
   }
 }
-
-
-
 
 /* Larger Progress Bar for Two Cards per Row */
 @media (min-width: 768px) {
@@ -253,18 +252,20 @@
   }
 
   .card {
-    flex: 1 1 calc(100% - 20px); /* Single card per row */
-    max-width: 100%; /* Allow full width */
-    padding: 15px; /* Reduce padding for smaller screens */
+    flex: 1 1 calc(100% - 20px);
+    max-width: 100%;
+    padding: 12px;
+  }
+  .categories-grid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   }
 }
 
 @media (max-width: 480px) {
-  .progress-bar {
-    height: 15px; /* Reduce bar height on small screens */
-  }
-
   .categories-grid {
-    grid-template-columns: 1fr; /* One category per row */
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  }
+  .progress-bar {
+    height: 5px;
   }
 }
