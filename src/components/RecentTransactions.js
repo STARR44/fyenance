@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useGlobalContext } from "../context/GlobalContext";
 import { FaWallet } from "react-icons/fa"; // Import Wallet Icon
+import { FaRegFrown } from "react-icons/fa"; // Import the Frown icon
 import "./RecentTransactions.css";
 
 function RecentTransactions({ limit = 5 }) {
@@ -76,12 +77,16 @@ function RecentTransactions({ limit = 5 }) {
           </table>
         </div>
       ) : (
-        <p className="no-transactions">No recent transactions...</p>
+        <p className="no-transactions">
+          <FaRegFrown className="icon"/>
+          No recent transactions...
+        </p>
       )}
-
-      <Link to="/transactions" className="view-more">
-        View All Transactions
-      </Link>
+      {recentTransactions.length > 0 && (
+        <Link to="/transactions" className="view-more">
+          View All Transactions
+        </Link>
+      )}
     </div>
   );
 }
