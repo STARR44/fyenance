@@ -1,13 +1,13 @@
 .recent-transactions {
-  background: white;
-  padding: 16px 20px; /* Increased padding for a better look */
-  border: 1px solid rgba(0, 0, 0, 0.12); /* Softer border */
-  border-radius: 10px; /* Slightly rounded corners */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06); /* Subtle shadow */
-  max-width: 90%; /* Less wide */
-  margin: auto; /* Center it */
+  background-color: #ffffff;
+  padding: 20px 25px; /* More padding for better spacing */
+  border: 1px solid rgba(0, 0, 0, 0.1); /* Softer, lighter border */
+  border-radius: 12px; /* Slightly more rounded corners */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Stronger shadow for a floating effect */
+  max-width: 90%; /* Maintain less width */
+  margin: auto;
   margin-top: 30px;
-  padding-bottom: 15px;
+  padding-bottom: 20px; /* More bottom padding for balance */
 }
 
 .recent-transactions-header {
@@ -70,10 +70,19 @@
   text-decoration: underline;
 }
 
-.no-transactions {
-  text-align: center;
-  font-style: italic;
-  color: gray;
-  padding: 12px 0;
-  font-size: 18px;
+.recent-transactions .no-transactions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #555; 
+  font-size: 16px; /* Standard font size */
+  font-weight: 400; /* Subtle weight */
+  padding: 10px 0; /* Light padding for spacing */
+  margin-top: 15px; /* Adds space above */
+}
+
+.recent-transactions .no-transactions .icon {
+  margin-right: 8px; /* Space between icon and text */
+  color: #888; /* Neutral color for the icon */
+  font-size: 1.6rem; /* Moderate icon size */
 }
