@@ -11,7 +11,9 @@ class CategorySerializer(serializers.ModelSerializer):
         extra_kwargs = {'percentage': {'read_only': True}}
 
 class TransactionSerializer(serializers.ModelSerializer):
-    category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all())
+    category = serializers.PrimaryKeyRelatedField(
+        queryset=Category.objects.all(), required=False, allow_null=True
+    )
     class Meta:
         model = BaseTransaction
         fields = ('transaction_id', 'amount', 'type', 'category', 'budget', 'user_username', 'category_name', 'budget_name', 'date_created')
@@ -21,8 +23,19 @@ class TransactionSerializer(serializers.ModelSerializer):
             # Clean amount_allocated and amount_left here
             if 'amount' in data:
                 data['amount'] = cleanDecimal(data['amount'])
+            if 'category' in data:
+                if isinstance(data['category'], str):
+                    if len(data['category']) > 0:
+                        data['category'] = int(data['category'])
+                    else:
+                        print(data)
+                        print(f"\n\"{data['category']}\"\n")
+                        # data.pop('category')
+                        data['category'] = None
+                        print(data)
+            # if 'type' in data:
+            #     data['type'] = data['type'].lower()
             return super().to_internal_value(data)
-
 
 class BudgetSerializer(serializers.ModelSerializer):
     class Meta:
