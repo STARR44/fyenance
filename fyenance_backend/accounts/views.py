@@ -10,7 +10,6 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.views import LoginView
 from rest_framework.views import APIView
 from rest_framework.response import Response
-# from rest_framework_simplejwt.views import TokenObtainPairView
 from django.views.generic.edit import CreateView, FormView
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.urls import reverse_lazy
@@ -19,6 +18,7 @@ from .forms import SignUpForm, LoginForm
 
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
+
 
 class SignUpView(CreateView):
     model = FyenanceUser
