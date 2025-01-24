@@ -18,7 +18,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 import requests
-from rest_framework import generics, status
+from rest_framework import generics, status, mixins
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -34,7 +34,8 @@ def cleanDecimal(value):
     return float(value.replace(",", ""))
 
 # Do not forget to add the login required decorator here
-class TransactionListCreate(generics.ListCreateAPIView):
+class TransactionListCreate(mixins.DestroyModelMixin,
+    generics.ListCreateAPIView):
     
      
     """
@@ -105,6 +106,7 @@ class TransactionListCreate(generics.ListCreateAPIView):
                 type = serializer.validated_data.get('type')
                 category = serializer.validated_data.get('category')
                 budget = serializer.validated_data.get('budget')
+                date_created = serializer.validated_data.get('date_created')
                 user = request.user
                 queryset = self.get_queryset()
 
@@ -114,6 +116,7 @@ class TransactionListCreate(generics.ListCreateAPIView):
                     transaction.type = type
                     transaction.category = category
                     transaction.budget = budget
+                    transaction.date_created = date_created
                     transaction.save(update_fields=['amount', 'date_created', 'type', 'category', 'budget'])
                     return Response(self.serializer_class(transaction).data, status=status.HTTP_200_OK) # I am choosing not to call it TransactionSerializer
                 else:
@@ -149,7 +152,13 @@ class TransactionListCreate(generics.ListCreateAPIView):
             return Response(data, status=status.HTTP_200_OK)
         return Response({"Bad Request": "User parameter not found in request."}, status=status.HTTP_400_BAD_REQUEST)
     
-class BudgetListCreate(generics.ListCreateAPIView):
+    def delete(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        queryset.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+class BudgetListCreate(mixins.DestroyModelMixin,
+    generics.ListCreateAPIView):
     """
     Handles listing and creating user budgets.
 
@@ -257,9 +266,15 @@ class BudgetListCreate(generics.ListCreateAPIView):
             data = BudgetSerializer(budget, many=True).data
             return Response(data, status=status.HTTP_200_OK)
         return Response({"Bad Request": "User parameter not found in request."}, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        queryset.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class CategoryListCreate(generics.CreateAPIView):
+class CategoryListCreate(mixins.DestroyModelMixin,
+    generics.CreateAPIView):
     """
     Handles creation and listing of categories.
 
@@ -365,6 +380,11 @@ class CategoryListCreate(generics.CreateAPIView):
         categories = Category.objects.all()
         data = CategorySerializer(categories, many=True).data
         return Response(data, status=status.HTTP_200_OK)
+    
+    def delete(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        queryset.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class ExchangeTokenView(APIView):

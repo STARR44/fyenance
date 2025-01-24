@@ -101,7 +101,7 @@ class BaseTransaction(models.Model):
 
     transaction_id = models.CharField(max_length=8, default=generate_transaction_id, primary_key=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    date_created = models.DateField(auto_now_add=True)
+    date_created = models.DateField(default=datetime.date.today)
     type = models.CharField(max_length=50, choices=TRANSACTION_TYPES, default="Expense", null=False)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="expense_category", null=True, blank=True)
     category_name = models.CharField(max_length=150, editable=False, default="")

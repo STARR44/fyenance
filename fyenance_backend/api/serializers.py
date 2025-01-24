@@ -14,7 +14,7 @@ class TransactionSerializer(serializers.ModelSerializer):
     category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all())
     class Meta:
         model = BaseTransaction
-        fields = ('transaction_id', 'amount', 'type', 'category', 'budget', 'user_username', 'category_name', 'budget_name')
+        fields = ('transaction_id', 'amount', 'type', 'category', 'budget', 'user_username', 'category_name', 'budget_name', 'date_created')
         extra_kwargs = {'user_username': {'read_only': True}, 'category_name': {'read_only': True}, 'budget_name': {'read_only': True}}
     
     def to_internal_value(self, data):
