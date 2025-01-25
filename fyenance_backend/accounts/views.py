@@ -18,24 +18,33 @@ from .forms import SignUpForm, LoginForm
 
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
+from .models import FyenanceUser
 
-
-class SignUpView(CreateView):
-    model = FyenanceUser
+class SignUpAPIView(APIView):
     permission_classes = [AllowAny]
-    form_class = SignUpForm
-    template_name = 'sign_up.html'
 
-    def get_success_url(self):
-        return reverse_lazy('accounts:login')
+    def post(self, request):
+        data = request.data
+        username = data.get('username')
+        email = data.get('email')
+        password = data.get('password')
 
-    def form_valid(self, form):
-        # TODO: Optimize this, Implement email verification
-        return super().form_valid(form)
+        if FyenanceUser.objects.filter(username=username).exists():
+            return Response({'error': 'Username already exists'}, status=status.HTTP_400_BAD_REQUEST)
+        if FyenanceUser.objects.filter(email=email).exists():
+            return Response({'error': 'Email already registered'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if len(password) < 8:
+            return Response({'error': 'Password must be at least 8 characters'}, status=status.HTTP_400_BAD_REQUEST)
 
-    def form_invalid(self, form):
-        # Return a response for invalid form submission
-        return self.render_to_response(self.get_context_data(form=form))
+        user = FyenanceUser.objects.create_user(username=username, email=email, password=password)
+        refresh = RefreshToken.for_user(user)
+
+        return Response({
+            'message': 'User created successfully',
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+        }, status=status.HTTP_201_CREATED)
 
 class UserLoginView(APIView):
     """
