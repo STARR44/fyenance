@@ -1,18 +1,24 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom"; // Added useLocation for automatic active link handling
 import { FaBell, FaRegUserCircle, FaSun, FaSignOutAlt } from "react-icons/fa";
 import { BsSun } from "react-icons/bs";
 import Logo from "../Logo";
-import { GlobalContext } from "../../context/GlobalContext"; // Import GlobalContext
+import AuthContext from "../../context/AuthContext";
 import "./DashboardNav.css";
 
 function DashboardNav() {
+
+  const { user } = useContext(AuthContext);
+
+
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef(null);
   const { user, handleLogout } = useContext(GlobalContext); // Access user and logout from context
   const location = useLocation(); // Track current location for active link logic
 
   const toggleMenu = () => setShowMenu((prev) => !prev);
+
+  let {logoutUser} = useContext(AuthContext)
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -44,8 +50,8 @@ function DashboardNav() {
         </li>
         <li>
           <Link
-            to="/budget"
-            className={isActive("/budget") ? "active" : ""}
+            to="/budgets"
+            className={isActive("/budgets") ? "active" : ""}
             aria-label="Budgets"
           >
             Budgets
@@ -74,8 +80,10 @@ function DashboardNav() {
             <div className="profile-menu">
               <p className="profile-info">
                 <FaRegUserCircle size={20} />
-
-                <strong>{user?.name || "Guest"}</strong>
+                <strong>{user ? user.username : "Guest"}</strong>
+              </p>
+              <p className="email-text">
+                {user ? user.email : "guest@example.com"}
               </p>
               <p className="email-text">{user?.email || "guest@example.com"}</p>
               <hr />
@@ -87,9 +95,10 @@ function DashboardNav() {
                   <FaSun size={16} /> Settings
                 </p>
               </Link>
-              <p onClick={handleLogout}>
+              <p onClick={logoutUser}>
+//               <p onClick={handleLogout}>
                 <FaSignOutAlt size={16} /> Logout
-              </p>
+              </p>{" "}
             </div>
           )}
         </div>

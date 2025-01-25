@@ -6,9 +6,9 @@ function BudgetForm({ onCancel, initialData }) {
   const { addBudget, updateBudget } = useGlobalContext();
   const [formData, setFormData] = useState({
     name: initialData?.name || "",
-    allocated: initialData?.allocated ?? "", // Ensure a default value
-    startDate: initialData?.startDate || "",
-    endDate: initialData?.endDate || "",
+    amount_allocated: initialData?.amount_allocated ?? "", // Ensure a default value
+    start_date: initialData?.start_date || "",
+    end_date: initialData?.end_date || "",
   });
 
   const [errors, setErrors] = useState({});
@@ -19,10 +19,10 @@ function BudgetForm({ onCancel, initialData }) {
     if (initialData) {
       setFormData({
         ...initialData,
-        startDate: initialData.startDate
-          ? initialData.startDate.slice(0, 10)
+        start_date: initialData.start_date
+          ? initialData.start_date.slice(0, 10)
           : "",
-        endDate: initialData.endDate ? initialData.endDate.slice(0, 10) : "",
+          end_date: initialData.end_date ? initialData.end_date.slice(0, 10) : "",
       });
     }
   }, [initialData]);
@@ -35,13 +35,13 @@ function BudgetForm({ onCancel, initialData }) {
   const validate = () => {
     const newErrors = {};
     if (!formData.name.trim()) newErrors.name = "Budget Name is required.";
-    if (!formData.allocated || Number(formData.allocated) <= 0) {
-      newErrors.allocated = "Amount Allocated must be greater than zero.";
+    if (!formData.amount_allocated || Number(formData.amount_allocated) <= 0) {
+      newErrors.amount_allocated = "Amount Allocated must be greater than zero.";
     }
-    if (!formData.startDate) newErrors.startDate = "Start Date is required.";
-    if (!formData.endDate) newErrors.endDate = "End Date is required.";
-    else if (new Date(formData.endDate) < new Date(formData.startDate)) {
-      newErrors.endDate = "End Date must be later than Start Date.";
+    if (!formData.start_date) newErrors.start_date = "Start Date is required.";
+    if (!formData.end_date) newErrors.end_date = "End Date is required.";
+    else if (new Date(formData.end_date) < new Date(formData.start_date)) {
+      newErrors.end_date = "End Date must be later than Start Date.";
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -55,21 +55,21 @@ function BudgetForm({ onCancel, initialData }) {
         if (initialData?.id) {
           updateBudget(initialData.id, {
             name: formData.name,
-            allocated: Number(formData.allocated),
-            startDate: formData.startDate,
-            endDate: formData.endDate,
+            amount_allocated: Number(formData.amount_allocated),
+            start_date: formData.start_date,
+            end_date: formData.end_date,
           });
         } else {
           addBudget({
-            id: initialData?.id || Date.now(), // Handle backend ID assignment
+            // id: initialData?.id || Date.now(), // Handle backend ID assignment
             name: formData.name,
-            allocated: Number(formData.allocated),
-            startDate: formData.startDate,
-            endDate: formData.endDate,
+            amount_allocated: Number(formData.amount_allocated),
+            start_date: formData.start_date,
+            end_date: formData.end_date,
           });
         }
         setIsSubmitting(false);
-        setFormData({ name: "", allocated: "", startDate: "", endDate: "" });
+        setFormData({ name: "", amount_allocated: "", start_date: "", end_date: "" });
         onCancel(); // Close form after submit
       }, 1000);
     }
@@ -94,36 +94,36 @@ function BudgetForm({ onCancel, initialData }) {
           Amount Allocated:
           <input
             type="number"
-            name="allocated"
-            value={formData.allocated}
+            name="amount_allocated"
+            value={formData.amount_allocated}
             onChange={handleInputChange}
             placeholder="Enter allocated amount"
           />
-          {errors.allocated && (
-            <small className="error">{errors.allocated}</small>
+          {errors.amount_allocated && (
+            <small className="error">{errors.amount_allocated}</small>
           )}
         </label>
         <label>
           Start Date:
           <input
             type="date"
-            name="startDate"
-            value={formData.startDate}
+            name="start_date"
+            value={formData.start_date}
             onChange={handleInputChange}
           />
-          {errors.startDate && (
-            <small className="error">{errors.startDate}</small>
+          {errors.start_date && (
+            <small className="error">{errors.start_date}</small>
           )}
         </label>
         <label>
           End Date:
           <input
             type="date"
-            name="endDate"
-            value={formData.endDate}
+            name="end_date"
+            value={formData.end_date}
             onChange={handleInputChange}
           />
-          {errors.endDate && <small className="error">{errors.endDate}</small>}
+          {errors.end_date && <small className="error">{errors.end_date}</small>}
         </label>
         <div className="form-buttons">
           <button type="submit" disabled={isSubmitting}>

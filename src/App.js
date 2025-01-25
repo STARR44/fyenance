@@ -2,45 +2,71 @@ import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { GlobalProvider } from "./context/GlobalContext";
 import { CurrencyProvider } from "./context/currencyContext"; // Import CurrencyProvider to manage global currency state
+import { AuthProvider } from "./context/AuthContext"; // Import AuthProvider for authentication context
 import LandingPage from "./pages/LandingPage"; // Import Landing page
 import About from "./pages/AboutPage"; // Import About page
+import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPages/MainDashboard"; // Import Dashboard page component
 import TransactionPage from "./pages/TransactionPage";
 import BudgetPage from "./pages/budgetPage";
+import PrivateRoute from './utils/PrivateRoute';
 import SettingsPage from "./pages/DashboardPages/SettingsPages/Settings"; // Import SettingsPage
 
 function App() {
   return (
-    <GlobalProvider>
-      <CurrencyProvider>
-        {" "}
-        {/* Wrap the app with CurrencyProvider to make the currency state accessible */}
-        <Router>
-          <div>
-            {/* Define the routes */}
-            <Routes>
-              {/* The LandingPage component is displayed for the root path */}
-              <Route path="/" element={<LandingPage />} />
+    <Router>
+      <AuthProvider>
+        <GlobalProvider>
+          <CurrencyProvider>
+              <div>
+                <Routes>
+                  {/* Public Routes */}
+                  <Route path="/" element={<LandingPage />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/login" element={<LoginPage />} />
 
-              {/* The About component is displayed for the /about path */}
-              <Route path="/about" element={<About />} />
+                  {/* Private Routes */}
 
-              {/* The Dashboard component is displayed for the /dashboard path */}
-              <Route path="/dashboard" element={<DashboardPage />} />
+                  <Route
+                    path="/dashboard"
+                    element={
+                      <PrivateRoute>
+                        <DashboardPage />
+                      </PrivateRoute>
+                    }
+                  />
+                  <Route
+                    path="/transactions"
+                    element={
+                      <PrivateRoute>
+                        <TransactionPage />
+                      </PrivateRoute>
+                    }
+                  />
+                  <Route
+                    path="/budgets"
+                    element={
+                      <PrivateRoute>
+                        <BudgetPage />
+                      </PrivateRoute>
+                    }
+                  />
+                  <Route
+                    path="/settings"
+                    element={
+                      <PrivateRoute>
+                        <SettingsPage />
+                      </PrivateRoute>
+                    }
+                  />
+                </Routes>
+              </div>
 
-              {/* The Dashboard component is displayed for the /transaction page path */}
-              <Route path="/transactions" element={<TransactionPage />} />
-
-              {/* The Dashboard component is displayed for the /Budget page path */}
-              <Route path="/budget" element={<BudgetPage />} />
-
-              {/* The Settings component is displayed for the /settings path */}
-              <Route path="/settings" element={<SettingsPage />} />
-            </Routes>
-          </div>
-        </Router>
-      </CurrencyProvider>
-    </GlobalProvider>
+          </CurrencyProvider>
+        </GlobalProvider>
+      </AuthProvider>
+    </Router>
+    
   );
 }
 

@@ -27,9 +27,9 @@ function TransactionPage() {
 
   const handleFormSubmit = (transactionData) => {
     if (editTransaction) {
-      updateTransaction(editTransaction.id, transactionData);
+      updateTransaction(editTransaction.transaction_id, transactionData);
     } else {
-      addTransaction({ id: Date.now(), ...transactionData });
+      addTransaction({...transactionData });
     }
     toggleForm();
   };
@@ -64,6 +64,8 @@ function TransactionPage() {
     } else {
       document.removeEventListener("mousedown", handleClickOutside);
     }
+
+    console.log(categories)
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -119,37 +121,37 @@ function TransactionPage() {
             </thead>
             <tbody>
               {transactions.map((transaction) => {
-                const categoryObj = categories.find(
-                  (cat) => cat.id === transaction.categoryId
-                );
                 return (
-                  <tr key={transaction.id}>
-                    <td>{transaction.id}</td>
-                    <td>
+                  <tr key={transaction.transaction_id}>
+                    <td>{transaction.transaction_id}</td>
+                    <td>                      
                       <span
                         className={`type ${
-                          transaction.type === "income" ? "income" : "expense"
+                          transaction.type === "Income" ? "Income" : "Expense"
                         }`}
+                        style={{
+                          color: transaction.type === "Income" ? "#4ECC5A" : "#EE3535",
+                        }}
                       >
-                        {transaction.type === "income" ? "Income" : "Expense"}
+                        {transaction.type === "Income" ? "Income" : "Expense"}
                         <span className="dropdown-icon"></span>
                       </span>
                     </td>
-                    <td>{categoryObj ? categoryObj.name : "-"}</td>
+                    <td>{transaction.category_name || "-"}</td>
                     <td
                       style={{
                         color:
-                          transaction.type === "income" ? "#4ECC5A" : "#EE3535",
+                          transaction.type === "Income" ? "#4ECC5A" : "#EE3535",
                       }}
                     >
                       {formatAmount(transaction.amount)}
                     </td>
-                    <td>{formatDate(transaction.date)}</td>
+                    <td>{formatDate(transaction.date_created)}</td>
                     <td>
                       <button onClick={() => toggleForm(transaction)}>
                         Edit
                       </button>
-                      <button onClick={() => handleDelete(transaction.id)}>
+                      <button onClick={() => handleDelete(transaction.transaction_id)}>
                         Delete
                       </button>
                     </td>
