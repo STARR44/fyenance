@@ -10,7 +10,6 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.views import LoginView
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from django.views.generic.edit import CreateView, FormView
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.urls import reverse_lazy
 from .utils import verify_google_token
