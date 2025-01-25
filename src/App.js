@@ -10,6 +10,8 @@ import DashboardPage from "./pages/DashboardPages/MainDashboard"; // Import Dash
 import TransactionPage from "./pages/TransactionPage";
 import BudgetPage from "./pages/budgetPage";
 import PrivateRoute from './utils/PrivateRoute';
+import Login from "./pages/Auth/Login";
+import SignUp from "./pages/Auth/SignUp";
 import SettingsPage from "./pages/DashboardPages/SettingsPages/Settings"; // Import SettingsPage
 
 function App() {
@@ -23,7 +25,8 @@ function App() {
                   {/* Public Routes */}
                   <Route path="/" element={<LandingPage />} />
                   <Route path="/about" element={<About />} />
-                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/signup" element={<SignUp />} />
 
                   {/* Private Routes */}
 

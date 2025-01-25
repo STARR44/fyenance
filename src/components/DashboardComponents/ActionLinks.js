@@ -8,7 +8,7 @@ function ActionLinks({ onActionComplete }) {
   // Handle "Add a Transaction" action
   const handleAddTransaction = () => {
     onActionComplete("addTransaction"); // Mark action as completed
-    // navigate("/transactions"); // Navigate to the transactions page
+    navigate("/transactions"); // Navigate to the transactions page
   };
 
   // Handle "Add a Budget" action

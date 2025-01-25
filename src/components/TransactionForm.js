@@ -60,43 +60,6 @@ function TransactionForm({ transaction, onCancel }) {
     setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
-  // const handleInputChange = (e) => {
-  //   const { name, value } = e.target;
-  
-  //   // If the name is category or budget, find the index in the respective array
-  //   if (name === "category") {
-  //     const categoryIndex = categories.findIndex((cat) => cat.name === value);
-  //     setFormData((prev) => ({
-  //       ...prev,
-  //       category: categoryIndex >= 0 ? categoryIndex : "", // Store the index or empty if not found
-  //     }));
-  //   } else if (name === "budget") {
-  //     const budgetIndex = budgets.findIndex((bud) => bud.name === value);
-  //     setFormData((prev) => ({
-  //       ...prev,
-  //       budget: budgetIndex >= 0 ? budgetIndex : "", // Store the index or empty if not found
-  //     }));
-  //   } else {
-  //     setFormData((prev) => ({
-  //       ...prev,
-  //       [name]: name === "amount" ? Number(value) : value, // For other inputs
-  //     }));
-  //   }
-  
-  //   setErrors((prev) => ({ ...prev, [name]: "" }));
-  // };
-
-  // const handleInputChange = (e) => {
-  //   const { name, value } = e.target;
-
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     [name]: name === "amount" ? Number(value) : value,
-  //   }));
-
-  //   setErrors((prev) => ({ ...prev, [name]: "" }));
-  // };
-
   const handleDropdownChange = (e) => {
     const { name, value } = e.target;
 
@@ -139,22 +102,12 @@ function TransactionForm({ transaction, onCancel }) {
             ? budgets[formData.budget - 1].id
             : null;
       }
-      console.log("Form Data:", formData);
-      console.log("Transaction.id:", transaction.id);
+      // console.log("Form Data:", formData);
+      // console.log("Transaction.id:", transaction.transaction_id);
 
       console.log("Submitting Payload:", payload);
-        // const payload = {
-        //   ...formData,
-        //   category: formData.category
-        //     ? categories[formData.category - 1]?.id || null
-        //     : null,
-        //   budget: formData.budget
-        //     ? budgets[formData.budget - 1]?.id || null
-        //     : null,
-        //   amount: parseFloat(formData.amount).toFixed(2), // Ensure amount is in decimal format
-        // };
       if (transaction) {
-        updateTransaction(transaction.id, formData);
+        updateTransaction(transaction.transaction_id, formData);
       } else {
         addTransaction(payload);
       }
@@ -162,27 +115,6 @@ function TransactionForm({ transaction, onCancel }) {
       onCancel();
     }
   };
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   const validationErrors = validateForm();
-  //   if (Object.keys(validationErrors).length > 0) {
-  //     setErrors(validationErrors);
-  //   } else {
-  //     const payload = {
-  //       ...formData,
-  //       category: categories[formData.category]?.name || null,
-  //       budget: budgets[formData.budget]?.name || null,
-  //     };
-  //     if (transaction) {
-  //       updateTransaction(transaction.id, payload);
-  //     } else {
-  //       addTransaction(payload);
-  //     }
-  //     resetForm();
-  //     onCancel();
-  //   }
-  // };
 
   return (
     <div className="transaction-form">
@@ -233,37 +165,6 @@ function TransactionForm({ transaction, onCancel }) {
                 ))}
               </select>
             </label>
-            {/* <label>
-              Category:
-              <select
-                name="category"
-                value={formData.category}
-                onChange={handleDropdownChange}
-              >
-                <option value="">Select Category (optional)</option>
-                {categories.map((category, index) => (
-                  <option key={index} value={index}>
-                    {category.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <label>
-              Budget:
-              <select
-                name="budget"
-                value={formData.budget}
-                onChange={handleDropdownChange}
-              >
-                <option value="">Select Budget (optional)</option>
-                {budgets.map((budget, index) => (
-                  <option key={index} value={index}>
-                    {budget.name}
-                  </option>
-                ))}
-              </select>
-            </label> */}
           </>
         )}
 

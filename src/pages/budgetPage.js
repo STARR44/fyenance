@@ -51,6 +51,7 @@ function BudgetPage() {
   const handleDeleteBudget = (id) => {
     if (window.confirm("Are you sure you want to delete this budget?")) {
       deleteBudget(id);
+      alert("Budget deleted successfully!");
     }
   };
 

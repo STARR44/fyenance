@@ -208,7 +208,7 @@ export const GlobalProvider = ({ children }) => {
         data: { name: id },
       });
 
-      setBudgets((prev) => prev.filter((b) => b.id !== id));
+      setBudgets((prev) => prev.filter((b) => b.name !== id));
     } catch (error) {
       console.error("Error deleting budget:", error);
     }
