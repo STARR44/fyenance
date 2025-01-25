@@ -112,15 +112,15 @@ function BudgetPage() {
                 return (
                   <tr key={budget.id}>
                     <td>{budget.name}</td>
-                    <td>{formatCurrency(budget.allocated, currency, false)}</td>
+                    <td>{formatCurrency(budget.amount_allocated, currency, false)}</td>
                     <td
                       style={{
-                        color: budget.amountLeft >= 0 ? "#4ECC5A" : "#EE3535",
+                        color: budget.amount_left >= 0 ? "#4ECC5A" : "#EE3535",
                       }}
                     >
-                      {budget.amountLeft < 0 ? "-" : ""}
+                      {budget.amount_left < 0 ? "-" : ""}
                       {formatCurrency(
-                        Math.abs(budget.amountLeft),
+                        Math.abs(budget.amount_left),
                         currency,
                         false
                       )}
