@@ -54,7 +54,7 @@ function DashboardCards() {
               {budgets.slice(0, 2).map((budget) => (
                 <div key={budget.id} className="budget-item">
                   <p className="budget-name">{budget.name}</p>
-                  <p className="amount-left">{formatCurrency(budget.amountLeft, currency)}</p>
+                  <p className="amount-left">{formatCurrency(budget.amount_left, currency)}</p>
                 </div>
               ))}
             </div>
