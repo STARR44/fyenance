@@ -13,7 +13,9 @@ function Greeting({ user }) {
 
   return (
     <div className="greeting-text">
-      <h1>{greeting}, {user ? user.name : "Guest"}!</h1>
+      <h1>
+        {greeting}, {user ? user.name : "Guest"}!
+      </h1>
     </div>
   );
 }
