@@ -107,20 +107,60 @@ export const GlobalProvider = ({ children }) => {
   // };
 
   // Update a transaction
+
   const updateTransaction = async (id, updatedTransaction) => {
     try {
-      const response = await axiosInstance.post(`${baseURL}/api/transactions/`, {
-        transaction_id: id,
-        ...updatedTransaction,
-      });
-
+      // Construct payload based on transaction type
+      const payload = {
+        transaction_id: updatedTransaction.transaction_id,
+        amount: updatedTransaction.amount,
+        type: updatedTransaction.type,
+        date_created: updatedTransaction.date_created,
+      };
+  
+      // Add category and budget only for Expense transactions
+      if (updatedTransaction.type === "Expense") {
+        if (updatedTransaction.category) {
+          const categoryObj = categories.find(
+            (cat) => cat.name === updatedTransaction.category
+          );
+          if (categoryObj) payload.category = categoryObj.id;
+        }
+        if (updatedTransaction.budget) {
+          const budgetObj = budgets.find(
+            (budget) => budget.name === updatedTransaction.budget
+          );
+          if (budgetObj) payload.budget = budgetObj.id;
+        }
+      }
+  
+      // Send request to backend
+      const response = await axiosInstance.post(`${baseURL}/api/transactions/`, payload);
+  
+      // Update state with the updated transaction
       setTransactions((prev) =>
         prev.map((t) => (t.transaction_id === id ? response.data : t))
       );
     } catch (error) {
-      console.error("Error updating transaction:", error);
+      console.error("Error updating transaction:", error.message);
     }
   };
+
+
+  // const updateTransaction = async (id, updatedTransaction) => {
+  //   try {
+  //     const response = await axiosInstance.post(`${baseURL}/api/transactions/`, {
+  //       transaction_id: id,
+  //       ...updatedTransaction,
+  //     });
+
+  //     setTransactions((prev) =>
+  //       prev.map((t) => (t.transaction_id === id ? response.data : t))
+  //     );
+  //   } catch (error) {
+  //     console.error("Error updating transaction:", error);
+  //   }
+  // };
 
   // Delete a transaction
   const deleteTransaction = async (id) => {

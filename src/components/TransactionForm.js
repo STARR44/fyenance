@@ -5,13 +5,11 @@ import "./TransactionForm.css";
 function TransactionForm({ transaction, onCancel }) {
   const { addTransaction, updateTransaction, categories, budgets } =
     useGlobalContext();
-    console.log(budgets)
-    console.log(categories)
 
   const [formData, setFormData] = useState({
     type: "Expense",
-    category: "",
-    budget: "",
+    category: "", // This will store the index of the selected category
+    budget: "", // This will store the index of the selected budget
     amount: "",
     date_created: new Date().toISOString().split("T")[0],
   });
@@ -23,27 +21,15 @@ function TransactionForm({ transaction, onCancel }) {
       setFormData({
         ...transaction,
         amount: transaction.amount ? String(transaction.amount) : "",
-        category: transaction.category || "", // Ensure we handle ID here
-        budget: transaction.budget || "",
+        category: categories.findIndex(
+          (cat) => cat.name === transaction.category
+        ),
+        budget: budgets.findIndex((bud) => bud.name === transaction.budget),
       });
-
-      console.log(budgets)
-      console.log(categories)
     } else {
       resetForm();
     }
-  }, [transaction]);
-
-  // useEffect(() => {
-  //   if (transaction) {
-  //     setFormData({
-  //       ...transaction,
-  //       amount: transaction.amount ? String(transaction.amount) : "",
-  //     });
-  //   } else {
-  //     resetForm();
-  //   }
-  // }, [transaction]);
+  }, [transaction, categories, budgets]);
 
   const resetForm = () => {
     setFormData({
@@ -59,36 +45,66 @@ function TransactionForm({ transaction, onCancel }) {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
   
-    setFormData((prev) => ({
-      ...prev,
-      [name]: name === "amount" ? Number(value) : value, // Do not convert dropdown values to numbers
-    }));
+    if (name === "category" || name === "budget") {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value ? Number(value) : "", // Convert ID string to number or reset to empty
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: name === "amount" ? Number(value) : value, // For other fields
+      }));
+    }
   
     setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
   // const handleInputChange = (e) => {
   //   const { name, value } = e.target;
+  
+  //   // If the name is category or budget, find the index in the respective array
+  //   if (name === "category") {
+  //     const categoryIndex = categories.findIndex((cat) => cat.name === value);
+  //     setFormData((prev) => ({
+  //       ...prev,
+  //       category: categoryIndex >= 0 ? categoryIndex : "", // Store the index or empty if not found
+  //     }));
+  //   } else if (name === "budget") {
+  //     const budgetIndex = budgets.findIndex((bud) => bud.name === value);
+  //     setFormData((prev) => ({
+  //       ...prev,
+  //       budget: budgetIndex >= 0 ? budgetIndex : "", // Store the index or empty if not found
+  //     }));
+  //   } else {
+  //     setFormData((prev) => ({
+  //       ...prev,
+  //       [name]: name === "amount" ? Number(value) : value, // For other inputs
+  //     }));
+  //   }
+  
+  //   setErrors((prev) => ({ ...prev, [name]: "" }));
+  // };
 
-  //   // setFormData((prev) => ({
-  //   //   ...prev,
-  //   //   [name]:
-  //   //     name === "amount"
-  //   //       ? Number(value)
-  //   //       : name === "category" || name === "budget"
-  //   //       ? value
-  //   //         ? Number(value)
-  //   //         : "" // Ensure IDs are stored as numbers
-  //   //       : value,
-  //   // }));
+  // const handleInputChange = (e) => {
+  //   const { name, value } = e.target;
 
   //   setFormData((prev) => ({
   //     ...prev,
-  //     [name]: name === "amount" ? Number(value) : value ? Number(value) : null, // Convert to number or set to null
+  //     [name]: name === "amount" ? Number(value) : value,
   //   }));
 
   //   setErrors((prev) => ({ ...prev, [name]: "" }));
   // };
+
+  const handleDropdownChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: Number(value),
+    }));
+  };
 
   const validateForm = () => {
     const newErrors = {};
@@ -99,16 +115,48 @@ function TransactionForm({ transaction, onCancel }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form Data:", formData); // Debugging step
+  
+     // Debugging step to verify payload
   
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
     } else {
+      const payload = {
+        amount: parseFloat(formData.amount).toFixed(2), // Ensure valid decimal format
+        type: formData.type,
+        date_created: formData.date_created,
+      };
+  
+      // Add category and budget only for Expenses
+      if (formData.type === "Expense") {
+        payload.category =
+          formData.category && categories[formData.category - 1]
+            ? categories[formData.category - 1].id
+            : null;
+        payload.budget =
+          formData.budget && budgets[formData.budget - 1]
+            ? budgets[formData.budget - 1].id
+            : null;
+      }
+      console.log("Form Data:", formData);
+      console.log("Transaction.id:", transaction.id);
+
+      console.log("Submitting Payload:", payload);
+        // const payload = {
+        //   ...formData,
+        //   category: formData.category
+        //     ? categories[formData.category - 1]?.id || null
+        //     : null,
+        //   budget: formData.budget
+        //     ? budgets[formData.budget - 1]?.id || null
+        //     : null,
+        //   amount: parseFloat(formData.amount).toFixed(2), // Ensure amount is in decimal format
+        // };
       if (transaction) {
         updateTransaction(transaction.id, formData);
       } else {
-        addTransaction(formData); // Use formData directly
+        addTransaction(payload);
       }
       resetForm();
       onCancel();
@@ -117,18 +165,15 @@ function TransactionForm({ transaction, onCancel }) {
 
   // const handleSubmit = (e) => {
   //   e.preventDefault();
-
-  //   const payload = {
-  //     ...formData,
-  //     budget: formData.budget, // Map budgetId to budget
-  //     budgetId: undefined, // Remove unnecessary budgetId key
-  //   };
-
-
   //   const validationErrors = validateForm();
   //   if (Object.keys(validationErrors).length > 0) {
   //     setErrors(validationErrors);
   //   } else {
+  //     const payload = {
+  //       ...formData,
+  //       category: categories[formData.category]?.name || null,
+  //       budget: budgets[formData.budget]?.name || null,
+  //     };
   //     if (transaction) {
   //       updateTransaction(transaction.id, payload);
   //     } else {
@@ -137,17 +182,6 @@ function TransactionForm({ transaction, onCancel }) {
   //     resetForm();
   //     onCancel();
   //   }
-  //   // if (Object.keys(validationErrors).length > 0) {
-  //   //   setErrors(validationErrors);
-  //   // } else {
-  //   //   if (transaction) {
-  //   //     updateTransaction(transaction.id, formData);
-  //   //   } else {
-  //   //     addTransaction(formData);
-  //   //   }
-  //   //   resetForm();
-  //   //   onCancel();
-  //   // }
   // };
 
   return (
@@ -176,8 +210,8 @@ function TransactionForm({ transaction, onCancel }) {
                 onChange={handleInputChange}
               >
                 <option value="">Select Category (optional)</option>
-                {categories.map((category) => (
-                  <option key={categories.indexOf(category.id)} value={category.id}>
+                {categories.map((category, index) => (
+                  <option key={category.id} value={index + 1}>
                     {category.name}
                   </option>
                 ))}
@@ -192,8 +226,8 @@ function TransactionForm({ transaction, onCancel }) {
                 onChange={handleInputChange}
               >
                 <option value="">Select Budget (optional)</option>
-                {budgets.map((budget) => (
-                  <option key={budget.id} value={budget.id}>
+                {budgets.map((budget, index) => (
+                  <option key={budget.id} value={index + 1}>
                     {budget.name}
                   </option>
                 ))}
@@ -202,13 +236,13 @@ function TransactionForm({ transaction, onCancel }) {
             {/* <label>
               Category:
               <select
-                name="category" // Match backend key
-                value={formData.category || ""}
-                onChange={handleInputChange}
+                name="category"
+                value={formData.category}
+                onChange={handleDropdownChange}
               >
                 <option value="">Select Category (optional)</option>
-                {categories.map((category) => (
-                  <option key={category.name} value={category.id}>
+                {categories.map((category, index) => (
+                  <option key={index} value={index}>
                     {category.name}
                   </option>
                 ))}
@@ -218,13 +252,13 @@ function TransactionForm({ transaction, onCancel }) {
             <label>
               Budget:
               <select
-                name="budget" // Use budgetId for internal handling
-                value={formData.budget || ""}
-                onChange={handleInputChange}
+                name="budget"
+                value={formData.budget}
+                onChange={handleDropdownChange}
               >
                 <option value="">Select Budget (optional)</option>
-                {budgets.map((budget) => (
-                  <option key={budget.id} value={budget.id}>
+                {budgets.map((budget, index) => (
+                  <option key={index} value={index}>
                     {budget.name}
                   </option>
                 ))}
@@ -232,42 +266,6 @@ function TransactionForm({ transaction, onCancel }) {
             </label> */}
           </>
         )}
-
-        {/* {formData.type === "Expense" && (
-          <>
-            <label>
-              Category:
-              <select
-                name="category"
-                value={formData.category}
-                onChange={handleInputChange}
-              >
-                <option value="">Select Category (optional)</option>
-                {categories.map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <label>
-              Budget:
-              <select
-                name="budgetId"
-                value={formData.budgetId}
-                onChange={handleInputChange}
-              >
-                <option value="">Select Budget (optional)</option>
-                {budgets.map((budget) => (
-                  <option key={budget.id} value={budget.id}>
-                    {budget.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </>
-        )} */}
 
         <label>
           Amount:
@@ -303,5 +301,6 @@ function TransactionForm({ transaction, onCancel }) {
     </div>
   );
 }
+
 
 export default TransactionForm;

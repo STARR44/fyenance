@@ -128,10 +128,10 @@ function TransactionPage() {
                     <td>
                       <span
                         className={`type ${
-                          transaction.type === "income" ? "Income" : "Expense"
+                          transaction.type === "Income" ? "Income" : "Expense"
                         }`}
                       >
-                        {transaction.type === "income" ? "Income" : "Expense"}
+                        {transaction.type === "Income" ? "Income" : "Expense"}
                         <span className="dropdown-icon"></span>
                       </span>
                     </td>
@@ -139,7 +139,7 @@ function TransactionPage() {
                     <td
                       style={{
                         color:
-                          transaction.type === "income" ? "#4ECC5A" : "#EE3535",
+                          transaction.type === "Income" ? "#4ECC5A" : "#EE3535",
                       }}
                     >
                       {formatAmount(transaction.amount)}

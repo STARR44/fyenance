@@ -54,17 +54,17 @@ function RecentTransactions({ limit = 5 }) {
                     <td>
                       <span
                         className={`type ${
-                          transaction.type === "income" ? "income" : "expense"
+                          transaction.type === "Income" ? "income" : "expense"
                         }`}
                       >
-                        {transaction.type === "income" ? "Income" : "Expense"}
+                        {transaction.type === "Income" ? "Income" : "Expense"}
                       </span>
                     </td>
                     <td>{categoryObj ? categoryObj.name : "-"}</td>
                     <td
                       style={{
                         color:
-                          transaction.type === "income" ? "#4ECC5A" : "#EE3535",
+                          transaction.type === "Income" ? "#4ECC5A" : "#EE3535",
                       }}
                     >
                       {formatAmount(transaction.amount)}
