@@ -16,19 +16,20 @@ class Category(models.Model):
     percentage = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)  # Adjusted field type
 
     def calculatePercentage(self):
+        # Get all expense transactions
         expenses = BaseTransaction.objects.filter(type="Expense")
-        categories = Category.objects.all()
+        total_amount = expenses.aggregate(total=models.Sum('amount'))['total'] or 0
 
-        total_expenses = expenses.count()
-
-        if total_expenses > 0:
-            for category in categories:
-                category_count = expenses.filter(category=category).count()
-                category.count = category_count
-                category.percentage = (category_count / total_expenses) * 100
+        if total_amount > 0:
+            for category in Category.objects.all():
+                # Sum amounts for the category
+                category_amount = expenses.filter(category=category).aggregate(sum=models.Sum('amount'))['sum'] or 0
+                category.count = expenses.filter(category=category).count()  # Update count
+                category.percentage = (category_amount / total_amount) * 100
                 category.save()
         else:
-            for category in categories:
+            # Reset percentages and counts if no expenses
+            for category in Category.objects.all():
                 category.count = 0
                 category.percentage = 0
                 category.save()        
