@@ -75,7 +75,7 @@ function DashboardNav({ user }) {
             <div className="profile-menu">
               <p className="profile-info">
                 <FaRegUserCircle size={20} />
-                <strong>{user ? user.name : "Guest"}</strong>
+                <strong>{user ? user.username : "Guest"}</strong>
               </p>
               <p className="email-text">
                 {user ? user.email : "guest@example.com"}
