@@ -18,7 +18,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 import requests
-from rest_framework import generics, status
+from rest_framework import generics, status, mixins
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -34,7 +34,8 @@ def cleanDecimal(value):
     return float(value.replace(",", ""))
 
 # Do not forget to add the login required decorator here
-class TransactionListCreate(generics.ListCreateAPIView):
+class TransactionListCreate(mixins.DestroyModelMixin,
+    generics.ListCreateAPIView):
     
      
     """
@@ -97,7 +98,16 @@ class TransactionListCreate(generics.ListCreateAPIView):
         If the transaction ID does not exist, it creates a new transaction.
         """
 
-        serializer = self.serializer_class(data=request.data)
+        transaction_id = request.data.get('transaction_id')
+
+        if transaction_id:
+            transaction = BaseTransaction.objects.filter(transaction_id=transaction_id).first()
+            if not transaction:
+                return Response({"Error (Bad Request)": "Transaction ID not found"}, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                serializer = self.serializer_class(transaction, data=request.data, partial=True)
+        else:
+            serializer = self.serializer_class(data=request.data)
         print(serializer)
         if serializer.is_valid():
             try:
@@ -105,6 +115,7 @@ class TransactionListCreate(generics.ListCreateAPIView):
                 type = serializer.validated_data.get('type')
                 category = serializer.validated_data.get('category')
                 budget = serializer.validated_data.get('budget')
+                date_created = serializer.validated_data.get('date_created')
                 user = request.user
                 queryset = self.get_queryset()
 
@@ -114,6 +125,7 @@ class TransactionListCreate(generics.ListCreateAPIView):
                     transaction.type = type
                     transaction.category = category
                     transaction.budget = budget
+                    transaction.date_created = date_created
                     transaction.save(update_fields=['amount', 'date_created', 'type', 'category', 'budget'])
                     return Response(self.serializer_class(transaction).data, status=status.HTTP_200_OK) # I am choosing not to call it TransactionSerializer
                 else:
@@ -124,7 +136,8 @@ class TransactionListCreate(generics.ListCreateAPIView):
                     return Response(self.serializer_class(transaction).data, status=status.HTTP_201_CREATED)
             except ValidationError as e:
                 return Response({"Error (Bad Request)": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-        return Response({"Bad Request": "Invalido data"}, status=status.HTTP_400_BAD_REQUEST)
+        # return Response({"Bad Request": "Invalido data"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
     def get(self, request, format=None):
         """
@@ -144,12 +157,18 @@ class TransactionListCreate(generics.ListCreateAPIView):
         
         user = request.user
         if user != None:
-            transactions = BaseTransaction.objects.filter(user=user)
+            transactions = BaseTransaction.objects.filter(user=user).order_by("-date_created")
             data = TransactionSerializer(transactions, many=True).data
             return Response(data, status=status.HTTP_200_OK)
         return Response({"Bad Request": "User parameter not found in request."}, status=status.HTTP_400_BAD_REQUEST)
     
-class BudgetListCreate(generics.ListCreateAPIView):
+    def delete(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        queryset.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+class BudgetListCreate(mixins.DestroyModelMixin,
+    generics.ListCreateAPIView):
     """
     Handles listing and creating user budgets.
 
@@ -204,13 +223,23 @@ class BudgetListCreate(generics.ListCreateAPIView):
         If the transaction ID does not exist, it creates a new transaction.
         """
 
-        serializer = self.serializer_class(data=request.data)
-        print(serializer)
+        budget_name = request.data.get('name')
+
+        if budget_name:
+            budget = Budget.objects.filter(name=budget_name).first()
+            if budget:
+                serializer = self.serializer_class(budget, data=request.data, partial=True)
+            else:
+                serializer = self.serializer_class(data=request.data)
+        else:
+            return Response({"Error (Bad Request)": "Budget name not found"}, status=status.HTTP_400_BAD_REQUEST)
 
         if serializer.is_valid(raise_exception=True):
             name = serializer.validated_data.get('name')
             amount_allocated = serializer.validated_data.get('amount_allocated')
             amount_left = serializer.validated_data.get('amount_left')
+            start_date = serializer.validated_data.get('start_date')
+            end_date = serializer.validated_data.get('end_date')
             user = request.user
             queryset = self.get_queryset()
 
@@ -219,8 +248,9 @@ class BudgetListCreate(generics.ListCreateAPIView):
                 budget.name = name
                 budget.amount_allocated = amount_allocated
                 budget.amount_left = amount_left
-                budget.user = user
-                budget.save(update_fields=['name', 'amount_allocated', 'amount_left', 'user'])
+                budget.start_date = start_date
+                budget.end_date = end_date
+                budget.save(update_fields=['name', 'amount_allocated', 'amount_left', 'start_date', 'end_date'])
                 return Response(self.serializer_class(budget).data, status=status.HTTP_200_OK) # I am choosing not to call it TransactionSerializer
             else:
                 """
@@ -257,9 +287,15 @@ class BudgetListCreate(generics.ListCreateAPIView):
             data = BudgetSerializer(budget, many=True).data
             return Response(data, status=status.HTTP_200_OK)
         return Response({"Bad Request": "User parameter not found in request."}, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        queryset.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class CategoryListCreate(generics.CreateAPIView):
+class CategoryListCreate(mixins.DestroyModelMixin,
+    generics.CreateAPIView):
     """
     Handles creation and listing of categories.
 
@@ -365,6 +401,11 @@ class CategoryListCreate(generics.CreateAPIView):
         categories = Category.objects.all()
         data = CategorySerializer(categories, many=True).data
         return Response(data, status=status.HTTP_200_OK)
+    
+    def delete(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        queryset.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class ExchangeTokenView(APIView):
