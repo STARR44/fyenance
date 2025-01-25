@@ -125,11 +125,14 @@ function TransactionPage() {
                 return (
                   <tr key={transaction.transaction_id}>
                     <td>{transaction.transaction_id}</td>
-                    <td>
+                    <td>                      
                       <span
                         className={`type ${
                           transaction.type === "Income" ? "Income" : "Expense"
                         }`}
+                        style={{
+                          color: transaction.type === "Income" ? "#4ECC5A" : "#EE3535",
+                        }}
                       >
                         {transaction.type === "Income" ? "Income" : "Expense"}
                         <span className="dropdown-icon"></span>
