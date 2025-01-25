@@ -27,9 +27,9 @@ function TransactionPage() {
 
   const handleFormSubmit = (transactionData) => {
     if (editTransaction) {
-      updateTransaction(editTransaction.id, transactionData);
+      updateTransaction(editTransaction.transaction_id, transactionData);
     } else {
-      addTransaction({ id: Date.now(), ...transactionData });
+      addTransaction({...transactionData });
     }
     toggleForm();
   };
@@ -123,12 +123,12 @@ function TransactionPage() {
                   (cat) => cat.id === transaction.categoryId
                 );
                 return (
-                  <tr key={transaction.id}>
-                    <td>{transaction.id}</td>
+                  <tr key={transaction.transaction_id}>
+                    <td>{transaction.transaction_id}</td>
                     <td>
                       <span
                         className={`type ${
-                          transaction.type === "income" ? "income" : "expense"
+                          transaction.type === "income" ? "Income" : "Expense"
                         }`}
                       >
                         {transaction.type === "income" ? "Income" : "Expense"}
@@ -144,12 +144,12 @@ function TransactionPage() {
                     >
                       {formatAmount(transaction.amount)}
                     </td>
-                    <td>{formatDate(transaction.date)}</td>
+                    <td>{formatDate(transaction.date_created)}</td>
                     <td>
                       <button onClick={() => toggleForm(transaction)}>
                         Edit
                       </button>
-                      <button onClick={() => handleDelete(transaction.id)}>
+                      <button onClick={() => handleDelete(transaction.transaction_id)}>
                         Delete
                       </button>
                     </td>

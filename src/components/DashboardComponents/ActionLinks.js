@@ -14,7 +14,7 @@ function ActionLinks({ onActionComplete }) {
   // Handle "Add a Budget" action
   const handleAddBudget = () => {
     onActionComplete("addBudget"); // Mark action as completed
-    navigate("/budget"); // Navigate to the budget page
+    navigate("/budgets"); // Navigate to the budget page
   };
 
   const handleLinkBankAccount = () => {

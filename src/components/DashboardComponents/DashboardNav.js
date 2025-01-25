@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom"; // Added useLocation for automatic active link handling
 import { FaBell, FaRegUserCircle, FaSun, FaSignOutAlt } from "react-icons/fa";
 import { BsSun } from "react-icons/bs";
 import Logo from "../Logo";
+import AuthContext from "../../context/AuthContext";
 import "./DashboardNav.css";
 
 function DashboardNav({ user }) {
@@ -11,6 +12,8 @@ function DashboardNav({ user }) {
   const location = useLocation(); // Track current location for active link logic
 
   const toggleMenu = () => setShowMenu((prev) => !prev);
+
+  let {logoutUser} = useContext(AuthContext)
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -42,8 +45,8 @@ function DashboardNav({ user }) {
         </li>
         <li>
           <Link
-            to="/budget"
-            className={isActive("/budget") ? "active" : ""}
+            to="/budgets"
+            className={isActive("/budgets") ? "active" : ""}
             aria-label="Budgets"
           >
             Budgets
@@ -86,9 +89,9 @@ function DashboardNav({ user }) {
                   <FaSun size={16} /> Settings
                 </p>
               </Link>
-              <p>
+              <p onClick={logoutUser}>
                 <FaSignOutAlt size={16} /> Logout
-              </p>
+              </p>{" "}
             </div>
           )}
         </div>

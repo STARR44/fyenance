@@ -10,16 +10,16 @@ function RecentTransactions({ limit = 5 }) {
 
   const formatAmount = (amount) => `₦${Number(amount).toLocaleString()}`;
   const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return `${date.getDate().toString().padStart(2, "0")}-${(
-      date.getMonth() + 1
+    const date_created = new Date(dateString);
+    return `${date_created.getDate().toString().padStart(2, "0")}-${(
+      date_created.getMonth() + 1
     )
       .toString()
-      .padStart(2, "0")}-${date.getFullYear().toString().slice(2)}`;
+      .padStart(2, "0")}-${date_created.getFullYear().toString().slice(2)}`;
   };
 
   const recentTransactions = transactions
-    .sort((a, b) => new Date(b.date) - new Date(a.date))
+    .sort((a, b) => new Date(b.date_created) - new Date(a.date_created))
     .slice(0, limit);
 
   return (
@@ -49,8 +49,8 @@ function RecentTransactions({ limit = 5 }) {
                   (cat) => cat.id === transaction.categoryId
                 );
                 return (
-                  <tr key={transaction.id}>
-                    <td>{transaction.id}</td>
+                  <tr key={transaction.transaction_id}>
+                    <td>{transaction.transaction_id}</td>
                     <td>
                       <span
                         className={`type ${
@@ -69,7 +69,7 @@ function RecentTransactions({ limit = 5 }) {
                     >
                       {formatAmount(transaction.amount)}
                     </td>
-                    <td>{formatDate(transaction.date)}</td>
+                    <td>{formatDate(transaction.date_created)}</td>
                   </tr>
                 );
               })}

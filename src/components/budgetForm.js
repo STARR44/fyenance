@@ -61,7 +61,7 @@ function BudgetForm({ onCancel, initialData }) {
           });
         } else {
           addBudget({
-            id: initialData?.id || Date.now(), // Handle backend ID assignment
+            // id: initialData?.id || Date.now(), // Handle backend ID assignment
             name: formData.name,
             allocated: Number(formData.allocated),
             startDate: formData.startDate,
