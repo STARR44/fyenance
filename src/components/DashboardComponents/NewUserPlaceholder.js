@@ -6,7 +6,6 @@ function NewUserPlaceholder() {
   return (
     <div className="new-user-placeholder">
       <p className="placeholder-text">Nothing to display yet...</p>
-      {/* <ActionLinks /> */}
     </div>
   );
 }
