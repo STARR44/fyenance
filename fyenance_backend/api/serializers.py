@@ -70,8 +70,18 @@ class BudgetSerializer(serializers.ModelSerializer):
     def to_internal_value(self, data):
             # Clean amount_allocated and amount_left here
             if 'amount_allocated' in data:
-                data['amount_allocated'] = cleanDecimal(data['amount_allocated'])
+                if isinstance(data['amount_allocated'],str):
+                    try:
+                        data['amount_allocated'] = cleanDecimal(data['amount_allocated'])
+                    except ValueError as e:
+                        raise serializers.ValidationError({'amount_allocated': str(e)})
+                else:
+                    data['amount_allocated'] = Decimal(data['amount_allocated'])
             if 'amount_left' in data:
-                data['amount_left'] = cleanDecimal(data['amount_left'])
+                if isinstance(data['amount_left'], str):
+                    try:
+                        data['amount_left'] = cleanDecimal(data['amount_left'])
+                    except ValueError as e:
+                        raise serializers.ValidationError({'amount_left': str(e)})
             return super().to_internal_value(data)
 
