@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react'
 import { jwtDecode } from "jwt-decode";
+import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom'
 
 const AuthContext = createContext()
@@ -52,16 +53,52 @@ export const AuthProvider = ({children}) => {
         logoutUser:logoutUser,
     }
 
+    useEffect(() => {
+        const refreshToken = async () => {
+            if (authTokens?.refresh) {
+                const refreshDecoded = jwtDecode(authTokens.refresh);
+                const isRefreshExpired = dayjs.unix(refreshDecoded.exp).diff(dayjs()) < 1;
+    
+                if (!isRefreshExpired) {
+                    try {
+                        const response = await fetch('http://127.0.0.1:8000/accounts/token/refresh/', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ refresh: authTokens.refresh }),
+                        });
+    
+                        if (response.status === 200) {
+                            const data = await response.json();
+                            setAuthTokens(data);
+                            setUser(jwtDecode(data.access));
+                            localStorage.setItem('authTokens', JSON.stringify(data));
+                        } else {
+                            logoutUser();
+                        }
+                    } catch (error) {
+                        console.error("Error during token refresh:", error);
+                        logoutUser();
+                    }
+                } else {
+                    logoutUser();
+                }
+            }
+        };
+    
+        refreshToken();
+        setLoading(false);
+    }, []);
 
-    useEffect(()=> {
 
-        if(authTokens){
-            setUser(jwtDecode(authTokens.access))
-        }
-        setLoading(false)
+    // useEffect(()=> {
+
+    //     if(authTokens){
+    //         setUser(jwtDecode(authTokens.access))
+    //     }
+    //     setLoading(false)
 
 
-    }, [authTokens, loading])
+    // }, [authTokens, loading])
 
     return(
         <AuthContext.Provider value={contextData} >
