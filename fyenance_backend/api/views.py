@@ -98,7 +98,16 @@ class TransactionListCreate(mixins.DestroyModelMixin,
         If the transaction ID does not exist, it creates a new transaction.
         """
 
-        serializer = self.serializer_class(data=request.data)
+        transaction_id = request.data.get('transaction_id')
+
+        if transaction_id:
+            transaction = BaseTransaction.objects.filter(transaction_id=transaction_id).first()
+            if not transaction:
+                return Response({"Error (Bad Request)": "Transaction ID not found"}, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                serializer = self.serializer_class(transaction, data=request.data, partial=True)
+        else:
+            serializer = self.serializer_class(data=request.data)
         print(serializer)
         if serializer.is_valid():
             try:
@@ -127,7 +136,8 @@ class TransactionListCreate(mixins.DestroyModelMixin,
                     return Response(self.serializer_class(transaction).data, status=status.HTTP_201_CREATED)
             except ValidationError as e:
                 return Response({"Error (Bad Request)": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-        return Response({"Bad Request": "Invalido data"}, status=status.HTTP_400_BAD_REQUEST)
+        # return Response({"Bad Request": "Invalido data"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
     def get(self, request, format=None):
         """
@@ -147,7 +157,7 @@ class TransactionListCreate(mixins.DestroyModelMixin,
         
         user = request.user
         if user != None:
-            transactions = BaseTransaction.objects.filter(user=user)
+            transactions = BaseTransaction.objects.filter(user=user).order_by("-date_created")
             data = TransactionSerializer(transactions, many=True).data
             return Response(data, status=status.HTTP_200_OK)
         return Response({"Bad Request": "User parameter not found in request."}, status=status.HTTP_400_BAD_REQUEST)

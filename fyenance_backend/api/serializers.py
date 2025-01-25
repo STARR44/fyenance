@@ -1,5 +1,6 @@
 from .models import BaseTransaction, Budget, Category
 from rest_framework import serializers
+from decimal import Decimal
 
 def cleanDecimal(value):
     return float(value.replace(",", ""))
@@ -20,28 +21,51 @@ class TransactionSerializer(serializers.ModelSerializer):
         extra_kwargs = {'user_username': {'read_only': True}, 'category_name': {'read_only': True}, 'budget_name': {'read_only': True}}
     
     def to_internal_value(self, data):
-            # Clean amount_allocated and amount_left here
-            if 'amount' in data:
-                data['amount'] = cleanDecimal(data['amount'])
-            if 'category' in data:
-                if isinstance(data['category'], str):
-                    if len(data['category']) > 0:
-                        data['category'] = int(data['category'])
-                    else:
-                        print(data)
-                        print(f"\n\"{data['category']}\"\n")
-                        # data.pop('category')
-                        data['category'] = None
-                        print(data)
-            # if 'type' in data:
-            #     data['type'] = data['type'].lower()
-            return super().to_internal_value(data)
+        if 'amount' in data:
+            if isinstance(data['amount'], str):
+                try:
+                    data['amount'] = cleanDecimal(data['amount'])
+                except ValueError as e:
+                    raise serializers.ValidationError({'amount': str(e)})
+            else:
+                data['amount'] = Decimal(data['amount'])  # Ensure it's always a Decimal.
+        
+        if 'category' in data:
+            if isinstance(data['category'], str):
+                if data['category'].strip():
+                    data['category'] = int(data['category'])
+                else:
+                    data['category'] = None
+    
+        return super().to_internal_value(data)
+
+    # def to_internal_value(self, data):
+    #         # Clean amount_allocated and amount_left here
+    #         if 'amount' in data:
+    #             if type(data['amount']) != 'str':
+    #                 data['amount'] = str(data['amount'])
+    #                 print(f"\n\"{data['amount']}\"\n")
+    #             else:
+    #                 data['amount'] = cleanDecimal(data['amount'])
+    #         if 'category' in data:
+    #             if isinstance(data['category'], str):
+    #                 if len(data['category']) > 0:
+    #                     data['category'] = int(data['category'])
+    #                 else:
+    #                     print(data)
+    #                     print(f"\n\"{data['category']}\"\n")
+    #                     # data.pop('category')
+    #                     data['category'] = None
+    #                     print(data)
+    #         # if 'type' in data:
+    #         #     data['type'] = data['type'].lower()
+    #         return super().to_internal_value(data)
 
 class BudgetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Budget
-        fields = ('name', 'amount_allocated', 'amount_left', 'user_username')
-        extra_kwargs = {'user_username': {'read_only': True}}
+        fields = ('name', 'amount_allocated', 'amount_left', 'user_username', 'status', 'start_date', 'end_date')
+        extra_kwargs = {'user_username': {'read_only': True}, 'status': {'read_only': True}}
     
     def to_internal_value(self, data):
             # Clean amount_allocated and amount_left here

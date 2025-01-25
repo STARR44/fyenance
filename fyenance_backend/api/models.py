@@ -60,6 +60,7 @@ class Budget(models.Model):
     amount_allocated = models.DecimalField(max_digits=10, decimal_places=2)
     amount_left = models.DecimalField(max_digits=10, decimal_places=2, default="0.00")
     start_date = models.DateField(default=timezone.now)
+    end_date = models.DateField(blank=True, null=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="budget_owner")
     user_username = models.CharField(max_length=150, editable=False, default="")
     @property
@@ -87,6 +88,8 @@ class Budget(models.Model):
 
     def save(self, *args, **kwargs):
         self.user_username = self.user.username  # Automatically populate the username field
+        if not self.end_date:
+            self.end_date = self.start_date + datetime.timedelta(days=30)
         super().save(*args, **kwargs)
 
     def __str__(self):
