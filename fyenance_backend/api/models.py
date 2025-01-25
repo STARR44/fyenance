@@ -59,7 +59,7 @@ def generate_transaction_id():
 class Budget(models.Model):
     name = models.CharField(max_length=50)
     amount_allocated = models.DecimalField(max_digits=10, decimal_places=2)
-    amount_left = models.DecimalField(max_digits=10, decimal_places=2, default="0.00")
+    amount_left = models.DecimalField(max_digits=10, decimal_places=2, default="0.00", null=True, blank=True)
     start_date = models.DateField(timezone.now().date())
     end_date = models.DateField(blank=True, null=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="budget_owner")
@@ -87,10 +87,18 @@ class Budget(models.Model):
         self.amount_left = self.amount_allocated - total_expenses + total_incomes
         return self.amount_left
 
+    # def save(self, *args, **kwargs):
+    #     self.user_username = self.user.username  # Automatically populate the username field
+    #     if not self.end_date:
+    #         self.end_date = self.start_date + datetime.timedelta(days=30)
+    #     super().save(*args, **kwargs)
+
     def save(self, *args, **kwargs):
-        self.user_username = self.user.username  # Automatically populate the username field
+        if self.amount_left is None:  # Ensure it always has a value
+            self.amount_left = self.amount_allocated
         if not self.end_date:
             self.end_date = self.start_date + datetime.timedelta(days=30)
+        self.user_username = self.user.username  # Automatically populate the username field
         super().save(*args, **kwargs)
 
     def __str__(self):
