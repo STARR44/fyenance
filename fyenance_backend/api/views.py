@@ -223,13 +223,23 @@ class BudgetListCreate(mixins.DestroyModelMixin,
         If the transaction ID does not exist, it creates a new transaction.
         """
 
-        serializer = self.serializer_class(data=request.data)
-        print(serializer)
+        budget_name = request.data.get('name')
+
+        if budget_name:
+            budget = Budget.objects.filter(name=budget_name).first()
+            if budget:
+                serializer = self.serializer_class(budget, data=request.data, partial=True)
+            else:
+                serializer = self.serializer_class(data=request.data)
+        else:
+            return Response({"Error (Bad Request)": "Budget name not found"}, status=status.HTTP_400_BAD_REQUEST)
 
         if serializer.is_valid(raise_exception=True):
             name = serializer.validated_data.get('name')
             amount_allocated = serializer.validated_data.get('amount_allocated')
             amount_left = serializer.validated_data.get('amount_left')
+            start_date = serializer.validated_data.get('start_date')
+            end_date = serializer.validated_data.get('end_date')
             user = request.user
             queryset = self.get_queryset()
 
@@ -238,8 +248,9 @@ class BudgetListCreate(mixins.DestroyModelMixin,
                 budget.name = name
                 budget.amount_allocated = amount_allocated
                 budget.amount_left = amount_left
-                budget.user = user
-                budget.save(update_fields=['name', 'amount_allocated', 'amount_left', 'user'])
+                budget.start_date = start_date
+                budget.end_date = end_date
+                budget.save(update_fields=['name', 'amount_allocated', 'amount_left', 'start_date', 'end_date'])
                 return Response(self.serializer_class(budget).data, status=status.HTTP_200_OK) # I am choosing not to call it TransactionSerializer
             else:
                 """

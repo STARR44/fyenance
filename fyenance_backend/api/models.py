@@ -59,7 +59,7 @@ class Budget(models.Model):
     name = models.CharField(max_length=50)
     amount_allocated = models.DecimalField(max_digits=10, decimal_places=2)
     amount_left = models.DecimalField(max_digits=10, decimal_places=2, default="0.00")
-    start_date = models.DateField(default=timezone.now)
+    start_date = models.DateField(timezone.now().date())
     end_date = models.DateField(blank=True, null=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="budget_owner")
     user_username = models.CharField(max_length=150, editable=False, default="")
