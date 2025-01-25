@@ -135,7 +135,7 @@ function BudgetPage() {
                       </button>
                       <button
                         className="delete-btn"
-                        onClick={() => handleDeleteBudget(budget.id)}
+                        onClick={() => handleDeleteBudget(budget.name)}
                       >
                         Delete
                       </button>

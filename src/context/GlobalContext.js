@@ -205,7 +205,7 @@ export const GlobalProvider = ({ children }) => {
   const deleteBudget = async (id) => {
     try {
       await axiosInstance.delete(`${baseURL}/api/budgets/`, {
-        data: { budget_id: id },
+        data: { name: id },
       });
 
       setBudgets((prev) => prev.filter((b) => b.id !== id));
