@@ -1,7 +1,7 @@
 /* Updated Dashboard Cards Layout */
 .dashboard-cards {
   display: flex;
-  width: 95%;
+  max-width: 95%;
   gap: 20px; /* Space between cards */
   padding: 0 20px auto;
   flex-wrap: wrap; /* Allow wrapping on smaller screens */

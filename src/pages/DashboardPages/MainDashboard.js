@@ -7,12 +7,7 @@ import {
 } from "../../components/DashboardComponents";
 import { FaPlus } from "react-icons/fa";
 import DropdownMenu from "../../components/DashboardComponents/DropdownMenu";
-import DashboardCards from "../../components/DashboardComponents/DashboardCards";
-import RecentTransactions from "../../components/RecentTransactions";
-import OverlaySpinner from "../../components/DashboardComponents/OverlaySpinner";
-import { useGlobalContext } from "../../context/GlobalContext"; // Import global context
-import AuthContext from "../../context/AuthContext";
-import "./MainDashboard.css";
+
 
 function DashboardPage() {
   // Access user from AuthContext

@@ -9,8 +9,11 @@ import "./DashboardNav.css";
 function DashboardNav() {
 
   const { user } = useContext(AuthContext);
+
+
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef(null);
+  const { user, handleLogout } = useContext(GlobalContext); // Access user and logout from context
   const location = useLocation(); // Track current location for active link logic
 
   const toggleMenu = () => setShowMenu((prev) => !prev);
@@ -82,6 +85,7 @@ function DashboardNav() {
               <p className="email-text">
                 {user ? user.email : "guest@example.com"}
               </p>
+              <p className="email-text">{user?.email || "guest@example.com"}</p>
               <hr />
               <p>
                 <BsSun size={16} color="B2BEB5" /> Light mode
@@ -92,6 +96,7 @@ function DashboardNav() {
                 </p>
               </Link>
               <p onClick={logoutUser}>
+//               <p onClick={handleLogout}>
                 <FaSignOutAlt size={16} /> Logout
               </p>{" "}
             </div>
@@ -103,4 +108,3 @@ function DashboardNav() {
 }
 
 export default DashboardNav;
-
