@@ -53,57 +53,57 @@ export const AuthProvider = ({children}) => {
         logoutUser:logoutUser,
     }
 
-    useEffect(() => {
-        const loadTokens = () => {
-            const tokens = localStorage.getItem('authTokens');
-            if (tokens) {
-                setAuthTokens(JSON.parse(tokens));
-                setUser(jwtDecode(JSON.parse(tokens).access));
-            }
-            setLoading(false);
-        };
-    
-        loadTokens();
-        setLoading(false);
-    }, []);
-
-    
-
     // useEffect(() => {
-    //     const refreshToken = async () => {
-    //         if (authTokens?.refresh) {
-    //             const refreshDecoded = jwtDecode(authTokens.refresh);
-    //             const isRefreshExpired = dayjs.unix(refreshDecoded.exp).diff(dayjs()) < 1;
-    
-    //             if (!isRefreshExpired) {
-    //                 try {
-    //                     const response = await fetch('http://127.0.0.1:8000/accounts/token/refresh/', {
-    //                         method: 'POST',
-    //                         headers: { 'Content-Type': 'application/json' },
-    //                         body: JSON.stringify({ refresh: authTokens.refresh }),
-    //                     });
-    
-    //                     if (response.status === 200) {
-    //                         const data = await response.json();
-    //                         setAuthTokens(data);
-    //                         setUser(jwtDecode(data.access));
-    //                         localStorage.setItem('authTokens', JSON.stringify(data));
-    //                     } else {
-    //                         logoutUser();
-    //                     }
-    //                 } catch (error) {
-    //                     console.error("Error during token refresh:", error);
-    //                     logoutUser();
-    //                 }
-    //             } else {
-    //                 logoutUser();
-    //             }
+    //     const loadTokens = () => {
+    //         const tokens = localStorage.getItem('authTokens');
+    //         if (tokens) {
+    //             setAuthTokens(JSON.parse(tokens));
+    //             setUser(jwtDecode(JSON.parse(tokens).access));
     //         }
+    //         setLoading(false);
     //     };
     
-    //     refreshToken();
+    //     loadTokens();
     //     setLoading(false);
     // }, []);
+
+    
+
+    useEffect(() => {
+        const refreshToken = async () => {
+            if (authTokens?.refresh) {
+                const refreshDecoded = jwtDecode(authTokens.refresh);
+                const isRefreshExpired = dayjs.unix(refreshDecoded.exp).diff(dayjs()) < 1;
+    
+                if (!isRefreshExpired) {
+                    try {
+                        const response = await fetch('http://127.0.0.1:8000/accounts/token/refresh/', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ refresh: authTokens.refresh }),
+                        });
+    
+                        if (response.status === 200) {
+                            const data = await response.json();
+                            setAuthTokens(data);
+                            setUser(jwtDecode(data.access));
+                            localStorage.setItem('authTokens', JSON.stringify(data));
+                        } else {
+                            logoutUser();
+                        }
+                    } catch (error) {
+                        console.error("Error during token refresh:", error);
+                        logoutUser();
+                    }
+                } else {
+                    logoutUser();
+                }
+            }
+        };
+    
+        refreshToken();
+        setLoading(false);
+    }, []);
 
 
     // useEffect(()=> {

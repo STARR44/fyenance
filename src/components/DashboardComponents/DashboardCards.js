@@ -67,18 +67,34 @@ function DashboardCards() {
         <h3>Categories</h3>
         <div className="progress-bar single-bar">
           {categories
-            .filter((cat) => typeof cat.percentage === "number" && cat.percentage > 0)
+            .filter((cat) => !isNaN(Number(cat.percentage)) && Number(cat.percentage) > 0)
             .map((category) => (
               <div
                 key={category.id}
                 className="progress-segment"
                 style={{
-                  width: `${category.percentage}%`,
+                  width: `${Number(category.percentage)}%`,
                   backgroundColor: category.color,
-                  minWidth: `${Math.max(category.percentage, 1)}%`,
+                  minWidth: `${Math.max(Number(category.percentage), 1)}%`,
                 }}
               ></div>
             ))}
+        </div>
+        <div className="categories-grid">
+          {categories.map((category) => (
+            <div key={category.id} className="category-item">
+              <div className="category-header">
+                <div
+                  className="color-circle"
+                  style={{ backgroundColor: category.color }}
+                ></div>
+                <p className="category-name">{category.name}</p>
+              </div>
+              <p className="percentage">
+                {Number(category.percentage).toFixed(0)}%
+              </p>
+            </div>
+          ))}
         </div>
         <div className="categories-grid">
           {categories.map((category) => (

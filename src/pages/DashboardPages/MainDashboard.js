@@ -31,7 +31,7 @@ function DashboardPage() {
   return (
     <div className="dashboard-page">
       <OverlaySpinner isLoading={!user || !categories.length} /> {/* Show spinner if data is loading */}
-      <DashboardNav user={user} />
+      <DashboardNav />
       <div className="dashboard-content">
         {!user || !hasActions ? ( // Show new user dialog if no actions completed
           <>

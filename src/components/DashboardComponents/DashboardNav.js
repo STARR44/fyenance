@@ -6,7 +6,9 @@ import Logo from "../Logo";
 import AuthContext from "../../context/AuthContext";
 import "./DashboardNav.css";
 
-function DashboardNav({ user }) {
+function DashboardNav() {
+
+  const { user } = useContext(AuthContext);
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef(null);
   const location = useLocation(); // Track current location for active link logic

@@ -45,9 +45,6 @@ function RecentTransactions({ limit = 5 }) {
             </thead>
             <tbody>
               {recentTransactions.map((transaction) => {
-                const categoryObj = categories.find(
-                  (cat) => cat.id === transaction.categoryId
-                );
                 return (
                   <tr key={transaction.transaction_id}>
                     <td>{transaction.transaction_id}</td>
@@ -60,7 +57,7 @@ function RecentTransactions({ limit = 5 }) {
                         {transaction.type === "Income" ? "Income" : "Expense"}
                       </span>
                     </td>
-                    <td>{categoryObj ? categoryObj.name : "-"}</td>
+                    <td>{transaction.category_name || "-"}</td>
                     <td
                       style={{
                         color:

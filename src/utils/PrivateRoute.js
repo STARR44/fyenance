@@ -1,13 +1,14 @@
 import React, { useContext } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'
 import AuthContext from '../context/AuthContext';
 
 const PrivateRoute = ({ children }) => {
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate()
 
   // Redirect to login if the user is not authenticated
   if (!user) {
-    return <Navigate to="/login" />;
+    navigate('/login', { replace: true })
   }
 
   return children;
