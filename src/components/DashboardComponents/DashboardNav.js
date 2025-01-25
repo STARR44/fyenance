@@ -3,11 +3,13 @@ import { Link, useLocation } from "react-router-dom"; // Added useLocation for a
 import { FaBell, FaRegUserCircle, FaSun, FaSignOutAlt } from "react-icons/fa";
 import { BsSun } from "react-icons/bs";
 import Logo from "../Logo";
+import { GlobalContext } from "../../context/GlobalContext"; // Import GlobalContext
 import "./DashboardNav.css";
 
-function DashboardNav({ user }) {
+function DashboardNav() {
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef(null);
+  const { user, handleLogout } = useContext(GlobalContext); // Access user and logout from context
   const location = useLocation(); // Track current location for active link logic
 
   const toggleMenu = () => setShowMenu((prev) => !prev);
@@ -72,11 +74,10 @@ function DashboardNav({ user }) {
             <div className="profile-menu">
               <p className="profile-info">
                 <FaRegUserCircle size={20} />
-                <strong>{user ? user.name : "Guest"}</strong>
+
+                <strong>{user?.name || "Guest"}</strong>
               </p>
-              <p className="email-text">
-                {user ? user.email : "guest@example.com"}
-              </p>
+              <p className="email-text">{user?.email || "guest@example.com"}</p>
               <hr />
               <p>
                 <BsSun size={16} color="B2BEB5" /> Light mode
@@ -86,7 +87,7 @@ function DashboardNav({ user }) {
                   <FaSun size={16} /> Settings
                 </p>
               </Link>
-              <p>
+              <p onClick={handleLogout}>
                 <FaSignOutAlt size={16} /> Logout
               </p>
             </div>
@@ -98,4 +99,3 @@ function DashboardNav({ user }) {
 }
 
 export default DashboardNav;
-
