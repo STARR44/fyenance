@@ -10,7 +10,7 @@ import {
 import { FaPlus } from "react-icons/fa"; // Import the plus icon from react-icons
 import DropdownMenu from "../../components/DashboardComponents/DropdownMenu";
 import DashboardCards from "../../components/DashboardComponents/DashboardCards"; // Import the new component
-import RecentTransactions from "../../components/RecentTransactions"
+import RecentTransactions from "../../components/RecentTransactions";
 import OverlaySpinner from "../../components/DashboardComponents/OverlaySpinner"; // Spinner component for loading state
 import "./MainDashboard.css"; // Import styles specific to the dashboard page
 
