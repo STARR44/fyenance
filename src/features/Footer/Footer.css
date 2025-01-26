@@ -1,14 +1,14 @@
 @import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;600&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;600&display=swap");
 
 .footer {
-  background-color: #FFFFFF; /* Color for footer background */
-  padding: 15px; /* Tweaked: Minimal padding for footer to make it compact */
+  background-color: #ffffff; /* Color for footer background */
+  padding: 20px 15px; /* Tweaked: Minimal padding for footer to make it compact */
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center; /* Aligns all items vertically in the center */
+  border-top: 2px solid #d7c178;
 }
 
 .footer-logo-container {
@@ -18,7 +18,6 @@
   justify-content: center;
   text-align: center; /* Ensures text is aligned to the left */
 }
-
 
 .footer-subtitle {
   font-size: 0.9rem;
@@ -47,4 +46,42 @@
 
 .footer-color {
   color: black;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .footer {
+    flex-direction: column; /* Stack items vertically for smaller screens */
+    align-items: center;
+    padding: 15px 10px; /* Slightly reduced padding */
+    text-align: center; /* Center all text */
+  }
+
+  .footer-logo-container {
+    margin-bottom: 10px; /* Add space below the logo for stacked layout */
+  }
+
+  .footer-subtitle {
+    font-size: 0.9rem; /* Slightly smaller font for smaller screens */
+    padding: 0 10px; /* Reduce padding for tighter layout */
+  }
+
+  .footer-copyright {
+    text-align: center; /* Center copyright text */
+    margin-top: 10px; /* Add spacing above copyright text */
+  }
+}
+
+@media (max-width: 480px) {
+  .footer {
+    padding: 10px; /* Compact padding for very small devices */
+  }
+
+  .footer-subtitle {
+    font-size: 0.8rem; /* Further reduce subtitle font size */
+  }
+
+  .footer-copyright {
+    font-size: 0.75rem; /* Smaller font for copyright text */
+  }
 }
