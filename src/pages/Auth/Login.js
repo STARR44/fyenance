@@ -16,14 +16,20 @@ const Login = () => {
     const form = new FormData();
     form.append("username", identifier);
     form.append("password", password);
-    loginUser({ preventDefault: () => {}, target: { username: { value: identifier }, password: { value: password } } });
+    loginUser({
+      preventDefault: () => {},
+      target: {
+        username: { value: identifier },
+        password: { value: password },
+      },
+    });
   };
 
   return (
     <div className="auth-container">
-      <Logo />
+      <Logo className="custom-logo" />
       <h1 className="auth-title">Login</h1>
-      <form className="auth-form" onSubmit={handleSubmit}>
+      <form className="auth-form login-form" onSubmit={handleSubmit}>
         <input
           type="text"
           placeholder="Enter Username"
@@ -38,10 +44,7 @@ const Login = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button
-          type="submit"
-          className="auth-button primary"
-        >
+        <button type="submit" className="auth-button primary">
           Sign in
         </button>
         <div className="auth-divider">
