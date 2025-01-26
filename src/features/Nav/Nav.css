@@ -63,7 +63,7 @@
   color: rgb(255, 255, 255);
 }
 
-/* 📌 Responsive Styles for Navigation */
+/* Responsive Styles for Navigation */
 @media (max-width: 1023px) { /* Tablets */
   .navbar {
     padding: 8px 12px;
