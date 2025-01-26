@@ -1,0 +1,157 @@
+/* General Settings Page Styles */
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&display=swap");
+
+.settings-page {
+  font-family: "Fredoka", sans-serif;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  min-height: 100vh;
+  margin: 0;
+}
+
+/* Header Section */
+.settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background-color: #ffffff;
+  padding: 5px;
+  border-bottom: 1px solid #ddd;
+}
+
+.settings-header h2 {
+  padding-left: 15px;
+  font-weight: 500;
+}
+
+/* Collapse Button */
+.collapse-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Main Section (Side Panel + Divider + Content) */
+.settings-main {
+  display: flex;
+  width: 100%;
+  /* max-width: 1200px; */
+  background-color: #f9fafb;
+  height: calc(100vh - 60px); /* Take full height minus header height */
+  padding: 0 10px; /* Adds space on the sides */
+  overflow: hidden;
+}
+
+/* Side Panel */
+.side-panel {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  padding: 20px;
+}
+
+.side-panel button {
+  padding: 10px 20px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+  text-align: left;
+}
+
+/* When collapsed, hide divider and content area and reduce width */
+.settings-main.collapsed {
+  width: fit-content; /* Adjust the width to fit only the side panel */
+  transition: width 0.3s ease; /* Add smooth transition */
+  display: flex; /* Align everything to the left */
+  justify-content: flex-start; /* Align everything to the left */
+  /* width: auto;                 Allow width to adjust */
+}
+
+  
+  /* Hide the divider and content area */
+  .settings-main.collapsed .divider,
+  .settings-main.collapsed .settings-content {
+    display: none;
+  }
+  
+  
+  
+
+.side-panel button.active {
+  background-color: #adebb3;
+  color: #ffffff;
+}
+
+.side-panel button:hover {
+  background-color: #adebb3;
+  color: #ffffff;
+}
+
+/* Divider */
+.divider {
+  width: 2px;
+  background-color: #b3b3b3; /* Dark color */
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+/* Content Area */
+.settings-content {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* Financial Tab Content */
+.financial-tab-content {
+  margin-top: 20px;
+}
+
+.settings-page button {
+  font-family: inherit; /* Ensures buttons inherit the Fredoka font */
+  margin: 16px;
+  font-size: 16px;
+}
+
+.transaction-buttons {
+  display: flex;
+  gap: 15px; /* Adds spacing between buttons */
+  margin-top: 15px;
+}
+
+.link-bank-btn {
+  margin-top: 15px;
+}
+
+.link-bank-btn,
+.download-btn {
+  background-color: #adebb3;
+  color: black;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  gap: 15px;
+  margin-bottom: 15px; /* Added space between buttons */
+}
+
+.upload-btn {
+  background-color: #ffffff;
+  color: black;
+  padding: 10px 15px;
+  border: 1px solid grey;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 15px; /* Added space between buttons */
+}
+
+.underline {
+  border: 0;
+  border-top: 2px solid #ddd;
+  margin: 10px 0;
+}

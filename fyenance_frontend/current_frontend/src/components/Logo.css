@@ -1,0 +1,32 @@
+/* Import the Azeret Mono font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;600&display=swap');
+
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+    text-decoration: none; /* Ensures no underline for the link */
+    color: inherit;
+    /* gap: 2px; */
+}
+
+        
+
+.logo-container img {
+    width: 30px;
+    height: 30px;
+    margin: 5px;
+}
+
+
+.logo-text {
+    font-family: 'Azeret Mono', monospace; /* Apply the font */
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.highlight {
+    font-family: 'Azeret Mono', monospace; /* Apply the font */
+    color: #D7C178;
+}

@@ -10,4 +10,6 @@ urlpatterns = [
     path('settings/', index),
     path('dashboard/', index),
     path('about/', index),
+    path('signup/', index),
+    path('login/', index),
 ]

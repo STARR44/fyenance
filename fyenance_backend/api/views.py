@@ -233,6 +233,8 @@ class BudgetListCreate(mixins.DestroyModelMixin,
                 serializer = self.serializer_class(data=request.data)
         else:
             return Response({"Error (Bad Request)": "Budget name not found"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        print(serializer)
 
         if serializer.is_valid(raise_exception=True):
             name = serializer.validated_data.get('name')

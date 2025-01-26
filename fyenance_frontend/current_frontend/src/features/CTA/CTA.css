@@ -1,0 +1,49 @@
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&display=swap");
+
+.cta-section {
+  background: linear-gradient(135deg, #4ECC5A, #ADEBB3, #D7C178); /* Elegant gradient */
+  text-align: center;
+  padding: 35px 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.cta-title {
+  font-family: "Fredoka", sans-serif;
+  font-size: 2.5rem;
+  color: #3f3e39; /* Dark grey for contrast */
+  margin-bottom: 20px;
+}
+
+.cta-text {
+  font-family: "Fredoka", sans-serif;
+  font-size: 1.2rem;
+  color: #3f3e39;
+  margin-bottom: 30px;
+}
+
+.cta-button {
+  font-family: "Fredoka", sans-serif; 
+  background-color: #D7C178; /* Dark grey background for the button */
+  color: #ffffff; /* light green for text */
+  border: 2px solid #3f3e39; /* Mint green border */
+  font-size: 1.8rem;
+  font-weight: 600;
+  padding: 12px 25px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.cta-button:hover {
+  background-color: #D7C178; /* Gold for hover */
+  color: #FFFFFF; /* White text on hover */
+  border-color: #3F3E39; /* Dark grey border for hover */
+}
+
+.cta-button:active {
+  /* Updated: A richer mint green for pressed state */
+  background-color: #4ECC5A; /* Mint green for active */
+  color: #FFFFFF; /* White text remains */
+  border-color: #3F3E39; /* Dark grey border for pressed effect */
+}
