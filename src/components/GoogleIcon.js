@@ -1,7 +1,7 @@
 import React from "react";
 
 // Use svg for google icon in login and signup pages
-const GoogleIcon = ({ size = 20, className = "" }) => {
+const GoogleIcon = ({ size = 20, className = " " }) => {
   return (
     <svg
       className={className} // Apply className to the SVG
