@@ -1,7 +1,6 @@
 import React from "react";
 import "./AboutPage.css";
 import Logo from "../components/Logo"; // Importing the Logo component
-import CTA from "../features/CTA/CTA";
 
 function AboutPage() {
   return (
@@ -42,8 +41,7 @@ function AboutPage() {
         </p>
       </main>
       {/* CTA section inside main */}
-    
-      <CTA /> 
+
       <footer className="about-footer">
         <Logo />
       </footer>
