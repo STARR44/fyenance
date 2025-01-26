@@ -1,0 +1,50 @@
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;600&display=swap');
+
+
+.footer {
+  background-color: #FFFFFF; /* Color for footer background */
+  padding: 15px; /* Tweaked: Minimal padding for footer to make it compact */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center; /* Aligns all items vertically in the center */
+}
+
+.footer-logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center; /* Ensures text is aligned to the left */
+}
+
+
+.footer-subtitle {
+  font-size: 0.9rem;
+  /* margin: 0; */
+  margin-left: 30px;
+  display: block; /* Ensure subtitle appears as a separate line */
+  color: #333; /* Subtle dark gray */
+  font-family: "Fredoka", sans-serif;
+  /* text-align: left; Align subtitle text to the left */
+  padding-left: 15px;
+  padding-bottom: 10px;
+  text-align: center; /* Ensures subtitle is centered under the logo */
+}
+
+.footer-unique-color {
+  color: #d7c178; /* Gold for 'eye' */
+}
+
+.footer-copyright {
+  font-family: "Fredoka", sans-serif;
+  font-size: 0.8rem;
+  color: #827d7d; /* Light grey for subtle copyright text */
+  padding: 5px;
+  text-align: right; /* Align copyright text to the right */
+}
+
+.footer-color {
+  color: black;
+}

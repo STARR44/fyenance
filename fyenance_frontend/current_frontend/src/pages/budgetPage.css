@@ -1,0 +1,105 @@
+/* Budget page styles */
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&display=swap");
+
+.budget-page {
+  padding: 20px;
+  margin-right: 25px;
+  background-color: #f9fafb;
+  font-family: "Fredoka", sans-serif;
+  position: relative;
+
+}
+
+.budget-actions {
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.search-budget {
+  font-family: "Fredoka", sans-serif;
+  font-size: 1rem;
+  text-align: center;
+  padding: 10px;
+  margin-left: 25px;
+  width: 30vw;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.add-budget {
+  background-color: #d9d9d9;
+  color: black;
+  font-family: "Fredoka", sans-serif;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-right: 25px;
+  padding-right: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.add-budget:hover {
+  background-color: #adebb3;
+}
+
+.budget-form-container {
+  position: absolute;
+  top: 35%;
+  right: 3%;
+  width: 350px;
+  max-width: 500px;
+  max-height: 100vh;
+  min-height: 200px; /* Minimum height */
+  background: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
+  z-index: 1000;
+}
+
+.budget-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: none;
+}
+
+.budget-table th {
+  padding-top: 20px;
+  border-bottom: 2px solid #d9d9d9;
+}
+
+.budget-table td {
+  border-bottom: 1px solid #d9d9d9;
+  padding: 8px;
+  text-align: center;
+}
+
+.budget-table td button:focus {
+  outline: 1px solid #adebb3;
+}
+
+.edit-btn,
+.delete-btn {
+  margin-right: 10px;
+  background-color: #f0f0f0;
+  color: #333;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.edit-btn:hover {
+  background-color: #d9d9d9;
+}
+
+.delete-btn:hover {
+  background-color: #d9d9d9;
+}
