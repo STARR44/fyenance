@@ -52,7 +52,7 @@ Overview of transactions and budgets.
 - Fyenance is ideal for individuals to track weekly, or monthly expenses, ensuring they stay within their budget.
 
 -  Click on the "Add Transaction or Add budget" button and "save" to start using the app.
-- To edit a task, click the "Edit" button, modify the text, and press the save button to reflect the changes.
+- To edit a transaction, click the "Edit" button, modify the text, and press the save button to reflect the changes.
 - Delete a transaction by clicking the "Delete" button.
 
 
