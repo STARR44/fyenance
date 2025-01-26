@@ -27,6 +27,8 @@ export const GlobalProvider = ({ children }) => {
   // Fetch data from the backend
   useEffect(() => {
     const fetchData = async () => {
+      if (!authTokens?.access) return;
+    // const fetchData = async () => {
       try {
         const [transactionsRes, budgetsRes, categoriesRes] = await Promise.all([
           axiosInstance.get(`${baseURL}/api/transactions/`),
@@ -56,10 +58,10 @@ export const GlobalProvider = ({ children }) => {
     console.log(budgets)
     console.log(categories)
 
-    fetchData();
+    // fetchData();
   // }, [axiosInstance]);
       if (authTokens) fetchData();
-  }, [authTokens]);
+  }, [authTokens, axiosInstance]);
 
   // Add a transaction
   // const addTransaction = async (transaction) => {

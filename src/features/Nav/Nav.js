@@ -9,12 +9,16 @@ function Nav() {
       <Logo />
       <ul className="nav-links">
         <li>
-        <Link to="/about" className="nav-link">About Us</Link> {/* Link instead of a */}
+          <Link to="/about" className="nav-link">About Us</Link> {/* Link instead of a */}
         </li>
       </ul>
       <div className="nav-buttons">
-        <button>Signup</button>
-        <button>Login</button>
+        <Link to="/signup" >
+          <button id="signup">Signup</button>
+        </Link>
+        <Link to="/login" >
+          <button id="login">Login</button>
+        </Link>
       </div>
     </nav>
   );
