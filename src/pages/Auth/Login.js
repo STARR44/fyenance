@@ -3,7 +3,7 @@ import AuthContext from "../../context/AuthContext"; // Import AuthContext
 import { Link } from "react-router-dom";
 import Logo from "../../components/Logo";
 import GoogleIcon from "../../components/GoogleIcon";
-import "./auth.css";
+import "./Auth.css";
 
 const Login = () => {
   const { loginUser } = useContext(AuthContext); // Get loginUser from AuthContext

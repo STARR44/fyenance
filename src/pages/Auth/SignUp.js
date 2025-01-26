@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import AuthContext from "../../context/AuthContext";
 import Logo from "../../components/Logo";
 import GoogleIcon from "../../components/GoogleIcon";
-import "./auth.css";
+import "./Auth.css";
 
 const SignUp = () => {
   const [username, setUsername] = useState("");
