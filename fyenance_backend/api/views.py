@@ -372,7 +372,7 @@ class CategoryListCreate(mixins.DestroyModelMixin,
                 If the category name does not exist, it creates a new category.
                 """
 
-                category = Category(name=name, colour=colour)
+                category = Category(name=name, colour=colour, user=request.user)
                 category.save()
                 return Response(self.serializer_class(category).data, status=status.HTTP_201_CREATED)
         return Response({"Bad Request": "Invalid data"}, status=status.HTTP_400_BAD_REQUEST)
