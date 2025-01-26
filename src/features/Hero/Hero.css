@@ -2,7 +2,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&display=swap");
 
 .hero {
-  background-color: #F9FAFB; /* Light grey for a clean background */
+  background-color: #f9fafb; /* Light grey for a clean background */
   color: #3f3e39; /* Dark grey for text */
   text-align: center;
   padding: 60px 20px;
@@ -32,8 +32,8 @@
 }
 
 .hero-btn {
-  font-family: "Fredoka", sans-serif; 
-  background-color: #D7C178; /* Dark grey background for the button */
+  font-family: "Fredoka", sans-serif;
+  background-color: #d7c178; /* Dark grey background for the button */
   color: #ffffff; /* light green for text */
   border: 2px solid #3f3e39; /* Mint green border */
   font-size: 1.8rem;
@@ -48,18 +48,17 @@
 }
 
 .hero-btn:hover {
-  background-color: #D7C178; /* Gold for hover */
-  color: #FFFFFF; /* White text on hover */
-  border-color: #3F3E39; /* Dark grey border for hover */
+  background-color: #d7c178; /* Gold for hover */
+  color: #ffffff; /* White text on hover */
+  border-color: #3f3e39; /* Dark grey border for hover */
 }
 
 .hero-btn:active {
   /* Updated: A richer mint green for pressed state */
-  background-color: #4ECC5A; /* Mint green for active */
-  color: #FFFFFF; /* White text remains */
-  border-color: #3F3E39; /* Dark grey border for pressed effect */
+  background-color: #4ecc5a; /* Mint green for active */
+  color: #ffffff; /* White text remains */
+  border-color: #3f3e39; /* Dark grey border for pressed effect */
 }
-
 
 .hero-video {
   width: 100%; /* Full width of the container */
@@ -73,4 +72,93 @@
 .hero-phrase {
   font-family: "Fredoka", sans-serif;
   color: #d7c178;
+}
+
+/* Media Queries */
+
+/* Mobile Devices (Portrait - max-width: 575.98px) */
+@media only screen and (max-width: 575.98px) {
+  .hero {
+    padding: 40px 15px;
+    flex-direction: column; /* Stack content vertically */
+    text-align: center; /* Center align everything */
+  }
+
+  .hero-content {
+    max-width: 100%; /* Allow content to take full width */
+  }
+
+  .hero-title {
+    font-size: 2rem; /* Adjust title font size */
+  }
+
+  .hero-subtitle {
+    font-size: 1.2rem; /* Adjust subtitle font size */
+  }
+
+  .hero-btn {
+    font-size: 1.4rem;
+    padding: 10px 20px; /* Smaller padding for buttons */
+    margin-right: 0; /* Avoid right margin issues */
+  }
+
+  .hero-video {
+    max-width: 90%; /* Reduce video size */
+  }
+}
+
+/* Tablets (Portrait and Small Screens - max-width: 767.98px) */
+@media only screen and (max-width: 767.98px) and (min-width: 576px) {
+  .hero {
+    padding: 50px 20px; /* Slightly larger padding than mobile */
+  }
+
+  .hero-content {
+    max-width: 700px; /* Restrict content width for readability */
+  }
+
+  .hero-title {
+    font-size: 2.5rem; /* Adjust title size */
+  }
+
+  .hero-subtitle {
+    font-size: 1.3rem; /* Adjust subtitle size */
+  }
+
+  .hero-btn {
+    font-size: 1.6rem;
+    padding: 12px 24px; /* Adjust button padding */
+  }
+
+  .hero-video {
+    max-width: 80%; /* Adjust video size */
+  }
+}
+
+/* Small Desktops (Landscape Mode - max-width: 991.98px) */
+@media only screen and (max-width: 991.98px) and (min-width: 768px) {
+  .hero {
+    padding: 60px 30px; /* Standard padding for medium devices */
+  }
+
+  .hero-content {
+    max-width: 750px;
+  }
+
+  .hero-title {
+    font-size: 2.8rem; /* Adjust title size */
+  }
+
+  .hero-subtitle {
+    font-size: 1.4rem;
+  }
+
+  .hero-btn {
+    font-size: 1.7rem;
+    padding: 14px 28px;
+  }
+
+  .hero-video {
+    max-width: 70%; /* Adjust video size */
+  }
 }
