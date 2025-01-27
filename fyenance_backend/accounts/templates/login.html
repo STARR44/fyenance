@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Fyenance</title>
+    <script src="https://accounts.google.com/gsi/client" async></script>
+    <script>
+        function handleCredentialResponse(response) {
+
+            const token = response.credential; // This is the token from Google
+// Debug the response
+            console.log("Extracted Token:", token);
+
+            fetch('http://localhost:8000/accounts/google-login/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({ token: token })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message === 'Login successful') {
+                    alert('Login successful!');
+                    window.location.href = '/api/transactions'; // Redirect to transactions view
+                } else {
+                    alert('Login failed: ' + data.error);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+        window.onload = function () {
+            google.accounts.id.initialize({
+                client_id: "6157513953-avhb53l5mlgdsndmum3rvgj4e7ogeb2t.apps.googleusercontent.com",
+                callback: handleCredentialResponse
+            });
+    
+            google.accounts.id.renderButton(
+                document.getElementById("g_id_signin"), // Ensure this ID matches the button in your HTML
+                {
+                    type: "standard",
+                    shape: "rectangular",
+                    theme: "outline",
+                    text: "signin_with",
+                    size: "large",
+                    logo_alignment: "left"
+                }
+            );
+    
+            google.accounts.id.prompt(); // Optional
+        }
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .form-group {
+            margin: 15px 0;
+        }
+
+        input[type="text"], input[type="password"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .g_id_signin {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Login to Fyenance</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+        </table>
+        <input type="hidden" name="next" value="{{ request.path }}">
+        <button type="submit">Login</button>
+    </form>
+
+    <p>OR</p>
+
+    <div id="g_id_onload"
+         data-client_id="6157513953-avhb53l5mlgdsndmum3rvgj4e7ogeb2t.apps.googleusercontent.com"
+         data-context="signin"
+         data-ux_mode="popup"
+         data-login_uri="http://localhost:8000/accounts/google-login/"
+         data-itp_support="true"
+         data-callback="handleCredentialResponse">
+    </div>
+
+    <div class="g_id_signin"
+         data-type="standard"
+         data-shape="rectangular"
+         data-theme="outline"
+         data-text="signin_with"
+         data-size="large"
+         data-logo_alignment="left">
+    </div>
+</div>
+
+</body>
+</html>

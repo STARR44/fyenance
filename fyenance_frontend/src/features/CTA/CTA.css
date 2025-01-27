@@ -1,0 +1,118 @@
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&display=swap");
+
+.cta-section {
+  background: linear-gradient(
+    135deg,
+    #4ecc5a,
+    #adebb3,
+    #d7c178
+  ); /* Elegant gradient */
+  text-align: center;
+  padding: 35px 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.cta-title {
+  font-family: "Fredoka", sans-serif;
+  font-size: 2.5rem;
+  color: #3f3e39; /* Dark grey for contrast */
+  margin-bottom: 20px;
+}
+
+.cta-text {
+  font-family: "Fredoka", sans-serif;
+  font-size: 1.2rem;
+  color: #3f3e39;
+  margin-bottom: 30px;
+}
+
+.cta-button {
+  font-family: "Fredoka", sans-serif;
+  background-color: #d7c178; /* Dark grey background for the button */
+  color: #ffffff; /* light green for text */
+  border: 2px solid #3f3e39; /* Mint green border */
+  font-size: 1.8rem;
+  font-weight: 600;
+  padding: 12px 25px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.cta-button:hover {
+  background-color: #d7c178; /* Gold for hover */
+  color: #ffffff; /* White text on hover */
+  border-color: #3f3e39; /* Dark grey border for hover */
+}
+
+.cta-button:active {
+  /* Updated: A richer mint green for pressed state */
+  background-color: #4ecc5a; /* Mint green for active */
+  color: #ffffff; /* White text remains */
+  border-color: #3f3e39; /* Dark grey border for pressed effect */
+}
+
+/* Medium Screens (Tablets, 768px and below) */
+@media (max-width: 768px) {
+  .cta-section {
+    padding: 30px 15px; /* Reduce padding slightly */
+  }
+
+  .cta-title {
+    font-size: 2rem; /* Slightly smaller title */
+  }
+
+  .cta-text {
+    font-size: 1rem; /* Adjust text size for readability */
+    margin-bottom: 20px; /* Reduce margin */
+  }
+
+  .cta-button {
+    font-size: 1.5rem; /* Decrease button text size */
+    padding: 10px 20px; /* Adjust padding for smaller buttons */
+  }
+}
+
+/* Small Screens (Phones, 576px and below) */
+@media (max-width: 576px) {
+  .cta-section {
+    padding: 25px 10px; /* Compact padding */
+    border-radius: 6px; /* Slightly smaller border-radius */
+  }
+
+  .cta-title {
+    font-size: 1.8rem; /* Further reduce title size */
+    margin-bottom: 15px; /* Reduce spacing */
+  }
+
+  .cta-text {
+    font-size: 0.9rem; /* Smaller text */
+    margin-bottom: 15px; /* Tighter spacing */
+  }
+
+  .cta-button {
+    font-size: 1.2rem; /* Compact button text size */
+    padding: 8px 15px; /* Adjust padding */
+  }
+}
+
+/* Extra Small Screens (Tiny phones, 375px and below) */
+@media (max-width: 375px) {
+  .cta-section {
+    padding: 20px 5px; /* Minimal padding */
+  }
+
+  .cta-title {
+    font-size: 1.5rem; /* Small but readable title */
+  }
+
+  .cta-text {
+    font-size: 0.8rem; /* Compact text size */
+  }
+
+  .cta-button {
+    font-size: 1rem; /* Compact button */
+    padding: 6px 10px; /* Further padding adjustments */
+  }
+}
