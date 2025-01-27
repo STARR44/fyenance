@@ -89,7 +89,7 @@ const SignUp = () => {
           required
         />
         <button type="submit" className="auth-button primary">
-          Sign Up
+          Sign Up with Email
         </button>
         <div className="auth-divider">
           <span>or</span>
