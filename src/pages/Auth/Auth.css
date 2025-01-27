@@ -48,7 +48,7 @@
 
 /* Input */
 .auth-input {
-  padding: 15px;
+  padding: 10px;
   font-size: 16px;
   border: 1px solid #d9d9d9;
   border-radius: 5px;
@@ -59,7 +59,7 @@
 .auth-button {
   padding: 12px 15px;
   font-size: 16px;
-  font-weight: bold;
+  /* font-weight: bold; */
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -72,7 +72,7 @@
 }
 
 .auth-button.google {
-  background-color: #d7c178;
+  background-color: #3F3E39;
   color: #ffffff;
   border: 1px solid #d9d9d9;
   display: flex;
@@ -113,7 +113,7 @@
 }
 
 .auth-footer a {
-  color: #aaaa;
+  color: #d7c178;
   font-weight: 600;
   text-decoration: none;
   margin-left: 10px;
