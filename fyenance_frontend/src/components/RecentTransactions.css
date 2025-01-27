@@ -1,0 +1,88 @@
+.recent-transactions {
+  background-color: #ffffff;
+  padding: 20px 25px; /* More padding for better spacing */
+  border: 1px solid rgba(0, 0, 0, 0.1); /* Softer, lighter border */
+  border-radius: 12px; /* Slightly more rounded corners */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Stronger shadow for a floating effect */
+  max-width: 90%; /* Maintain less width */
+  margin: auto;
+  margin-top: 30px;
+  padding-bottom: 20px; /* More bottom padding for balance */
+}
+
+.recent-transactions-header {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Adds space between the icon and text */
+  font-size: 1.5rem;
+  margin-bottom: 18px; /* Adds space below the header */
+}
+
+.wallet-icon {
+  color: #4ecc5a; /* Green wallet icon */
+  font-size: 1.8rem; /* Adjust icon size */
+}
+
+.transaction-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.transaction-table th,
+.transaction-table td {
+  padding: 8px 12px; /* Increased padding for better spacing */
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  font-size: 15px; /* Readable text size */
+}
+
+.transaction-table th {
+  font-weight: 700;
+  font-size: 16px; /* Larger headers */
+  border-bottom: 2px solid #bbb; /* Even thicker border */
+}
+
+.transaction-table tr:last-child td {
+  border-bottom: none;
+}
+
+.type.income {
+  color: #4ecc5a;
+  font-weight: bold;
+}
+
+.type.expense {
+  color: #ee3535;
+  font-weight: bold;
+}
+
+.view-more {
+  display: block;
+  margin-top: 14px;
+  text-align: left;
+  color: #4ecc5a;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 15px;
+}
+
+.view-more:hover {
+  text-decoration: underline;
+}
+
+.recent-transactions .no-transactions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #555; 
+  font-size: 16px; /* Standard font size */
+  font-weight: 400; /* Subtle weight */
+  padding: 10px 0; /* Light padding for spacing */
+  margin-top: 15px; /* Adds space above */
+}
+
+.recent-transactions .no-transactions .icon {
+  margin-right: 8px; /* Space between icon and text */
+  color: #888; /* Neutral color for the icon */
+  font-size: 1.6rem; /* Moderate icon size */
+}

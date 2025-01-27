@@ -1,0 +1,15 @@
+/* Container for Greeting */
+.greeting-text {
+  margin: 10px 20px;
+  /* padding: 10px; */
+  text-align: left; /*Align the text to the left */
+  padding-left: 20px; /* Add some padding to give space from the edge */
+  margin-top: -8vh;
+}
+
+/* Greeting Text */
+.greeting-text h1 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #333; /* Dark text color */
+}
