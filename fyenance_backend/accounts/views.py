@@ -67,22 +67,18 @@ class UserLoginView(APIView):
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
 
-            # Authenticate user
             user = authenticate(username=username, password=password)
             if user:
-                # Generate JWT tokens
                 refresh = RefreshToken.for_user(user)
                 access_token = str(refresh.access_token)
                 refresh_token = str(refresh)
 
-                # Respond with tokens and user data
                 return Response({
                     'refresh': refresh_token,
                     'access': access_token,
                     'user': UserSerializer(user).data
                 }, status=status.HTTP_200_OK)
 
-        # Invalid form or credentials
         return Response({
             'error': 'Invalid credentials or form data',
             'form_errors': form.errors
@@ -90,17 +86,17 @@ class UserLoginView(APIView):
 
 
 def get_one_name(user_data, index):
-    if not isinstance(user_data, dict):  # Ensure user_data is a dictionary
+    if not isinstance(user_data, dict):
         return None
 
-    name = user_data.get('name', '').strip()  # Extract and strip the name
-    if not name:  # If name is empty or only whitespace
+    name = user_data.get('name', '').strip()
+    if not name:
         return None
 
     name_parts = name.split()
     try:
-        return name_parts[index]  # Return the requested part by index
-    except IndexError:  # Handle cases where index is out of bounds
+        return name_parts[index]
+    except IndexError:
         return None
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -108,7 +104,7 @@ class GoogleLoginView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
-        token = request.data.get('token')  # Token from Google
+        token = request.data.get('token')
         if not token:
             return Response({'error': 'Token is required'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -122,7 +118,6 @@ class GoogleLoginView(APIView):
         last_name = get_one_name(user_data, -1)
         google_username = user_data.get('username')
 
-        # Check if the user already exists
         user, created = FyenanceUser.objects.get_or_create(
             username=google_username or google_id,
             defaults={
@@ -135,8 +130,8 @@ class GoogleLoginView(APIView):
         )
 
         if created:
-            user.set_unusable_password()  # Google users won't have a password
+            user.set_unusable_password()
             user.save()
 
-        login(request, user)  # Log in the user
+        login(request, user)
         return Response({'message': 'Login successful', 'username': user.username}, status=status.HTTP_200_OK)

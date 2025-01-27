@@ -33,7 +33,6 @@ from django.core.exceptions import ValidationError
 def cleanDecimal(value):
     return float(value.replace(",", ""))
 
-# Do not forget to add the login required decorator here
 class TransactionListCreate(mixins.DestroyModelMixin,
     generics.ListCreateAPIView):
     
@@ -127,7 +126,7 @@ class TransactionListCreate(mixins.DestroyModelMixin,
                     transaction.budget = budget
                     transaction.date_created = date_created
                     transaction.save(update_fields=['amount', 'date_created', 'type', 'category', 'budget'])
-                    return Response(self.serializer_class(transaction).data, status=status.HTTP_200_OK) # I am choosing not to call it TransactionSerializer
+                    return Response(self.serializer_class(transaction).data, status=status.HTTP_200_OK)
                 else:
                     """
                     If the transaction id does not exist, it creates a new transaction.
@@ -136,7 +135,6 @@ class TransactionListCreate(mixins.DestroyModelMixin,
                     return Response(self.serializer_class(transaction).data, status=status.HTTP_201_CREATED)
             except ValidationError as e:
                 return Response({"Error (Bad Request)": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-        # return Response({"Bad Request": "Invalido data"}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
     def get(self, request, format=None):
@@ -253,12 +251,11 @@ class BudgetListCreate(mixins.DestroyModelMixin,
                 budget.start_date = start_date
                 budget.end_date = end_date
                 budget.save(update_fields=['name', 'amount_allocated', 'amount_left', 'start_date', 'end_date'])
-                return Response(self.serializer_class(budget).data, status=status.HTTP_200_OK) # I am choosing not to call it TransactionSerializer
+                return Response(self.serializer_class(budget).data, status=status.HTTP_200_OK)
             else:
                 """
                 If the budget name does not exist, it creates a new budget.
                 """
-                # I am doing this to set the remaining amount as the allocated amount for new budgets
                 amount_left = serializer.validated_data.get('amount_allocated')
                 budget = serializer.save(amount_left=amount_left, user=user)
                 return Response(self.serializer_class(budget).data, status=status.HTTP_201_CREATED)
@@ -313,8 +310,8 @@ class CategoryListCreate(mixins.DestroyModelMixin,
     """
 
     serializer_class = CategorySerializer
-    permission_classes = [AllowAny] # After testing these endpoints, the permission classes will return to IsAuthenticated
-    lookup_url_kwarg = 'name' # Find out if this is still necessary
+    permission_classes = [AllowAny]
+    lookup_url_kwarg = 'name'
 
     def get_queryset(self):
         """Returns queryset filtered by `name`."""
@@ -352,7 +349,6 @@ class CategoryListCreate(mixins.DestroyModelMixin,
         if serializer.is_valid():
             name = serializer.data.get('name')
             colour = serializer.data.get('colour')
-            # Checking whether the colour provided is valid HEX
             pattern = r'(?#)([a-fA-F0-9]{6})'
             if not re.match(pattern, colour):
                 return Response({"Error": "Invalid colour provided."}, status=status.HTTP_400_BAD_REQUEST)
@@ -366,7 +362,7 @@ class CategoryListCreate(mixins.DestroyModelMixin,
                 category.colour = colour.lower()
                 print(category.colour)
                 category.save(update_fields=['colour'])
-                return Response(self.serializer_class(category).data, status=status.HTTP_200_OK) # I am choosing not to call it CategorySerializer
+                return Response(self.serializer_class(category).data, status=status.HTTP_200_OK)
             else:
                 """
                 If the category name does not exist, it creates a new category.
@@ -421,7 +417,7 @@ class ExchangeTokenView(APIView):
         post: Exchanges a code for account information.
     """
      
-    permission_classes = [IsAuthenticated] # After testing these endpoints, the permission classes will return to IsAuthenticated
+    permission_classes = [IsAuthenticated]
     
     def post(self, request):
         """
@@ -446,15 +442,14 @@ class ExchangeTokenView(APIView):
             return Response({"error": "Code is required"}, status=400)
 
         url = "https://api.withmono.com/account/auth"
-        headers = {"mono-sec-key": os.getenv("MONO_SECRET_KEY")}  # Replace with your actual secret key
+        headers = {"mono-sec-key": os.getenv("MONO_SECRET_KEY")}
         response = requests.post(url, headers=headers, json={"code": code})
 
         if response.status_code == 200:
             data = response.json()
             account_id = data.get("id")
             account_balance = data.get("balance")
-            # Save account_id to the database (optional)
-            user = request.user  # Retrieve the currently logged-in user
+            user = request.user
             user.account_id = account_id
             user.account_balance = account_balance
             user.save()

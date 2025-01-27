@@ -62,3 +62,80 @@
   background-color: #adebb3;
   color: rgb(255, 255, 255);
 }
+
+/* 📌 Responsive Styles for Navigation */
+@media (max-width: 1023px) { /* Tablets */
+  .navbar {
+    padding: 8px 12px;
+  }
+
+  .nav-link {
+    font-size: 16px;
+    padding: 5px 8px;
+  }
+
+  .nav-buttons button {
+    font-size: 16px;
+    padding: 6px 14px;
+  }
+
+  .nav-buttons {
+    gap: 10px;
+    margin-right: 10px;
+  }
+}
+
+@media (max-width: 767px) { /* Mobile */
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start; /* Align everything to the left */
+    padding: 12px;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    margin: 10px 0;
+    margin-right: 0;
+    align-items: flex-start; /* Align links to the left */
+  }
+
+  .nav-link {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+
+  .nav-buttons {
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    align-items: flex-start; /* Move buttons to the left */
+  }
+
+  .nav-buttons button {
+    font-size: 14px;
+    padding: 8px 12px;
+    width: auto; /* Keep natural width */
+  }
+}
+
+@media (max-width: 479px) { /* Extra Small Phones */
+  .navbar {
+    padding: 8px;
+  }
+
+  .nav-link {
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+
+  .nav-buttons {
+    width: 100%;
+    align-items: flex-start; /* Keep buttons aligned left */
+  }
+
+  .nav-buttons button {
+    font-size: 13px;
+    padding: 6px 10px;
+    width: auto; /* Natural width */
+  }
+}

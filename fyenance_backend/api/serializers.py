@@ -28,7 +28,7 @@ class TransactionSerializer(serializers.ModelSerializer):
                 except ValueError as e:
                     raise serializers.ValidationError({'amount': str(e)})
             else:
-                data['amount'] = Decimal(data['amount'])  # Ensure it's always a Decimal.
+                data['amount'] = Decimal(data['amount'])
         
         if 'category' in data:
             if isinstance(data['category'], str):
@@ -39,27 +39,6 @@ class TransactionSerializer(serializers.ModelSerializer):
     
         return super().to_internal_value(data)
 
-    # def to_internal_value(self, data):
-    #         # Clean amount_allocated and amount_left here
-    #         if 'amount' in data:
-    #             if type(data['amount']) != 'str':
-    #                 data['amount'] = str(data['amount'])
-    #                 print(f"\n\"{data['amount']}\"\n")
-    #             else:
-    #                 data['amount'] = cleanDecimal(data['amount'])
-    #         if 'category' in data:
-    #             if isinstance(data['category'], str):
-    #                 if len(data['category']) > 0:
-    #                     data['category'] = int(data['category'])
-    #                 else:
-    #                     print(data)
-    #                     print(f"\n\"{data['category']}\"\n")
-    #                     # data.pop('category')
-    #                     data['category'] = None
-    #                     print(data)
-    #         # if 'type' in data:
-    #         #     data['type'] = data['type'].lower()
-    #         return super().to_internal_value(data)
 
 class BudgetSerializer(serializers.ModelSerializer):
     class Meta:
@@ -68,7 +47,6 @@ class BudgetSerializer(serializers.ModelSerializer):
         extra_kwargs = {'id': {'read_only': True}, 'user_username': {'read_only': True}, 'status': {'read_only': True}}
     
     def to_internal_value(self, data):
-            # Clean amount_allocated and amount_left here
             if 'amount_allocated' in data:
                 if isinstance(data['amount_allocated'],str):
                     try:
