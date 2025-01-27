@@ -58,3 +58,36 @@ To set up the Django backend, follow these steps:
    ```bash
    git clone <repository-url>
    cd fyenance_backend
+   ```
+
+2. **Create a Virtual Environment:**
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate  # On Windows, use venv\Scripts\activate
+   ```
+
+3. **Install Dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Set Up the Database:**
+   - Open `fyenance_backend/settings.py` and configure the database settings as needed (default is SQLite).
+   - Apply migrations:
+     ```bash
+     python manage.py migrate
+     ```
+
+5. **Run the Development Server:**
+   ```bash
+   python manage.py runserver
+   ```
+
+6. **(Optional) Create a Superuser for Admin Access:**
+   ```bash
+   python manage.py createsuperuser
+   ```
+
+7. **API Testing and Frontend Connection:**
+   - The API will be accessible at `http://127.0.0.1:8000`.
+   - Ensure the frontend communicates with the backend by configuring the appropriate endpoints in the React app.
