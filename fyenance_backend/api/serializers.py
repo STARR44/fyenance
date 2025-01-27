@@ -8,8 +8,8 @@ def cleanDecimal(value):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ('name', 'colour', 'percentage')
-        extra_kwargs = {'percentage': {'read_only': True}}
+        fields = ('id', 'name', 'colour', 'percentage')
+        extra_kwargs = {'id': {'read_only': True}, 'percentage': {'read_only': True}}
 
 class TransactionSerializer(serializers.ModelSerializer):
     category = serializers.PrimaryKeyRelatedField(
@@ -64,8 +64,8 @@ class TransactionSerializer(serializers.ModelSerializer):
 class BudgetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Budget
-        fields = ('name', 'amount_allocated', 'amount_left', 'user_username', 'status', 'start_date', 'end_date')
-        extra_kwargs = {'user_username': {'read_only': True}, 'status': {'read_only': True}}
+        fields = ('id', 'name', 'amount_allocated', 'amount_left', 'user_username', 'status', 'start_date', 'end_date')
+        extra_kwargs = {'id': {'read_only': True}, 'user_username': {'read_only': True}, 'status': {'read_only': True}}
     
     def to_internal_value(self, data):
             # Clean amount_allocated and amount_left here
