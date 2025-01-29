@@ -94,61 +94,61 @@ To set up the Django backend, follow these steps:
 
    ---
 
-   ## React Setup Instructions
-   To set up the React frontend, follow these steps:
+## React Setup Instructions
+To set up the React frontend, follow these steps:
    
-   ## Step 1: Clone the Repository
-   First, clone the repository from GitHub and navigate into the project folder
+## Step 1: Clone the Repository
+First, clone the repository from GitHub and navigate into the project folder
 ```bash
-   git clone <repository-url>
-   cd fyenance_frontend
+git clone <repository-url>
+cd fyenance_frontend
 ```
 
-   ## Step 2: Install Dependencies
-   Now, install all the required dependencies.
+## Step 2: Install Dependencies
+Now, install all the required dependencies.
 ```bash
-   npm install
+npm install
 ```
 
-   ## Step 3: Configure API Base URL
-   Set the API base URL by creating an `.env` file.
+## Step 3: Configure API Base URL
+Set the API base URL by creating an `.env` file.
 ```bash
-   touch .env
-   echo "REACT_APP_API_BASE_URL=http://127.0.0.1:8000" >> .env
+touch .env
+echo "REACT_APP_API_BASE_URL=http://127.0.0.1:8000" >> .env
 ```
-   Then, in your React code, you can use the API base URL like this:
+Then, in your React code, you can use the API base URL like this:
 ```bash
-   const baseURL = process.env.REACT_APP_API_BASE_URL;
-```
-
-   ## Step 4: Ignore Unnecessary Files
-   To avoid pushing unnecessary files like `node_modules/` and `.env`, add them to your `.gitignore`.
-```bash
-   touch .gitignore
-   echo "node_modules/" >> .gitignore
-   echo ".env" >> .gitignore
-```
-   Then, commit the .gitignore file.
-```bash
-   git add .gitignore
-   git commit -m "Added .gitignore to exclude unnecessary files"
+const baseURL = process.env.REACT_APP_API_BASE_URL;
 ```
 
-   ## Step 5: Start the Development Server
-   Run the development server to preview the app.
+## Step 4: Ignore Unnecessary Files
+To avoid pushing unnecessary files like `node_modules/` and `.env`, add them to your `.gitignore`.
 ```bash
-   npm start
+touch .gitignore
+echo "node_modules/" >> .gitignore
+echo ".env" >> .gitignore
 ```
-   Once the server starts, open your browser and visit:
+Then, commit the .gitignore file.
 ```bash
-   http://localhost:3000
+git add .gitignore
+git commit -m "Added .gitignore to exclude unnecessary files"
 ```
 
-   ## Step 6: Push Changes to GitHub
+## Step 5: Start the Development Server
+Run the development server to preview the app.
 ```bash
-   git add .
-   git commit -m "Set up initial React frontend and configuration"
-   git push origin master
+npm start
+```
+Once the server starts, open your browser and visit:
+```bash
+http://localhost:3000
+```
+
+## Step 6: Push Changes to GitHub
+```bash
+git add .
+git commit -m "Set up initial React frontend and configuration"
+git push origin master
 ```
 
    ---
