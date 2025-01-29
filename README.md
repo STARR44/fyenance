@@ -92,7 +92,7 @@ To set up the Django backend, follow these steps:
    - The API will be accessible at `http://127.0.0.1:8000`.
    - Ensure the frontend communicates with the backend by configuring the appropriate endpoints in the React app.
 
-   ---
+---
 
 ## React Setup Instructions
 To set up the React frontend, follow these steps:
@@ -151,4 +151,6 @@ git commit -m "Set up initial React frontend and configuration"
 git push origin master
 ```
 
-   ---
+******************************
+Thank you for reading!
+******************************
